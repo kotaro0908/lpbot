@@ -39,3 +39,20 @@ def get_usdc_eth_prices(w3: Web3, pool_address: str) -> (Decimal, Decimal, int):
     usdc_per_eth_for_tick = adjusted_usdc_per_eth / (Decimal(10) ** 12)
 
     return adjusted_usdc_per_eth, usdc_per_eth_for_tick, tick
+
+def add_liquidity(*args, **kwargs):
+    pass
+
+def remove_liquidity(web3, wallet, token_id):
+    """
+    Uniswap V3のNFTポジションをremove（流動性撤退）する関数
+    ※ ABIやコントラクトアドレスは別途管理
+    """
+    # ここでweb3経由でUniswap V3 PositionManagerのremoveLiquidityをコール
+    pass  # 詳細は順次肉付け
+
+def collect_fees(*args, **kwargs):
+    pass
+
+def get_lp_position(*args, **kwargs):
+    return {"token_id": 0}
