@@ -3,7 +3,7 @@ from swap_utils import w3, wallet, get_token_balance, get_token_decimals, approv
 import time
 
 def main_loop():
-    print("=== Swap自動化モニター起動（Arbitrum対応）===")
+    print("=== Swap自動化モニター起動（Arbitrum対応・デバッグ付き）===")
     while True:
         for pair in SWAP_PAIRS:
             from_address = pair["from_address"]
@@ -15,6 +15,11 @@ def main_loop():
             balance = get_token_balance(from_address, wallet.address)
             balance_human = balance / (10 ** decimals)
 
+            # === デバッグ出力 ===
+            print(f"[DEBUG] wallet.address: {wallet.address}")
+            print(f"[DEBUG] from_address: {from_address}")
+            print(f"[DEBUG] USDC balance raw: {balance}")
+            print(f"[DEBUG] decimals: {decimals}")
             print(f"[CHECK] {pair['from_symbol']} 残高: {balance_human}（しきい値: {threshold}）")
 
             threshold_wei = int(threshold * (10 ** decimals))
