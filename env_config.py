@@ -17,6 +17,7 @@ SWAP_ROUTER_ADDRESS = Web3.to_checksum_address("0xE592427A0AEce92De3Edee1F18E015
 USDC_ADDRESS = Web3.to_checksum_address(os.getenv("USDC_ADDRESS"))
 WETH_ADDRESS = Web3.to_checksum_address(os.getenv("WETH_ADDRESS"))
 
+
 # === swap対象ペア・しきい値・プールfee等をリストで管理 ===
 SWAP_PAIRS = [
     {
