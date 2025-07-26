@@ -105,3 +105,48 @@ def collect_fees(w3: Web3, wallet, token_id: int, gas: int, gas_price: int):
     tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     print("collect tx sent:", w3.to_hex(tx_hash))
     return tx_hash
+
+# === ここから追加 ===
+
+SLOT0_ABI = [{
+    "inputs": [],
+    "name": "slot0",
+    "outputs": [
+        {"internalType": "uint160", "name": "sqrtPriceX96", "type": "uint160"},
+        {"internalType": "int24", "name": "tick", "type": "int24"},
+        {"internalType": "uint16", "name": "observationIndex", "type": "uint16"},
+        {"internalType": "uint16", "name": "observationCardinality", "type": "uint16"},
+        {"internalType": "uint16", "name": "observationCardinalityNext", "type": "uint16"},
+        {"internalType": "uint8", "name": "feeProtocol", "type": "uint8"},
+        {"internalType": "bool", "name": "unlocked", "type": "bool"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+}]
+
+def get_eth_usdc_price(w3, pool_address):
+    """
+    Uniswap V3 poolのslot0から現在のETH/USDC価格を取得
+    :param w3: Web3インスタンス
+    :param pool_address: ETH/USDCプールアドレス（例: 0xC696...）
+    :return: 1ETH = ? USDC（float）
+    """
+    pool = w3.eth.contract(address=pool_address, abi=SLOT0_ABI)
+    slot0 = pool.functions.slot0().call()
+    sqrt_price_x96 = slot0[0]
+    # ETH/USDC（USDCが6桁, ETHが18桁の場合）
+    price = (sqrt_price_x96 ** 2 * (10 ** 12)) / (2 ** 192)
+    return price
+
+if __name__ == "__main__":
+    from dotenv import load_dotenv
+    import os
+
+    load_dotenv()
+    RPC_URL = os.getenv("RPC_URL")
+    w3 = Web3(Web3.HTTPProvider(RPC_URL))
+
+    # プールアドレス（ETH/USDC, 0.05% tier）
+    pool_address = Web3.to_checksum_address("0xC6962004f452bE9203591991D15f6b388e09E8D0")
+    price = get_eth_usdc_price(w3, pool_address)
+    print(f"ETH/USDC price: 1ETH = {price} USDC")
