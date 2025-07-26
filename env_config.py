@@ -48,3 +48,4 @@ GAS_BUFFER_ETH = float(os.getenv("GAS_BUFFER_ETH", "0.01"))
 RANGE_WIDTH_PERCENT = float(os.getenv("RANGE_WIDTH_PERCENT", "1.0"))
 
 # 必要ならPOOL_ADDRESSや通知設定もここで管理可
+REBALANCE_THRESHOLD_USD = float(os.getenv("REBALANCE_THRESHOLD_USD", "50"))
