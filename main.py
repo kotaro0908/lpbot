@@ -329,7 +329,7 @@ class LPManager:
         return effective_lower <= current_tick <= effective_upper
 
     def check_and_rebalance_if_needed(self):
-        """レンジチェックと必要時リバランス実行（段階的テスト版）"""
+        """レンジチェックと必要時リバランス実行（デバッグ版）"""
         current_tick = self.get_current_tick()
         if current_tick is None:
             return
@@ -368,15 +368,36 @@ class LPManager:
             logger.info(f"✅ NFT {token_id}: 流動性 {position_info['liquidity']}")
             active_nfts.append(token_id)
 
-            # 🧪 段階的テスト対応レンジチェック
+            # レンジチェック
             in_range = self.is_position_in_range(
                 current_tick,
                 position_info['tick_lower'],
                 position_info['tick_upper']
             )
 
+            # 🔧 デバッグ出力（バグ特定用）
+            print(f"🔧 DEBUG: current_tick={current_tick}")
+            print(f"🔧 DEBUG: tick_lower={position_info['tick_lower']}")
+            print(f"🔧 DEBUG: tick_upper={position_info['tick_upper']}")
+            print(f"🔧 DEBUG: in_range={in_range}")
+
+            # 手動計算での確認
+            tick_range = position_info['tick_upper'] - position_info['tick_lower']
+            buffer = int(tick_range * REBALANCE_THRESHOLD)
+            effective_lower = position_info['tick_lower'] + buffer
+            effective_upper = position_info['tick_upper'] - buffer
+            manual_check = effective_lower <= current_tick <= effective_upper
+            print(f"🔧 DEBUG: effective_range=[{effective_lower}, {effective_upper}]")
+            print(f"🔧 DEBUG: manual_calculation={manual_check}")
+
             logger.info(
                 f"NFT {token_id}: 現在:{current_tick}, レンジ:[{position_info['tick_lower']}, {position_info['tick_upper']}]")
+
+            if in_range:
+                logger.info(f"✅ NFT {token_id} レンジ内")
+            else:
+                logger.info(f"🔴 NFT {token_id} レンジ外 - リバランス対象")
+                out_of_range_nfts.append(token_id)
 
         # 追跡リスト更新
         if len(self.tracked_nfts) != len(active_nfts):
