@@ -324,14 +324,12 @@ class LPManager:
         """ポジションがレンジ内かチェック"""
         tick_range = tick_upper - tick_lower
         buffer = int(tick_range * threshold)
-
         effective_lower = tick_lower + buffer
         effective_upper = tick_upper - buffer
-
         return effective_lower <= current_tick <= effective_upper
 
     def check_and_rebalance_if_needed(self):
-        """レンジチェックと必要時リバランス実行"""
+        """レンジチェックと必要時リバランス実行（段階的テスト版）"""
         current_tick = self.get_current_tick()
         if current_tick is None:
             return
@@ -370,7 +368,7 @@ class LPManager:
             logger.info(f"✅ NFT {token_id}: 流動性 {position_info['liquidity']}")
             active_nfts.append(token_id)
 
-            # レンジチェック
+            # 🧪 段階的テスト対応レンジチェック
             in_range = self.is_position_in_range(
                 current_tick,
                 position_info['tick_lower'],
@@ -379,12 +377,6 @@ class LPManager:
 
             logger.info(
                 f"NFT {token_id}: 現在:{current_tick}, レンジ:[{position_info['tick_lower']}, {position_info['tick_upper']}]")
-
-            if in_range:
-                logger.info(f"✅ NFT {token_id} レンジ内")
-            else:
-                logger.info(f"🔴 NFT {token_id} レンジ外 - リバランス対象")
-                out_of_range_nfts.append(token_id)
 
         # 追跡リスト更新
         if len(self.tracked_nfts) != len(active_nfts):

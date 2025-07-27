@@ -1,4 +1,4 @@
-# add_liquidity.py - swap_utils統合版
+# add_liquidity.py - swap_utils統合版（NFT ID抽出機能付き）
 from web3 import Web3
 from env_config import USDC_ADDRESS, WETH_ADDRESS
 import json, os, time
@@ -56,6 +56,52 @@ POSITION_MANAGER_ABI = [
                                  {"internalType": "uint256", "name": "amount1", "type": "uint256"}],
      "stateMutability": "payable", "type": "function"}
 ]
+
+
+# ✅ NFT ID抽出機能
+def extract_nft_id_from_transaction(w3, tx_hash):
+    """TransactionからNFT IDを抽出"""
+    try:
+        print(f"🔍 Transaction解析: NFT ID抽出中...")
+
+        # トランザクションレシート取得（最大30秒待機）
+        receipt = None
+        for attempt in range(30):
+            try:
+                receipt = w3.eth.get_transaction_receipt(tx_hash)
+                break
+            except:
+                print(f"   レシート取得試行 {attempt + 1}/30...")
+                time.sleep(1)
+                continue
+
+        if not receipt:
+            print("❌ トランザクションレシート取得失敗")
+            return None
+
+        # Transfer イベント検索
+        transfer_signature = w3.keccak(text="Transfer(address,address,uint256)")
+
+        for log in receipt.logs:
+            if (log.address.lower() == POSITION_MANAGER_ADDRESS.lower() and
+                    len(log.topics) >= 4 and
+                    log.topics[0] == transfer_signature):
+
+                # topic[1] = from, topic[2] = to, topic[3] = tokenId
+                from_address = log.topics[1].hex()
+
+                # Mint検出（from = 0x000...000）
+                if from_address == "0x0000000000000000000000000000000000000000000000000000000000000000":
+                    token_id = int(log.topics[3].hex(), 16)
+                    print(f"✅ NFT Mint検出成功")
+                    return token_id
+
+        print("⚠️ NFT Mint イベントが見つかりませんでした")
+        return None
+
+    except Exception as e:
+        print(f"❌ NFT ID抽出エラー: {e}")
+        return None
 
 
 # ✅ usable_weth計算（ETH + WETH - ガスバッファ）
@@ -257,9 +303,9 @@ def execute_mint_with_robust_gas(gas_limit, gas_price, w3, wallet, params):
         return {"success": False, "error": str(e)}
 
 
-# ✅ 統合版LP追加テスト
+# ✅ 統合版LP追加テスト（NFT ID抽出機能付き）
 def robust_lp_mint_test():
-    """統合版LP追加テスト（自動WETH変換対応）"""
+    """統合版LP追加テスト（自動WETH変換対応、NFT ID抽出機能付き）"""
     print("=== 🛡️ 統合版LP追加テスト（自動WETH変換対応） ===")
 
     # Web3接続
@@ -371,10 +417,21 @@ def robust_lp_mint_test():
         print(f"Gas Used: {result['gas_used']:,}")
         print(f"Events: {result['events']} 個")
         print(f"Tx Hash: {result['tx_hash']}")
-        print("🎉🎉🎉 統合版LP追加成功！ 🎉🎉🎉")
+
+        # ✅ NFT ID抽出・出力
+        print("\n=== 🎯 NFT ID抽出 ===")
+        nft_id = extract_nft_id_from_transaction(w3, result['tx_hash'])
+        if nft_id:
+            print(f"🎯 新NFT ID: {nft_id}")
+            print(f"🎯 新NFT ID: {nft_id}")  # rebalance.py検知用（重複出力）
+        else:
+            print("⚠️ NFT ID抽出失敗")
+
+        print("\n🎉🎉🎉 統合版LP追加成功！ 🎉🎉🎉")
         print("🔄 ETH→WETH自動変換対応")
         print("💰 usable_weth計算対応")
         print("🛡️ 堅牢ガス管理対応")
+        print("🎯 NFT ID自動抽出対応")
     else:
         print(f"Status: ❌ FAILED")
         print(f"Error: {result['error']}")
@@ -382,10 +439,11 @@ def robust_lp_mint_test():
 
 def main():
     """メイン実行関数"""
-    print("=== 🏆 統合版Uniswap V3 LP自動化 ===")
+    print("=== 🏆 統合版Uniswap V3 LP自動化（NFT ID抽出機能付き） ===")
     print("🔄 機能: ETH→WETH自動変換")
     print("💰 機能: usable_weth自動計算")
     print("🛡️ 機能: 堅牢ガス管理")
+    print("🎯 機能: NFT ID自動抽出")
 
     choice = input("\n実行モードを選択:\n1: 無制限approve設定のみ\n2: 統合版LP追加テスト\n3: 両方実行\n選択 (1/2/3): ")
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-リバランススクリプト
+リバランススクリプト（修正版）
 指定されたNFTの流動性を撤退し、新しいレンジで再LP投入
 
 使用方法:
@@ -50,14 +50,18 @@ def safe_collect(w3, wallet, token_id):
         receipt2 = w3.eth.wait_for_transaction_receipt(tx_hash2)
         if receipt2.status == 1:
             logger.info(f"✅ collect Tx confirmed in block: {receipt2.blockNumber}")
+            return True
         else:
             logger.error("❌ collect Tx failed at block level。未回収残高があるかも")
+            return False
     except Exception as e:
         # 既にfee回収済み/残高なしならこのエラーもOK
         if "already been used" in str(e) or "revert" in str(e):
             logger.warning("⚠️ collect Tx: 既にfee回収済み、または残高なしの可能性")
+            return True
         else:
             logger.error(f"❌ collect Tx exception: {e}")
+            return False
 
 
 def remove_liquidity(token_id):
@@ -73,6 +77,9 @@ def remove_liquidity(token_id):
 
     if liquidity == 0:
         logger.warning(f"⚠️ NFT {token_id}: 流動性が既に0です")
+        # 流動性0でもcollectを試行（手数料回収のため）
+        logger.info("💰 手数料回収を試行中...")
+        safe_collect(w3, wallet, token_id)
         return True
 
     # 全流動性撤退
@@ -114,10 +121,14 @@ def remove_liquidity(token_id):
 
         # collect実行
         logger.info("💰 手数料・残高回収中...")
-        safe_collect(w3, wallet, token_id)
+        collect_success = safe_collect(w3, wallet, token_id)
 
-        logger.info(f"✅ NFT {token_id} 流動性撤退完了")
-        return True
+        if collect_success:
+            logger.info(f"✅ NFT {token_id} 流動性撤退完了")
+            return True
+        else:
+            logger.error(f"❌ NFT {token_id} collect失敗 - 撤退未完了")
+            return False
 
     except Exception as e:
         logger.error(f"❌ 流動性撤退エラー: {e}")
@@ -138,7 +149,14 @@ def add_new_liquidity():
             timeout=120
         )
 
-        if result.returncode == 0:
+        # 成功判定を厳密化
+        success_indicators = ["SUCCESS", "🎉🎉🎉 統合版LP追加成功！", "✅ SUCCESS"]
+        error_indicators = ["❌", "残高不足", "failed", "error", "Error", "Exception"]
+
+        has_success = any(indicator in result.stdout for indicator in success_indicators)
+        has_error = any(indicator in result.stdout for indicator in error_indicators)
+
+        if result.returncode == 0 and has_success and not has_error:
             logger.info("✅ 新LP追加成功")
 
             # 出力からトランザクションハッシュ・NFT IDを抽出
@@ -173,14 +191,21 @@ def add_new_liquidity():
 
             if new_nft_id:
                 logger.info(f"🎯 新NFT ID: {new_nft_id}")
-                print(f"NEW NFT ID: {new_nft_id}")  # main.pyが検知用
+                print(f"🎯 新NFT ID: {new_nft_id}")  # main.pyが検知用
                 return new_nft_id
             else:
                 logger.warning("⚠️ 新NFT ID取得失敗")
                 return None
 
+        elif result.returncode == 0:
+            logger.error("❌ 新LP追加実行したが実際は失敗")
+            logger.error(f"詳細出力: {result.stdout}")
+            logger.error(f"エラー出力: {result.stderr}")
+            return None
         else:
-            logger.error(f"❌ 新LP追加失敗: {result.stderr}")
+            logger.error(f"❌ 新LP追加失敗 - Return Code: {result.returncode}")
+            logger.error(f"STDOUT: {result.stdout}")
+            logger.error(f"STDERR: {result.stderr}")
             return None
 
     except subprocess.TimeoutExpired:
@@ -189,6 +214,39 @@ def add_new_liquidity():
     except Exception as e:
         logger.error(f"❌ 新LP追加エラー: {e}")
         return None
+
+
+def update_tracked_nfts(old_nft_id, new_nft_id):
+    """追跡NFTファイル更新"""
+    try:
+        tracked_file = "tracked_nfts.json"
+
+        if os.path.exists(tracked_file):
+            with open(tracked_file, 'r') as f:
+                data = json.load(f)
+        else:
+            data = {"nft_ids": []}
+
+        # 古いIDを削除
+        if old_nft_id in data["nft_ids"]:
+            data["nft_ids"].remove(old_nft_id)
+            logger.info(f"📝 追跡リストから削除: NFT {old_nft_id}")
+
+        # 新しいIDを追加
+        if new_nft_id and new_nft_id not in data["nft_ids"]:
+            data["nft_ids"].append(new_nft_id)
+            logger.info(f"📝 追跡リストに追加: NFT {new_nft_id}")
+
+        # ファイル保存
+        with open(tracked_file, 'w') as f:
+            json.dump(data, f)
+
+        logger.info(f"💾 追跡NFT更新完了: {data['nft_ids']}")
+        return True
+
+    except Exception as e:
+        logger.error(f"❌ 追跡NFT更新失敗: {e}")
+        return False
 
 
 def main():
@@ -207,14 +265,18 @@ def main():
 
     # Step 1: 流動性撤退
     if not remove_liquidity(token_id):
-        logger.error(f"❌ NFT {token_id} 流動性撤退失敗")
+        logger.error(f"❌ NFT {token_id} 流動性撤退失敗 - リバランス中止")
         sys.exit(1)
 
     # Step 2: 新LP追加
     new_nft_id = add_new_liquidity()
     if new_nft_id:
+        # Step 3: 追跡NFT更新
+        update_tracked_nfts(token_id, new_nft_id)
+
         logger.info(f"✅ リバランス完了 - 旧NFT {token_id} → 新NFT {new_nft_id}")
         print(f"REBALANCE SUCCESS: {token_id} -> {new_nft_id}")
+        sys.exit(0)
     else:
         logger.error("❌ 新LP追加失敗 - リバランス未完了")
         sys.exit(1)
