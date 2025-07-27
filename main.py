@@ -26,6 +26,11 @@ POSITION_MANAGER_ADDRESS = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
 MONITORING_INTERVAL = 30  # 秒
 REBALANCE_THRESHOLD = 0.05  # 5%の閾値
 
+# LP Helper設定
+MIN_ETH_BUFFER = 0.008  # ガス代用ETH残高（SWAP+LP作成分）
+MIN_USDC_BUFFER = 5.0  # 調整用USDC残高
+TARGET_INVESTMENT_RATIO = 0.95  # 95%投入で安全マージン確保
+
 # Position Manager ABI
 POSITION_MANAGER_ABI = [
     {
@@ -71,6 +76,17 @@ POOL_ABI = [
             {"internalType": "uint8", "name": "feeProtocol", "type": "uint8"},
             {"internalType": "bool", "name": "unlocked", "type": "bool"}
         ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
+
+# ERC20 ABI（LP Helper用）
+ERC20_ABI = [
+    {
+        "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
+        "name": "balanceOf",
+        "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
         "stateMutability": "view",
         "type": "function"
     }
@@ -239,6 +255,118 @@ class WalletNFTDetector:
         return active_nfts
 
 
+class LPHelperIntegrated:
+    """LP作成支援機能（main.py統合版）"""
+
+    def __init__(self, w3, wallet_address):
+        self.w3 = w3
+        self.wallet_address = w3.to_checksum_address(wallet_address)
+
+        # コントラクト初期化
+        self.weth_contract = w3.eth.contract(address=w3.to_checksum_address(WETH_ADDRESS), abi=ERC20_ABI)
+        self.usdc_contract = w3.eth.contract(address=w3.to_checksum_address(USDC_ADDRESS), abi=ERC20_ABI)
+        self.pool_contract = w3.eth.contract(address=w3.to_checksum_address(POOL_ADDRESS), abi=POOL_ABI)
+
+    def get_eth_price(self):
+        """ETH/USDC価格取得"""
+        try:
+            slot0 = self.pool_contract.functions.slot0().call()
+            sqrt_price_x96 = slot0[0]
+
+            # sqrtPriceX96からETH価格計算
+            price_raw = (sqrt_price_x96 / (2 ** 96)) ** 2
+            eth_price_usd = price_raw * (10 ** 12)  # USDC per WETH
+
+            return eth_price_usd if eth_price_usd > 0 else 3800  # フォールバック価格
+        except Exception as e:
+            logger.warning(f"価格取得エラー、フォールバック価格使用: {e}")
+            return 3800
+
+    def get_available_funds_for_lp(self):
+        """LP作成用利用可能資金計算"""
+        try:
+            # ETH残高
+            eth_balance_wei = self.w3.eth.get_balance(self.wallet_address)
+            eth_balance = float(self.w3.from_wei(eth_balance_wei, 'ether'))
+
+            # WETH残高
+            weth_balance_wei = self.weth_contract.functions.balanceOf(self.wallet_address).call()
+            weth_balance = float(self.w3.from_wei(weth_balance_wei, 'ether'))
+
+            # USDC残高
+            usdc_balance_wei = self.usdc_contract.functions.balanceOf(self.wallet_address).call()
+            usdc_balance = float(usdc_balance_wei / 10 ** 6)
+
+            # 利用可能資金計算
+            available_eth = max(0, eth_balance + weth_balance - MIN_ETH_BUFFER)
+            available_usdc = max(0, usdc_balance - MIN_USDC_BUFFER)
+
+            eth_price = self.get_eth_price()
+            available_eth_usd = available_eth * eth_price
+            total_available_usd = available_eth_usd + available_usdc
+
+            return {
+                'available_eth': available_eth,
+                'available_usdc': available_usdc,
+                'available_eth_usd': available_eth_usd,
+                'total_available_usd': total_available_usd,
+                'eth_price': eth_price
+            }
+        except Exception as e:
+            logger.error(f"資金状況取得エラー: {e}")
+            return None
+
+    def calculate_optimal_lp_amounts(self):
+        """最適LP投入額計算（95%投入、SWAP考慮）"""
+        funds = self.get_available_funds_for_lp()
+        if not funds:
+            return None
+
+        # 95%投入額計算
+        target_investment_usd = funds['total_available_usd'] * TARGET_INVESTMENT_RATIO
+        target_per_token_usd = target_investment_usd / 2
+
+        # 現在の資金状況
+        current_eth_usd = funds['available_eth_usd']
+        current_usdc_usd = funds['available_usdc']
+
+        # SWAP必要性判定
+        needs_swap = False
+        swap_direction = None
+        swap_amount = 0
+
+        if current_eth_usd < target_per_token_usd and current_usdc_usd >= target_per_token_usd:
+            # USDC → ETH SWAP必要
+            needs_swap = True
+            swap_direction = "USDC_TO_ETH"
+            swap_amount = target_per_token_usd - current_eth_usd
+        elif current_usdc_usd < target_per_token_usd and current_eth_usd >= target_per_token_usd:
+            # ETH → USDC SWAP必要
+            needs_swap = True
+            swap_direction = "ETH_TO_USDC"
+            swap_amount = target_per_token_usd - current_usdc_usd
+
+        # 最終投入額計算
+        if needs_swap:
+            final_eth_usd = target_per_token_usd
+            final_usdc_usd = target_per_token_usd
+        else:
+            # SWAPなしで可能な最大投入
+            max_possible = min(current_eth_usd, current_usdc_usd)
+            final_eth_usd = max_possible
+            final_usdc_usd = max_possible
+
+        return {
+            'needs_swap': needs_swap,
+            'swap_direction': swap_direction,
+            'swap_amount': swap_amount,
+            'final_eth_amount': final_eth_usd / funds['eth_price'],
+            'final_usdc_amount': final_usdc_usd,
+            'total_investment_usd': final_eth_usd + final_usdc_usd,
+            'eth_price': funds['eth_price']
+        }
+
+
 class LPManager:
     def __init__(self, w3, pool_address, position_manager_address):
         self.w3 = w3
@@ -248,6 +376,9 @@ class LPManager:
 
         # NFT検出システム
         self.nft_detector = WalletNFTDetector(w3, WALLET_ADDRESS, self.position_manager)
+
+        # LP作成支援システム（新機能）
+        self.lp_helper = LPHelperIntegrated(w3, WALLET_ADDRESS)
 
     def load_tracked_nfts(self):
         """追跡NFTリストを読み込み"""
@@ -421,18 +552,39 @@ class LPManager:
             logger.info("🟢 全ポジションがレンジ内 - 監視継続")
 
     def add_initial_liquidity(self):
-        """初回LP追加"""
+        """初回LP追加（最大資金活用版）"""
         logger.info("🚀 初回LP追加を自動実行中...")
 
         try:
-            # add_liquidity.pyを呼び出してLP追加実行
-            result = subprocess.run(
-                ["python", "add_liquidity.py"],
-                input="2\n",  # LP追加テストを選択
-                text=True,
-                capture_output=True,
-                timeout=60
-            )
+            # 💰 LP Helper: 最適投入額計算
+            logger.info("💰 最大投入可能額を計算中...")
+
+            optimal_amounts = self.lp_helper.calculate_optimal_lp_amounts()
+            if optimal_amounts:
+                logger.info(f"📊 最適投入額: ${optimal_amounts['total_investment_usd']:.2f}")
+                logger.info(f"   ETH: {optimal_amounts['final_eth_amount']:.6f}")
+                logger.info(f"   USDC: {optimal_amounts['final_usdc_amount']:.2f}")
+
+                if optimal_amounts['needs_swap']:
+                    logger.info(f"🔄 SWAP必要: {optimal_amounts['swap_direction']}")
+                    logger.info(f"   SWAP額: ${optimal_amounts['swap_amount']:.2f}")
+                else:
+                    logger.info("✅ SWAPなしで投入可能")
+
+                # 最適化投入
+                result = subprocess.run([
+                    "python", "add_liquidity.py",
+                    "--eth", str(optimal_amounts['final_eth_amount']),
+                    "--usdc", str(optimal_amounts['final_usdc_amount']),
+                    "--auto"
+                ], text=True, capture_output=True, timeout=60)
+            else:
+                logger.warning("⚠️ 最適投入額計算失敗 - 従来方式で実行")
+
+                # フォールバック（従来方式）
+                result = subprocess.run([
+                    "python", "add_liquidity.py"
+                ], input="2\n", text=True, capture_output=True, timeout=60)
 
             if result.returncode == 0:
                 logger.info("✅ 初回LP追加成功")
@@ -559,10 +711,11 @@ class LPManager:
 
 
 def main():
-    print("=== 🤖 LP自動リバランス監視システム（10,000ブロック対応版） ===")
+    print("=== 🤖 LP自動リバランス監視システム（資金最大化対応版） ===")
     print("🎯 目標: 24/7無人LP最適化")
     print("🛡️ 機能: レンジ外自動検知・リバランス")
     print("🚀 新機能: 完全自動NFT検出（10,000ブロック対応）")
+    print("💰 新機能: 95%資金活用・自動SWAP計算")
     print("⏰ 開始中...")
 
     # 設定確認
@@ -573,6 +726,7 @@ def main():
     logger.info("🚀 LP自動リバランス監視システム開始")
     logger.info(f"📊 監視間隔: {MONITORING_INTERVAL}秒")
     logger.info(f"🎯 リバランス閾値: {REBALANCE_THRESHOLD}")
+    logger.info(f"💰 資金投入率: {TARGET_INVESTMENT_RATIO * 100}%（5%安全マージン）")
 
     try:
         # Web3接続
@@ -602,7 +756,7 @@ def main():
         # 追跡NFT読み込み
         lp_manager.load_tracked_nfts()
 
-        logger.info("✅ 完全修正版NFT検知システム初期化完了")
+        logger.info("✅ 資金最大化LP検知システム初期化完了")
 
         # 監視ループ
         cycle_count = 0

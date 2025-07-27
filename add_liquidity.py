@@ -1,4 +1,7 @@
-# add_liquidity.py - swap_utils統合版（NFT ID抽出機能付き）
+#!/usr/bin/env python3
+# add_liquidity.py - swap_utils統合版（NFT ID抽出機能付き + 引数対応）
+import sys
+import argparse
 from web3 import Web3
 from env_config import USDC_ADDRESS, WETH_ADDRESS
 import json, os, time
@@ -22,12 +25,12 @@ ROBUST_GAS_CONFIG = {
     "gas_price": "2 gwei"  # 基本ガス価格
 }
 
-# ✅ 設定値
+# ✅ 設定値（デフォルト値、引数で上書き可能）
 GAS_BUFFER_ETH = float(os.getenv("GAS_BUFFER_ETH", 0.005))  # ガスバッファ
 MIN_LP_AMOUNT_WETH = float(os.getenv("MIN_LP_AMOUNT_WETH", 0.001))
 MIN_LP_AMOUNT_USDC = float(os.getenv("MIN_LP_AMOUNT_USDC", 3.0))
 
-# ABIs（省略、元のまま）
+# ABIs
 ERC20_ABI = [
     {"constant": True, "inputs": [{"name": "_owner", "type": "address"}], "name": "balanceOf",
      "outputs": [{"name": "balance", "type": "uint256"}], "type": "function"},
@@ -201,7 +204,6 @@ def ensure_weth_balance(w3, wallet, required_weth):
         return False
 
 
-# 既存のRobustGasManagerクラス（省略、元のまま）
 class RobustGasManager:
     """堅牢ガス管理システム"""
 
@@ -303,10 +305,10 @@ def execute_mint_with_robust_gas(gas_limit, gas_price, w3, wallet, params):
         return {"success": False, "error": str(e)}
 
 
-# ✅ 統合版LP追加テスト（NFT ID抽出機能付き）
-def robust_lp_mint_test():
-    """統合版LP追加テスト（自動WETH変換対応、NFT ID抽出機能付き）"""
-    print("=== 🛡️ 統合版LP追加テスト（自動WETH変換対応） ===")
+# ✅ 引数対応版LP追加テスト（main.py連携対応）
+def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
+    """統合版LP追加テスト（引数対応版）"""
+    print("=== 🛡️ 統合版LP追加テスト（引数対応版） ===")
 
     # Web3接続
     w3 = Web3(Web3.HTTPProvider(RPC_URL))
@@ -351,9 +353,20 @@ def robust_lp_mint_test():
     print(f"USDC残高: {usdc_balance / 10 ** 6:.2f}")
 
     print("=== Step 4: 投入金額設定 ===")
-    # ✅ 設定値から投入金額決定
-    amount0_desired = int(MIN_LP_AMOUNT_WETH * 10 ** 18)  # WETH
-    amount1_desired = int(MIN_LP_AMOUNT_USDC * 10 ** 6)  # USDC
+    # ✅ カスタム金額または設定値から投入金額決定
+    if custom_eth_amount is not None and custom_usdc_amount is not None:
+        print(f"💰 main.pyからの最適化投入額を使用")
+        amount0_desired = int(custom_eth_amount * 10 ** 18)  # WETH
+        amount1_desired = int(custom_usdc_amount * 10 ** 6)  # USDC
+        target_weth = custom_eth_amount
+        target_usdc = custom_usdc_amount
+    else:
+        print(f"📋 デフォルト設定値を使用")
+        amount0_desired = int(MIN_LP_AMOUNT_WETH * 10 ** 18)  # WETH
+        amount1_desired = int(MIN_LP_AMOUNT_USDC * 10 ** 6)  # USDC
+        target_weth = MIN_LP_AMOUNT_WETH
+        target_usdc = MIN_LP_AMOUNT_USDC
+
     amount0_min = 1  # 最小限
     amount1_min = 1  # 最小限
 
@@ -361,13 +374,13 @@ def robust_lp_mint_test():
 
     print("=== Step 5: 自動WETH確保 ===")
     # ✅ 必要なWETH残高を確保（ETH→WETH自動変換）
-    if not ensure_weth_balance(w3, wallet, MIN_LP_AMOUNT_WETH):
+    if not ensure_weth_balance(w3, wallet, target_weth):
         print(f"❌ WETH確保失敗")
         return
 
     # USDC残高チェック
     if usdc_balance < amount1_desired:
-        print(f"❌ USDC残高不足: {usdc_balance / 10 ** 6:.2f} < {MIN_LP_AMOUNT_USDC}")
+        print(f"❌ USDC残高不足: {usdc_balance / 10 ** 6:.2f} < {target_usdc}")
         return
 
     print("✅ 残高確認完了")
@@ -432,20 +445,34 @@ def robust_lp_mint_test():
         print("💰 usable_weth計算対応")
         print("🛡️ 堅牢ガス管理対応")
         print("🎯 NFT ID自動抽出対応")
+        print("💡 main.py連携対応")
     else:
         print(f"Status: ❌ FAILED")
         print(f"Error: {result['error']}")
 
 
+def parse_arguments():
+    """コマンドライン引数を解析"""
+    parser = argparse.ArgumentParser(description='Uniswap V3 LP自動化（main.py連携対応版）')
+
+    parser.add_argument('--eth', type=float, help='投入するETH量（例: 0.01）')
+    parser.add_argument('--usdc', type=float, help='投入するUSDC量（例: 38.5）')
+    parser.add_argument('--auto', action='store_true', help='自動実行モード（ユーザー入力なし）')
+
+    return parser.parse_args()
+
+
 def main():
-    """メイン実行関数"""
-    print("=== 🏆 統合版Uniswap V3 LP自動化（NFT ID抽出機能付き） ===")
+    """メイン実行関数（引数対応版）"""
+    print("=== 🏆 統合版Uniswap V3 LP自動化（main.py連携対応版） ===")
     print("🔄 機能: ETH→WETH自動変換")
     print("💰 機能: usable_weth自動計算")
     print("🛡️ 機能: 堅牢ガス管理")
     print("🎯 機能: NFT ID自動抽出")
+    print("💡 新機能: main.py引数連携")
 
-    choice = input("\n実行モードを選択:\n1: 無制限approve設定のみ\n2: 統合版LP追加テスト\n3: 両方実行\n選択 (1/2/3): ")
+    # 引数解析
+    args = parse_arguments()
 
     # Web3接続
     w3 = Web3(Web3.HTTPProvider(RPC_URL))
@@ -459,18 +486,37 @@ def main():
 
     wallet = w3.eth.account.from_key(private_key)
 
-    if choice == "1":
-        # 無制限approve設定のみ（元の関数を使用）
-        print("approve設定機能は元のコードを参照してください")
-    elif choice == "2":
-        # ✅ 統合版LP追加テストのみ
-        robust_lp_mint_test()
-    elif choice == "3":
-        # 両方実行
-        print("approve設定 + 統合版LP追加")
-        robust_lp_mint_test()
+    # 実行モード判定
+    if args.auto:
+        # main.pyからの自動実行
+        print(f"\n🤖 main.pyからの自動実行モード")
+        if args.eth is not None and args.usdc is not None:
+            print(f"💰 カスタム投入額: ETH {args.eth:.6f}, USDC {args.usdc:.2f}")
+            robust_lp_mint_test(args.eth, args.usdc)
+        else:
+            print(f"📋 デフォルト投入額でLP作成")
+            robust_lp_mint_test()
     else:
-        print("❌ 無効な選択")
+        # 手動実行モード（従来通り）
+        if args.eth is not None and args.usdc is not None:
+            print(f"\n💰 引数指定モード: ETH {args.eth:.6f}, USDC {args.usdc:.2f}")
+            robust_lp_mint_test(args.eth, args.usdc)
+        else:
+            choice = input(
+                "\n実行モードを選択:\n1: 無制限approve設定のみ\n2: 統合版LP追加テスト\n3: 両方実行\n選択 (1/2/3): ")
+
+            if choice == "1":
+                # 無制限approve設定のみ（元の関数を使用）
+                print("approve設定機能は元のコードを参照してください")
+            elif choice == "2":
+                # ✅ 統合版LP追加テストのみ
+                robust_lp_mint_test()
+            elif choice == "3":
+                # 両方実行
+                print("approve設定 + 統合版LP追加")
+                robust_lp_mint_test()
+            else:
+                print("❌ 無効な選択")
 
 
 if __name__ == "__main__":
