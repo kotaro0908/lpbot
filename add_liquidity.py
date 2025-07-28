@@ -387,88 +387,99 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
 
         print(f"🔄 USDC不足検知: 不足額 {usdc_shortage_float:.2f} USDC")
 
-        # 現在のETH価格取得（簡易計算）
-        eth_price = 3900  # フォールバック価格
-        try:
-            # Pool価格から計算（より正確）
-            pool_abi = [
-                {
-                    "inputs": [],
-                    "name": "slot0",
-                    "outputs": [
-                        {"internalType": "uint160", "name": "sqrtPriceX96", "type": "uint160"},
-                        {"internalType": "int24", "name": "tick", "type": "int24"}
-                    ],
-                    "stateMutability": "view",
-                    "type": "function"
-                }
-            ]
-            pool_contract = w3.eth.contract(address=POOL_ADDRESS, abi=pool_abi)
-            slot0 = pool_contract.functions.slot0().call()
-            sqrt_price_x96 = slot0[0]
-            price_raw = (sqrt_price_x96 / (2 ** 96)) ** 2
-            eth_price = price_raw * (10 ** 12)  # USDC per WETH
-            if eth_price <= 0:
-                eth_price = 3900
-        except:
-            pass
+        # 🔧 追加: 5 USD閾値チェック
+        if usdc_shortage_float < 5.0:
+            print(f"💡 不足額が5 USD未満のためSWAP回避: {usdc_shortage_float:.2f} < 5.0")
+            print(f"🔧 投入USDC量を実残高に調整: {usdc_balance / 10 ** 6:.2f}")
+            amount1_desired = usdc_balance
+            target_usdc = usdc_balance / 10 ** 6
+            print(f"✅ 調整完了 - SWAP実行せずLP作成続行")
+        else:
+            print(f"🔄 不足額が5 USD以上のためSWAP実行: {usdc_shortage_float:.2f} >= 5.0")
 
-        # 必要ETH量計算（5%マージン付き）
-        eth_needed = (usdc_shortage_float / eth_price) * 1.05
-        eth_needed_wei = int(eth_needed * 10 ** 18)
-        min_usdc_out = int(usdc_shortage * 0.95)  # 5% slippage
+            # 現在のETH価格取得（簡易計算）
+            eth_price = 3900  # フォールバック価格
+            try:
+                # Pool価格から計算（より正確）
+                pool_abi = [
+                    {
+                        "inputs": [],
+                        "name": "slot0",
+                        "outputs": [
+                            {"internalType": "uint160", "name": "sqrtPriceX96", "type": "uint160"},
+                            {"internalType": "int24", "name": "tick", "type": "int24"}
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                    }
+                ]
+                pool_contract = w3.eth.contract(address=POOL_ADDRESS, abi=pool_abi)
+                slot0 = pool_contract.functions.slot0().call()
+                sqrt_price_x96 = slot0[0]
+                price_raw = (sqrt_price_x96 / (2 ** 96)) ** 2
+                eth_price = price_raw * (10 ** 12)  # USDC per WETH
+                if eth_price <= 0:
+                    eth_price = 3900
+            except:
+                pass
 
-        print(f"🔄 ETH→USDC SWAP実行: {eth_needed:.6f} ETH → {usdc_shortage_float:.2f} USDC")
-        print(f"   ETH価格: ${eth_price:.2f}")
-        print(f"   最小受取: {min_usdc_out / 10 ** 6:.2f} USDC")
+            # 必要ETH量計算（5%マージン付き）
+            eth_needed = (usdc_shortage_float / eth_price) * 1.05
+            eth_needed_wei = int(eth_needed * 10 ** 18)
+            min_usdc_out = int(usdc_shortage * 0.95)  # 5% slippage
 
-        # ETH残高確認
-        eth_balance = w3.eth.get_balance(wallet.address)
-        weth_balance = get_token_balance(WETH_ADDRESS, wallet.address)
-        total_eth = (eth_balance + weth_balance) / 10 ** 18
+            print(f"🔄 ETH→USDC SWAP実行: {eth_needed:.6f} ETH → {usdc_shortage_float:.2f} USDC")
+            print(f"   ETH価格: ${eth_price:.2f}")
+            print(f"   最小受取: {min_usdc_out / 10 ** 6:.2f} USDC")
 
-        if total_eth < eth_needed + GAS_BUFFER_ETH:
-            print(f"❌ ETH不足: 必要{eth_needed + GAS_BUFFER_ETH:.6f}, 利用可能{total_eth:.6f}")
-            return
+            # ETH残高確認
+            eth_balance = w3.eth.get_balance(wallet.address)
+            weth_balance = get_token_balance(WETH_ADDRESS, wallet.address)
+            total_eth = (eth_balance + weth_balance) / 10 ** 18
 
-        # ETH→USDC SWAP実行
-        try:
-            print("🔄 swap_exact_input実行中...")
-
-            # WETH Approve確認（SwapRouter用）
-            approve_if_needed(WETH_ADDRESS, "0xE592427A0AEce92De3Edee1F18E0157C05861564", eth_needed_wei)  # SwapRouter
-
-            # swap_exact_input の正しい呼び出し
-            swap_result = swap_exact_input(
-                WETH_ADDRESS,  # from_token
-                USDC_ADDRESS,  # to_token
-                eth_needed_wei,  # amount_in
-                500,  # fee
-                0.05  # slippage (5%)
-            )
-
-            if swap_result:
-                print("✅ ETH→USDC SWAP成功")
-
-                # 残高再確認
-                time.sleep(2)  # ブロック確認待機
-                usdc_balance = get_token_balance(USDC_ADDRESS, wallet.address)
-                print(f"📊 SWAP後USDC残高: {usdc_balance / 10 ** 6:.2f}")
-
-                if usdc_balance < amount1_desired:
-                    print(f"⚠️ SWAP後も不足: {usdc_balance / 10 ** 6:.2f} < {target_usdc}")
-                    # 不足分を調整
-                    amount1_desired = usdc_balance
-                    target_usdc = usdc_balance / 10 ** 6
-                    print(f"🔧 投入USDC量を調整: {target_usdc:.2f}")
-
-            else:
-                print("❌ ETH→USDC SWAP失敗")
+            if total_eth < eth_needed + GAS_BUFFER_ETH:
+                print(f"❌ ETH不足: 必要{eth_needed + GAS_BUFFER_ETH:.6f}, 利用可能{total_eth:.6f}")
                 return
 
-        except Exception as e:
-            print(f"❌ SWAP エラー: {e}")
-            return
+            # ETH→USDC SWAP実行
+            try:
+                print("🔄 swap_exact_input実行中...")
+
+                # WETH Approve確認（SwapRouter用）
+                approve_if_needed(WETH_ADDRESS, "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+                                  eth_needed_wei)  # SwapRouter
+
+                # swap_exact_input の正しい呼び出し（25%スリッページ使用）
+                swap_result = swap_exact_input(
+                    WETH_ADDRESS,  # from_token
+                    USDC_ADDRESS,  # to_token
+                    eth_needed_wei,  # amount_in
+                    500,  # fee
+                    0.25  # slippage (25%) - swap_utils.pyのデフォルト値を明示
+                )
+
+                if swap_result:
+                    print("✅ ETH→USDC SWAP成功")
+
+                    # 残高再確認
+                    time.sleep(2)  # ブロック確認待機
+                    usdc_balance = get_token_balance(USDC_ADDRESS, wallet.address)
+                    print(f"📊 SWAP後USDC残高: {usdc_balance / 10 ** 6:.2f}")
+
+                    if usdc_balance < amount1_desired:
+                        print(f"⚠️ SWAP後も不足: {usdc_balance / 10 ** 6:.2f} < {target_usdc}")
+                        # 不足分を調整
+                        amount1_desired = usdc_balance
+                        target_usdc = usdc_balance / 10 ** 6
+                        print(f"🔧 投入USDC量を調整: {target_usdc:.2f}")
+
+                else:
+                    print("❌ ETH→USDC SWAP失敗")
+                    return
+
+            except Exception as e:
+                print(f"❌ SWAP エラー: {e}")
+                return
     else:
         print(f"✅ USDC残高十分: {usdc_balance / 10 ** 6:.2f} >= {target_usdc}")
 
