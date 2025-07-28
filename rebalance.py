@@ -274,6 +274,7 @@ def remove_liquidity(token_id):
         # collect実行
         logger.info("💰 手数料・残高回収中...")
         collect_success = safe_collect(w3, wallet, token_id)
+        time.sleep(5)
 
         if collect_success:
             logger.info(f"✅ NFT {token_id} 流動性撤退完了")
@@ -316,60 +317,67 @@ def add_new_liquidity():
             timeout=180  # タイムアウト延長（SWAP含むため）
         )
 
-        # 成功判定を厳密化
-        success_indicators = ["SUCCESS", "🎉🎉🎉 統合版LP追加成功！", "✅ SUCCESS"]
-        error_indicators = ["❌", "残高不足", "failed", "error", "Error", "Exception"]
-
-        has_success = any(indicator in result.stdout for indicator in success_indicators)
-        has_error = any(indicator in result.stdout for indicator in error_indicators)
-
-        if result.returncode == 0 and has_success and not has_error:
-            logger.info("✅ 最大投入額での新LP追加成功")
-
-            # 出力からトランザクションハッシュ・NFT IDを抽出
-            output_lines = result.stdout.split('\n')
-            tx_hash = None
+        # 🔧 修正: NFT ID取得を最優先にする成功判定
+        if result.returncode == 0:
+            # NFT ID抽出を先に実行
             new_nft_id = None
+            output_lines = result.stdout.split('\n')
 
             for line in output_lines:
-                # トランザクションハッシュ抽出
-                if 'transaction hash:' in line.lower() or 'tx hash:' in line.lower():
-                    tx_hash = line.split(':')[-1].strip()
-                elif line.startswith('0x') and len(line) == 66:
-                    tx_hash = line.strip()
-
-                # NFT ID抽出（複数パターン対応）
-                if any(keyword in line.lower() for keyword in ['nft id:', 'token id:', 'mint:', 'created nft']):
+                # NFT ID抽出（🎯 新NFT ID: パターンを最優先）
+                if '🎯 新NFT ID:' in line:
                     try:
-                        # 数字を抽出
+                        import re
+                        numbers = re.findall(r'\d+', line)
+                        for num in numbers:
+                            if len(num) >= 6 and len(num) <= 8:  # NFT IDの範囲
+                                new_nft_id = int(num)
+                                break
+                        if new_nft_id:
+                            break
+                    except:
+                        pass
+
+                # フォールバック: 他のパターンも確認
+                if new_nft_id is None and any(
+                        keyword in line.lower() for keyword in ['nft id:', 'token id:', 'mint:', 'created nft']):
+                    try:
                         import re
                         numbers = re.findall(r'\d+', line)
                         if numbers:
-                            # 7桁の数字（NFT IDらしきもの）を探す
                             for num in numbers:
-                                if len(num) >= 6 and len(num) <= 8:  # NFT IDの範囲
+                                if len(num) >= 6 and len(num) <= 8:
                                     new_nft_id = int(num)
                                     break
                     except:
                         pass
 
-            if tx_hash:
-                logger.info(f"📝 新LP追加Tx: {tx_hash}")
-
+            # NFT IDが取得できたら成功
             if new_nft_id:
+                logger.info("✅ 最大投入額での新LP追加成功")
                 logger.info(f"🎯 新NFT ID: {new_nft_id}")
                 logger.info(f"💰 投入額: ${optimal_amounts['total_investment_usd']:.2f}")
                 print(f"🎯 新NFT ID: {new_nft_id}")  # main.pyが検知用
+
+                # トランザクションハッシュも抽出（ログ用）
+                tx_hash = None
+                for line in output_lines:
+                    if 'transaction hash:' in line.lower():
+                        tx_hash = line.split(':')[-1].strip()
+                        break
+                    elif line.startswith('0x') and len(line) == 66:
+                        tx_hash = line.strip()
+                        break
+
+                if tx_hash:
+                    logger.info(f"📝 新LP追加Tx: {tx_hash}")
+
                 return new_nft_id
             else:
-                logger.warning("⚠️ 新NFT ID取得失敗")
+                logger.error("❌ 新LP追加失敗 - NFT ID取得失敗")
+                logger.error(f"詳細出力: {result.stdout}")
+                logger.error(f"エラー出力: {result.stderr}")
                 return None
-
-        elif result.returncode == 0:
-            logger.error("❌ 新LP追加実行したが実際は失敗")
-            logger.error(f"詳細出力: {result.stdout}")
-            logger.error(f"エラー出力: {result.stderr}")
-            return None
         else:
             logger.error(f"❌ 新LP追加失敗 - Return Code: {result.returncode}")
             logger.error(f"STDOUT: {result.stdout}")

@@ -397,6 +397,105 @@ class LPManager:
         # LP作成支援システム（新機能）
         self.lp_helper = LPHelperIntegrated(w3, WALLET_ADDRESS)
 
+        # 🆕 前回残高を記録（増資検知用）
+        self.previous_balances = {
+            'eth': 0,
+            'weth': 0,
+            'usdc': 0,
+            'total_usd': 0
+        }
+        self.MIN_DEPOSIT_THRESHOLD = 10.0  # $10以上の入金で反応
+
+        # ERC20コントラクト初期化（残高確認用）
+        self.weth_contract = w3.eth.contract(address=w3.to_checksum_address(WETH_ADDRESS), abi=ERC20_ABI)
+        self.usdc_contract = w3.eth.contract(address=w3.to_checksum_address(USDC_ADDRESS), abi=ERC20_ABI)
+
+    def check_balance_changes(self):
+        """残高変化を検知（簡易版 - ウォレット残高のみ）"""
+        try:
+            # 現在の残高取得
+            eth_balance = self.w3.eth.get_balance(WALLET_ADDRESS)
+            weth_balance = self.weth_contract.functions.balanceOf(WALLET_ADDRESS).call()
+            usdc_balance = self.usdc_contract.functions.balanceOf(WALLET_ADDRESS).call()
+
+            # 単位変換
+            current_eth = eth_balance / 10 ** 18
+            current_weth = weth_balance / 10 ** 18
+            current_usdc = usdc_balance / 10 ** 6
+
+            # ETH価格取得
+            eth_price = self.lp_helper.get_eth_price()
+
+            # ウォレット内総資産
+            wallet_total_usd = ((current_eth + current_weth) * eth_price) + current_usdc
+
+            # 利用可能資金（バッファ除く）
+            available_funds = wallet_total_usd - (MIN_ETH_BUFFER * eth_price + MIN_USDC_BUFFER)
+
+            logger.info(f"💰 ウォレット残高: ${wallet_total_usd:.2f}")
+            logger.info(f"   利用可能資金: ${available_funds:.2f}")
+
+            # 初回チェック
+            if self.previous_balances['total_usd'] == 0:
+                self.previous_balances = {
+                    'eth': current_eth,
+                    'weth': current_weth,
+                    'usdc': current_usdc,
+                    'total_usd': wallet_total_usd
+                }
+
+                # 利用可能資金が$20以上あればリバランス
+                if available_funds > 20:
+                    logger.info(f"💡 初回起動時に利用可能資金検出: ${available_funds:.2f}")
+
+                    # 🆕 追跡中のNFTがあるかチェック
+                    if self.tracked_nfts:
+                        logger.info(f"📍 追跡NFTあり: {self.tracked_nfts}")
+                        # NFTがあっても資金があるなら、NFTは既に古い可能性
+                        # （前回のLP作成が少額だった等）
+
+                    return True
+
+                return False
+
+            # 前回からの増加チェック
+            usd_increase = wallet_total_usd - self.previous_balances['total_usd']
+
+            # リバランス判定
+            if usd_increase >= self.MIN_DEPOSIT_THRESHOLD:
+                # 新規入金
+                logger.info(f"💵 新規入金検出: +${usd_increase:.2f}")
+                trigger = True
+            elif available_funds > 20:
+                # 利用可能資金が多い
+                logger.info(f"💵 利用可能資金検出: ${available_funds:.2f}")
+                trigger = True
+            else:
+                trigger = False
+
+            if trigger:
+                # 残高を更新
+                self.previous_balances = {
+                    'eth': current_eth,
+                    'weth': current_weth,
+                    'usdc': current_usdc,
+                    'total_usd': wallet_total_usd
+                }
+
+                # 🆕 追跡中のNFTがあるかチェック
+                if self.tracked_nfts:
+                    logger.info(f"📍 追跡NFTあり: {self.tracked_nfts}")
+                    # NFTがあれば、それをリバランスする
+                    # （check_and_rebalance_if_neededでリバランスが実行される）
+
+                return True
+
+            return False
+
+        except Exception as e:
+            logger.error(f"❌ 残高チェックエラー: {e}")
+            return False
+
     def load_tracked_nfts(self):
         """追跡NFTリストを読み込み"""
         try:
@@ -477,12 +576,36 @@ class LPManager:
         return effective_lower <= current_tick <= effective_upper
 
     def check_and_rebalance_if_needed(self):
-        """レンジチェックと必要時リバランス実行（デバッグ版）"""
+        """レンジチェックと必要時リバランス実行（修正版）"""
         current_tick = self.get_current_tick()
         if current_tick is None:
             return
 
         logger.info(f"📊 現在tick: {current_tick}")
+
+        # 🆕 資金追加チェック（最初に実行）
+        if self.check_balance_changes():
+            logger.info("🔄 資金追加によるリバランスチェック開始")
+
+            # 🆕 LP価値をチェック
+            has_active_lp = False
+            for token_id in self.tracked_nfts:
+                position_info = self.get_position_info(token_id)
+                if position_info and position_info['liquidity'] > 0:
+                    has_active_lp = True
+                    break
+
+            if self.tracked_nfts:
+                # NFTが存在すれば無条件でリバランス
+                logger.info(f"🔄 既存NFTのリバランス実行: {self.tracked_nfts[0]}")
+                self.rebalance_position(self.tracked_nfts[0])
+            else:
+                logger.info("🆕 アクティブなLPなし - 新規LP作成実行")
+                self.add_initial_liquidity()
+
+            return  # ⚠️ ここで終了してしまう！
+
+        # 🔴 以下のレンジチェックコードが実行されない！
 
         # 追跡NFTが空の場合は自動検出を試行
         if not self.tracked_nfts:
@@ -747,6 +870,7 @@ def main():
     print("🛡️ 機能: レンジ外自動検知・リバランス")
     print("🚀 新機能: 完全自動NFT検出（10,000ブロック対応）")
     print("💰 新機能: 95%資金活用・自動SWAP計算")
+    print("💵 新機能: 増資自動検知・リバランス")
     print("⏰ 開始中...")
 
     # 設定確認
@@ -758,6 +882,7 @@ def main():
     logger.info(f"📊 監視間隔: {MONITORING_INTERVAL}秒")
     logger.info(f"🎯 リバランス閾値: {REBALANCE_THRESHOLD}")
     logger.info(f"💰 資金投入率: {TARGET_INVESTMENT_RATIO * 100}%（5%安全マージン）")
+    logger.info(f"💵 増資検知閾値: ${10.0}")
 
     try:
         # Web3接続
