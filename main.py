@@ -626,6 +626,16 @@ class LPManager:
         except Exception as e:
             logger.error(f"❌ LP追加エラー: {e}")
 
+        # main.pyのadd_initial_liquidity関数内で
+        print(f"🔧 DEBUG: optimal_amounts = {optimal_amounts}")
+        print(
+            f"🔧 DEBUG: subprocess args = {['python', 'add_liquidity.py', '--eth', str(optimal_amounts['final_eth_amount']), '--usdc', str(optimal_amounts['final_usdc_amount']), '--auto']}")
+
+        # subprocess.run実行後
+        print(f"🔧 DEBUG: returncode = {result.returncode}")
+        print(f"🔧 DEBUG: stdout = {result.stdout}")
+        print(f"🔧 DEBUG: stderr = {result.stderr}")
+
     def extract_nft_id_from_transaction(self, tx_hash):
         """トランザクションからNFT IDを抽出"""
         try:

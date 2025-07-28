@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# add_liquidity.py - swap_utils統合版（NFT ID抽出機能付き + 引数対応）
+# add_liquidity.py - swap_utils統合版（NFT ID抽出機能付き + 引数対応 + 自動SWAP復活）
 import sys
 import argparse
 from web3 import Web3
@@ -305,10 +305,10 @@ def execute_mint_with_robust_gas(gas_limit, gas_price, w3, wallet, params):
         return {"success": False, "error": str(e)}
 
 
-# ✅ 引数対応版LP追加テスト（main.py連携対応）
+# ✅ 引数対応版LP追加テスト（main.py連携対応 + 自動SWAP復活）
 def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
-    """統合版LP追加テスト（引数対応版）"""
-    print("=== 🛡️ 統合版LP追加テスト（引数対応版） ===")
+    """統合版LP追加テスト（引数対応版 + 自動SWAP復活）"""
+    print("=== 🛡️ 統合版LP追加テスト（引数対応版 + 自動SWAP復活） ===")
 
     # Web3接続
     w3 = Web3(Web3.HTTPProvider(RPC_URL))
@@ -378,10 +378,99 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
         print(f"❌ WETH確保失敗")
         return
 
-    # USDC残高チェック
+    print("=== Step 5.5: USDC不足時の自動SWAP ===")
+    # USDC残高チェックと自動SWAP
+    usdc_balance = get_token_balance(USDC_ADDRESS, wallet.address)  # 最新残高取得
     if usdc_balance < amount1_desired:
-        print(f"❌ USDC残高不足: {usdc_balance / 10 ** 6:.2f} < {target_usdc}")
-        return
+        usdc_shortage = amount1_desired - usdc_balance
+        usdc_shortage_float = usdc_shortage / 10 ** 6
+
+        print(f"🔄 USDC不足検知: 不足額 {usdc_shortage_float:.2f} USDC")
+
+        # 現在のETH価格取得（簡易計算）
+        eth_price = 3900  # フォールバック価格
+        try:
+            # Pool価格から計算（より正確）
+            pool_abi = [
+                {
+                    "inputs": [],
+                    "name": "slot0",
+                    "outputs": [
+                        {"internalType": "uint160", "name": "sqrtPriceX96", "type": "uint160"},
+                        {"internalType": "int24", "name": "tick", "type": "int24"}
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ]
+            pool_contract = w3.eth.contract(address=POOL_ADDRESS, abi=pool_abi)
+            slot0 = pool_contract.functions.slot0().call()
+            sqrt_price_x96 = slot0[0]
+            price_raw = (sqrt_price_x96 / (2 ** 96)) ** 2
+            eth_price = price_raw * (10 ** 12)  # USDC per WETH
+            if eth_price <= 0:
+                eth_price = 3900
+        except:
+            pass
+
+        # 必要ETH量計算（5%マージン付き）
+        eth_needed = (usdc_shortage_float / eth_price) * 1.05
+        eth_needed_wei = int(eth_needed * 10 ** 18)
+        min_usdc_out = int(usdc_shortage * 0.95)  # 5% slippage
+
+        print(f"🔄 ETH→USDC SWAP実行: {eth_needed:.6f} ETH → {usdc_shortage_float:.2f} USDC")
+        print(f"   ETH価格: ${eth_price:.2f}")
+        print(f"   最小受取: {min_usdc_out / 10 ** 6:.2f} USDC")
+
+        # ETH残高確認
+        eth_balance = w3.eth.get_balance(wallet.address)
+        weth_balance = get_token_balance(WETH_ADDRESS, wallet.address)
+        total_eth = (eth_balance + weth_balance) / 10 ** 18
+
+        if total_eth < eth_needed + GAS_BUFFER_ETH:
+            print(f"❌ ETH不足: 必要{eth_needed + GAS_BUFFER_ETH:.6f}, 利用可能{total_eth:.6f}")
+            return
+
+        # ETH→USDC SWAP実行
+        try:
+            print("🔄 swap_exact_input実行中...")
+
+            # WETH Approve確認（SwapRouter用）
+            approve_if_needed(WETH_ADDRESS, "0xE592427A0AEce92De3Edee1F18E0157C05861564", eth_needed_wei)  # SwapRouter
+
+            # swap_exact_input の正しい呼び出し
+            swap_result = swap_exact_input(
+                WETH_ADDRESS,  # from_token
+                USDC_ADDRESS,  # to_token
+                eth_needed_wei,  # amount_in
+                500,  # fee
+                0.05  # slippage (5%)
+            )
+
+            if swap_result:
+                print("✅ ETH→USDC SWAP成功")
+
+                # 残高再確認
+                time.sleep(2)  # ブロック確認待機
+                usdc_balance = get_token_balance(USDC_ADDRESS, wallet.address)
+                print(f"📊 SWAP後USDC残高: {usdc_balance / 10 ** 6:.2f}")
+
+                if usdc_balance < amount1_desired:
+                    print(f"⚠️ SWAP後も不足: {usdc_balance / 10 ** 6:.2f} < {target_usdc}")
+                    # 不足分を調整
+                    amount1_desired = usdc_balance
+                    target_usdc = usdc_balance / 10 ** 6
+                    print(f"🔧 投入USDC量を調整: {target_usdc:.2f}")
+
+            else:
+                print("❌ ETH→USDC SWAP失敗")
+                return
+
+        except Exception as e:
+            print(f"❌ SWAP エラー: {e}")
+            return
+    else:
+        print(f"✅ USDC残高十分: {usdc_balance / 10 ** 6:.2f} >= {target_usdc}")
 
     print("✅ 残高確認完了")
 
@@ -429,7 +518,7 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
         print(f"Status: ✅ SUCCESS")
         print(f"Gas Used: {result['gas_used']:,}")
         print(f"Events: {result['events']} 個")
-        print(f"Tx Hash: {result['tx_hash']}")
+        print(f"transaction hash: {result['tx_hash']}")  # main.py対応形式
 
         # ✅ NFT ID抽出・出力
         print("\n=== 🎯 NFT ID抽出 ===")
@@ -445,7 +534,8 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
         print("💰 usable_weth計算対応")
         print("🛡️ 堅牢ガス管理対応")
         print("🎯 NFT ID自動抽出対応")
-        print("💡 main.py連携対応")
+        print("💡 main.py引数連携対応")
+        print("🔄 ETH→USDC自動SWAP対応")
     else:
         print(f"Status: ❌ FAILED")
         print(f"Error: {result['error']}")
@@ -464,15 +554,18 @@ def parse_arguments():
 
 def main():
     """メイン実行関数（引数対応版）"""
-    print("=== 🏆 統合版Uniswap V3 LP自動化（main.py連携対応版） ===")
+    print("=== 🏆 統合版Uniswap V3 LP自動化（main.py連携対応版 + 自動SWAP復活） ===")
     print("🔄 機能: ETH→WETH自動変換")
     print("💰 機能: usable_weth自動計算")
     print("🛡️ 機能: 堅牢ガス管理")
     print("🎯 機能: NFT ID自動抽出")
     print("💡 新機能: main.py引数連携")
+    print("🔄 新機能: ETH→USDC自動SWAP復活")
+    print(f"🔧 DEBUG: sys.argv = {sys.argv}")
 
     # 引数解析
     args = parse_arguments()
+    print(f"🔧 DEBUG: parsed args = {args}")
 
     # Web3接続
     w3 = Web3(Web3.HTTPProvider(RPC_URL))
