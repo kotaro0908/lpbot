@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-リバランススクリプト（修正版）
-指定されたNFTの流動性を撤退し、新しいレンジで再LP投入
+リバランススクリプト（完全修正版 - 最適投入額計算移植）
+指定されたNFTの流動性を撤退し、新しいレンジで最大投入額再LP投入
 
 使用方法:
 python rebalance.py <NFT_ID>
@@ -26,6 +26,13 @@ PRIVATE_KEY = os.getenv('PRIVATE_KEY')
 GAS = int(os.getenv('GAS', 5000000))
 GAS_PRICE = int(os.getenv('GAS_PRICE', 2000000000))
 
+# 追加: 最適投入額計算用設定
+USDC_ADDRESS = os.getenv('USDC_ADDRESS')
+WETH_ADDRESS = os.getenv('WETH_ADDRESS')
+POOL_ADDRESS = "0xC6962004f452bE9203591991D15f6b388e09E8D0"
+FUND_UTILIZATION_RATE = float(os.getenv('FUND_UTILIZATION_RATE', 0.95))  # 95%
+GAS_BUFFER_ETH = float(os.getenv('GAS_BUFFER_ETH', 0.005))  # ガスバッファ
+
 # ログ設定
 logging.basicConfig(
     level=logging.INFO,
@@ -33,6 +40,154 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
+
+# ABIs
+ERC20_ABI = [
+    {"constant": True, "inputs": [{"name": "_owner", "type": "address"}], "name": "balanceOf",
+     "outputs": [{"name": "balance", "type": "uint256"}], "type": "function"}
+]
+
+POOL_ABI = [
+    {
+        "inputs": [],
+        "name": "slot0",
+        "outputs": [
+            {"internalType": "uint160", "name": "sqrtPriceX96", "type": "uint160"},
+            {"internalType": "int24", "name": "tick", "type": "int24"}
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
+
+
+def get_token_balance(w3, token_address, wallet_address):
+    """トークン残高取得"""
+    # チェックサムアドレスに変換
+    token_address = w3.to_checksum_address(token_address)
+    wallet_address = w3.to_checksum_address(wallet_address)
+    token_contract = w3.eth.contract(address=token_address, abi=ERC20_ABI)
+    return token_contract.functions.balanceOf(wallet_address).call()
+
+
+def get_eth_price(w3):
+    """ETH価格取得（Pool contractから）"""
+    try:
+        # チェックサムアドレスに変換
+        pool_address = w3.to_checksum_address(POOL_ADDRESS)
+        pool_contract = w3.eth.contract(address=pool_address, abi=POOL_ABI)
+        slot0 = pool_contract.functions.slot0().call()
+        sqrt_price_x96 = slot0[0]
+        price_raw = (sqrt_price_x96 / (2 ** 96)) ** 2
+        eth_price = price_raw * (10 ** 12)  # USDC per WETH
+
+        if eth_price <= 0:
+            logger.warning("⚠️ Pool価格取得失敗 - フォールバック価格使用")
+            return 3900.0
+
+        logger.info(f"📊 ETH価格: ${eth_price:.2f}")
+        return float(eth_price)
+    except Exception as e:
+        logger.warning(f"⚠️ ETH価格取得エラー - フォールバック価格使用: {e}")
+        return 3900.0
+
+
+def calculate_optimal_amounts(w3, wallet_address):
+    """最適投入額計算（main.pyから移植）"""
+    logger.info("💰 最適投入額計算中...")
+
+    # チェックサムアドレスに変換
+    wallet_address = w3.to_checksum_address(wallet_address)
+    weth_address = w3.to_checksum_address(WETH_ADDRESS)
+    usdc_address = w3.to_checksum_address(USDC_ADDRESS)
+
+    # 残高取得
+    eth_balance = w3.eth.get_balance(wallet_address)
+    weth_balance = get_token_balance(w3, weth_address, wallet_address)
+    usdc_balance = get_token_balance(w3, usdc_address, wallet_address)
+
+    eth_amount = eth_balance / 10 ** 18
+    weth_amount = weth_balance / 10 ** 18
+    usdc_amount = usdc_balance / 10 ** 6
+
+    logger.info(f"📊 現在残高:")
+    logger.info(f"   ETH: {eth_amount:.6f}")
+    logger.info(f"   WETH: {weth_amount:.6f}")
+    logger.info(f"   USDC: {usdc_amount:.2f}")
+
+    # 利用可能資金計算
+    usable_eth = max(0, eth_amount - GAS_BUFFER_ETH)
+    total_eth_value = usable_eth + weth_amount
+    total_usdc_value = usdc_amount
+
+    # ETH価格取得
+    eth_price = get_eth_price(w3)
+
+    # 総資産価値計算（USD）
+    total_eth_usd = total_eth_value * eth_price
+    total_usdc_usd = total_usdc_value
+    total_value_usd = total_eth_usd + total_usdc_usd
+
+    # 運用可能額計算（95%活用）
+    available_for_investment_usd = total_value_usd * FUND_UTILIZATION_RATE
+
+    logger.info(f"📊 資産分析:")
+    logger.info(f"   総ETH価値: ${total_eth_usd:.2f}")
+    logger.info(f"   総USDC価値: ${total_usdc_usd:.2f}")
+    logger.info(f"   総資産価値: ${total_value_usd:.2f}")
+    logger.info(f"   運用可能額: ${available_for_investment_usd:.2f}")
+
+    # 50:50分散で最適投入額計算
+    target_eth_usd = available_for_investment_usd / 2
+    target_usdc_usd = available_for_investment_usd / 2
+
+    final_eth_amount = target_eth_usd / eth_price
+    final_usdc_amount = target_usdc_usd
+
+    # SWAP必要性判定
+    current_eth_usd = total_eth_value * eth_price
+    current_usdc_usd = total_usdc_value
+
+    needs_swap = False
+    swap_direction = None
+    swap_amount = 0
+
+    if current_eth_usd > target_eth_usd:
+        # ETH過多 → ETH→USDC SWAP
+        excess_eth_usd = current_eth_usd - target_eth_usd
+        if excess_eth_usd > 1.0:  # 1USD以上の差があればSWAP
+            needs_swap = True
+            swap_direction = "ETH_TO_USDC"
+            swap_amount = excess_eth_usd
+    elif current_usdc_usd > target_usdc_usd:
+        # USDC過多 → USDC→ETH SWAP
+        excess_usdc_usd = current_usdc_usd - target_usdc_usd
+        if excess_usdc_usd > 1.0:  # 1USD以上の差があればSWAP
+            needs_swap = True
+            swap_direction = "USDC_TO_ETH"
+            swap_amount = excess_usdc_usd
+
+    optimal_amounts = {
+        'needs_swap': needs_swap,
+        'swap_direction': swap_direction,
+        'swap_amount': swap_amount,
+        'final_eth_amount': final_eth_amount,
+        'final_usdc_amount': final_usdc_amount,
+        'total_investment_usd': available_for_investment_usd,
+        'eth_price': eth_price
+    }
+
+    logger.info(f"📊 最適投入額: ${available_for_investment_usd:.2f}")
+    logger.info(f"   ETH: {final_eth_amount:.6f}")
+    logger.info(f"   USDC: {final_usdc_amount:.2f}")
+
+    if needs_swap:
+        logger.info(f"🔄 SWAP必要: {swap_direction}")
+        logger.info(f"   SWAP額: ${swap_amount:.2f}")
+    else:
+        logger.info("✅ SWAP不要")
+
+    return optimal_amounts
 
 
 def safe_collect(w3, wallet, token_id):
@@ -88,9 +243,6 @@ def remove_liquidity(token_id):
     logger.info(f"📉 撤退する流動性: {liquidity_to_remove}")
 
     # 最小受取量設定（バッファ込み）
-    BUFFER = 0.05  # 5%バッファ
-
-    # 簡易的な最小受取量（実際のポジション価値に基づいて調整可能）
     AMOUNT0_MIN = 0  # 最小ETH受取（安全のため0に設定）
     AMOUNT1_MIN = 0  # 最小USDC受取（安全のため0に設定）
 
@@ -136,17 +288,32 @@ def remove_liquidity(token_id):
 
 
 def add_new_liquidity():
-    """新しいレンジでLP追加"""
-    logger.info("🚀 新しいレンジでLP追加中...")
+    """新しいレンジで最大投入額LP追加"""
+    logger.info("🚀 新しいレンジで最大投入額LP追加中...")
 
     try:
-        # add_liquidity.pyを呼び出し
+        # Web3接続
+        w3 = Web3(Web3.HTTPProvider(RPC_URL))
+        wallet = w3.eth.account.from_key(PRIVATE_KEY)
+
+        # 最適投入額計算
+        optimal_amounts = calculate_optimal_amounts(w3, wallet.address)
+
+        # add_liquidity.pyを最適化引数付きで呼び出し
+        cmd = [
+            "python", "add_liquidity.py",
+            "--eth", str(optimal_amounts['final_eth_amount']),
+            "--usdc", str(optimal_amounts['final_usdc_amount']),
+            "--auto"
+        ]
+
+        logger.info(f"🔧 add_liquidity.py実行: {' '.join(cmd[2:])}")  # 引数部分のみ表示
+
         result = subprocess.run(
-            ["python", "add_liquidity.py"],
-            input="2\n",  # LP追加テストを選択
+            cmd,
             text=True,
             capture_output=True,
-            timeout=120
+            timeout=180  # タイムアウト延長（SWAP含むため）
         )
 
         # 成功判定を厳密化
@@ -157,7 +324,7 @@ def add_new_liquidity():
         has_error = any(indicator in result.stdout for indicator in error_indicators)
 
         if result.returncode == 0 and has_success and not has_error:
-            logger.info("✅ 新LP追加成功")
+            logger.info("✅ 最大投入額での新LP追加成功")
 
             # 出力からトランザクションハッシュ・NFT IDを抽出
             output_lines = result.stdout.split('\n')
@@ -191,6 +358,7 @@ def add_new_liquidity():
 
             if new_nft_id:
                 logger.info(f"🎯 新NFT ID: {new_nft_id}")
+                logger.info(f"💰 投入額: ${optimal_amounts['total_investment_usd']:.2f}")
                 print(f"🎯 新NFT ID: {new_nft_id}")  # main.pyが検知用
                 return new_nft_id
             else:
@@ -261,20 +429,22 @@ def main():
         print("エラー: NFT_IDは数値で指定してください")
         sys.exit(1)
 
-    logger.info(f"🔄 リバランス開始 - NFT {token_id}")
+    logger.info(f"🔄 完全リバランス開始 - NFT {token_id}")
+    logger.info("💰 最大投入額での資金効率最適化リバランス")
 
     # Step 1: 流動性撤退
     if not remove_liquidity(token_id):
         logger.error(f"❌ NFT {token_id} 流動性撤退失敗 - リバランス中止")
         sys.exit(1)
 
-    # Step 2: 新LP追加
+    # Step 2: 最大投入額での新LP追加
     new_nft_id = add_new_liquidity()
     if new_nft_id:
         # Step 3: 追跡NFT更新
         update_tracked_nfts(token_id, new_nft_id)
 
-        logger.info(f"✅ リバランス完了 - 旧NFT {token_id} → 新NFT {new_nft_id}")
+        logger.info(f"✅ 完全リバランス完了 - 旧NFT {token_id} → 新NFT {new_nft_id}")
+        logger.info("🚀 最大投入額での効率的なリバランスが完了しました")
         print(f"REBALANCE SUCCESS: {token_id} -> {new_nft_id}")
         sys.exit(0)
     else:

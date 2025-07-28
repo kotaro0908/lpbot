@@ -310,14 +310,17 @@ class LPHelperIntegrated:
                 'available_usdc': available_usdc,
                 'available_eth_usd': available_eth_usd,
                 'total_available_usd': total_available_usd,
-                'eth_price': eth_price
+                'eth_price': eth_price,
+                'current_eth_balance': eth_balance,
+                'current_weth_balance': weth_balance,
+                'current_usdc_balance': usdc_balance
             }
         except Exception as e:
             logger.error(f"資金状況取得エラー: {e}")
             return None
 
     def calculate_optimal_lp_amounts(self):
-        """最適LP投入額計算（95%投入、SWAP考慮）"""
+        """最適LP投入額計算（95%投入、SWAP考慮、WETH不足時調整対応）"""
         funds = self.get_available_funds_for_lp()
         if not funds:
             return None
@@ -330,31 +333,44 @@ class LPHelperIntegrated:
         current_eth_usd = funds['available_eth_usd']
         current_usdc_usd = funds['available_usdc']
 
+        # 🔧 修正: WETH確保可能性をチェック
+        # 利用可能ETH（ETH + WETH - ガスバッファ）
+        usable_eth_for_weth = max(0, funds['current_eth_balance'] - 0.005)  # 0.005 ETHはガスバッファ
+        max_possible_weth = funds['current_weth_balance'] + usable_eth_for_weth
+        max_possible_weth_usd = max_possible_weth * funds['eth_price']
+
+        # WETH制約による投入額調整
+        weth_constrained_amount = min(target_per_token_usd, max_possible_weth_usd)
+
         # SWAP必要性判定
         needs_swap = False
         swap_direction = None
         swap_amount = 0
 
-        if current_eth_usd < target_per_token_usd and current_usdc_usd >= target_per_token_usd:
+        if current_eth_usd < weth_constrained_amount and current_usdc_usd >= weth_constrained_amount:
             # USDC → ETH SWAP必要
             needs_swap = True
             swap_direction = "USDC_TO_ETH"
-            swap_amount = target_per_token_usd - current_eth_usd
-        elif current_usdc_usd < target_per_token_usd and current_eth_usd >= target_per_token_usd:
+            swap_amount = weth_constrained_amount - current_eth_usd
+        elif current_usdc_usd < weth_constrained_amount and current_eth_usd >= weth_constrained_amount:
             # ETH → USDC SWAP必要
             needs_swap = True
             swap_direction = "ETH_TO_USDC"
-            swap_amount = target_per_token_usd - current_usdc_usd
+            swap_amount = weth_constrained_amount - current_usdc_usd
 
-        # 最終投入額計算
+        # 最終投入額計算（WETH制約考慮）
         if needs_swap:
-            final_eth_usd = target_per_token_usd
-            final_usdc_usd = target_per_token_usd
+            final_eth_usd = weth_constrained_amount
+            final_usdc_usd = weth_constrained_amount
         else:
-            # SWAPなしで可能な最大投入
-            max_possible = min(current_eth_usd, current_usdc_usd)
+            # SWAPなしで可能な最大投入（WETH制約考慮）
+            max_possible = min(current_eth_usd, current_usdc_usd, weth_constrained_amount)
             final_eth_usd = max_possible
             final_usdc_usd = max_possible
+
+        # 🔧 修正: WETH制約により調整された場合の警告
+        if weth_constrained_amount < target_per_token_usd:
+            logger.warning(f"⚠️ WETH制約により投入額調整: ${target_per_token_usd:.2f} → ${weth_constrained_amount:.2f}")
 
         return {
             'needs_swap': needs_swap,
@@ -363,7 +379,8 @@ class LPHelperIntegrated:
             'final_eth_amount': final_eth_usd / funds['eth_price'],
             'final_usdc_amount': final_usdc_usd,
             'total_investment_usd': final_eth_usd + final_usdc_usd,
-            'eth_price': funds['eth_price']
+            'eth_price': funds['eth_price'],
+            'weth_constrained': weth_constrained_amount < target_per_token_usd
         }
 
 
@@ -564,6 +581,10 @@ class LPManager:
                 logger.info(f"📊 最適投入額: ${optimal_amounts['total_investment_usd']:.2f}")
                 logger.info(f"   ETH: {optimal_amounts['final_eth_amount']:.6f}")
                 logger.info(f"   USDC: {optimal_amounts['final_usdc_amount']:.2f}")
+
+                # 🔧 修正: WETH制約による調整の表示
+                if optimal_amounts.get('weth_constrained', False):
+                    logger.info("⚠️ WETH残高制約により投入額を調整しました")
 
                 if optimal_amounts['needs_swap']:
                     logger.info(f"🔄 SWAP必要: {optimal_amounts['swap_direction']}")
