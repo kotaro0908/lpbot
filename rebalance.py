@@ -15,7 +15,9 @@ import subprocess
 import logging
 from web3 import Web3
 from dotenv import load_dotenv
-from uniswap_utils import get_liquidity, decrease_liquidity, collect_fees, multicall_decrease_and_collect
+from uniswap_utils import get_liquidity, decrease_liquidity, collect_fees, multicall_decrease_and_collect, \
+    get_position_info
+from json_logger import JSONLogger
 
 # .envファイルを読み込み
 load_dotenv()
@@ -189,6 +191,7 @@ def calculate_optimal_amounts(w3, wallet_address):
 
     return optimal_amounts
 
+
 def remove_liquidity(token_id):
     """流動性撤退（Multicall版）"""
     logger.info(f"🔄 NFT {token_id} の流動性撤退開始...")
@@ -200,6 +203,13 @@ def remove_liquidity(token_id):
     liquidity = get_liquidity(w3, token_id)
     logger.info(f"📊 流動性確認 - NFT {token_id}: {liquidity}")
 
+    # ポジション情報取得（ログ用）- JSONログ用追加
+    position_info = None
+    try:
+        position_info = get_position_info(w3, token_id)
+    except:
+        pass  # エラーは無視
+
     if liquidity == 0:
         logger.warning(f"⚠️ NFT {token_id}: 流動性が既に0です")
         logger.info("💰 手数料回収を試行中...")
@@ -208,6 +218,14 @@ def remove_liquidity(token_id):
         try:
             tx_hash = collect_fees(w3, wallet, token_id, GAS, GAS_PRICE)
             logger.info(f"collect sent: {w3.to_hex(tx_hash)}")
+
+            # JSONログ追加
+            JSONLogger.log_to_json("fee_collection", {
+                "nft_id": token_id,
+                "tx_hash": w3.to_hex(tx_hash),
+                "success": True
+            })
+
             receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
             if receipt.status == 1:
                 logger.info(f"✅ collect Tx confirmed in block: {receipt.blockNumber}")
@@ -217,6 +235,13 @@ def remove_liquidity(token_id):
                 return False
         except Exception as e:
             logger.error(f"❌ collect Tx exception: {e}")
+            # JSONログ追加
+            JSONLogger.log_system(
+                log_level="ERROR",
+                function_name="remove_liquidity",
+                message="Collect failed",
+                error_details=str(e)
+            )
             return False
 
     # 全流動性撤退
@@ -233,6 +258,18 @@ def remove_liquidity(token_id):
     try:
         # Multicall実行（decreaseLiquidity + collect を同時実行）
         logger.info("🔄 Multicall実行中（decreaseLiquidity + collect）...")
+
+        # JSONログ追加 - 開始時
+        if position_info:
+            JSONLogger.log_rebalance(
+                reason="liquidity_removal_start",
+                old_nft_id=token_id,
+                new_nft_id=None,
+                old_tick_lower=position_info.get('tick_lower'),
+                old_tick_upper=position_info.get('tick_upper'),
+                success=True
+            )
+
         tx_hash = multicall_decrease_and_collect(
             w3,
             wallet,
@@ -245,6 +282,17 @@ def remove_liquidity(token_id):
         )
         logger.info(f"📝 Multicall送信: {w3.to_hex(tx_hash)}")
 
+        # JSONログ追加 - 実行後
+        JSONLogger.log_rebalance(
+            reason="multicall_execution",
+            old_nft_id=token_id,
+            new_nft_id=None,
+            old_tick_lower=position_info.get('tick_lower') if position_info else None,
+            old_tick_upper=position_info.get('tick_upper') if position_info else None,
+            tx_hash=w3.to_hex(tx_hash),
+            success=True
+        )
+
         # トランザクション確認
         receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
         if receipt.status == 1:
@@ -253,10 +301,24 @@ def remove_liquidity(token_id):
             return True
         else:
             logger.error("❌ Multicall失敗")
+            # JSONログ追加
+            JSONLogger.log_system(
+                log_level="ERROR",
+                function_name="remove_liquidity",
+                message="Multicall transaction failed",
+                error_details=f"NFT: {token_id}, tx_hash: {w3.to_hex(tx_hash)}"
+            )
             return False
 
     except Exception as e:
         logger.error(f"❌ 流動性撤退エラー: {e}")
+        # JSONログ追加
+        JSONLogger.log_system(
+            log_level="ERROR",
+            function_name="remove_liquidity",
+            message="Multicall execution error",
+            error_details=str(e)
+        )
         return False
 
 
@@ -271,6 +333,17 @@ def add_new_liquidity():
 
         # 最適投入額計算
         optimal_amounts = calculate_optimal_amounts(w3, wallet.address)
+
+        # レンジ情報読み込み（新レンジ記録用）- JSONログ用追加
+        new_tick_lower = None
+        new_tick_upper = None
+        try:
+            with open('range_config.json', 'r') as f:
+                range_config = json.load(f)
+                new_tick_lower = range_config.get('lower_tick')
+                new_tick_upper = range_config.get('upper_tick')
+        except:
+            logger.warning("⚠️ range_config.json読み込み失敗")
 
         # add_liquidity.pyを最適化引数付きで呼び出し
         cmd = [
@@ -344,23 +417,71 @@ def add_new_liquidity():
                 if tx_hash:
                     logger.info(f"📝 新LP追加Tx: {tx_hash}")
 
+                # 成功ログ - JSONログ追加
+                JSONLogger.log_rebalance(
+                    reason="range_out",  # または"fund_added" - main.pyから渡す必要あり
+                    old_nft_id=None,  # この時点では不明
+                    new_nft_id=new_nft_id,
+                    new_tick_lower=new_tick_lower,
+                    new_tick_upper=new_tick_upper,
+                    price_at_rebalance=optimal_amounts.get('eth_price'),
+                    estimated_amount=optimal_amounts['total_investment_usd'],
+                    swap_executed=False,  # 実際のSWAP実行はadd_liquidity.py内で判定
+                    tx_hash=tx_hash,
+                    success=True
+                )
+
                 return new_nft_id
             else:
                 logger.error("❌ 新LP追加失敗 - NFT ID取得失敗")
                 logger.error(f"詳細出力: {result.stdout}")
                 logger.error(f"エラー出力: {result.stderr}")
+
+                # 失敗ログ - JSONログ追加
+                JSONLogger.log_rebalance(
+                    reason="range_out",
+                    old_nft_id=None,
+                    new_nft_id=None,
+                    estimated_amount=optimal_amounts['total_investment_usd'],
+                    error_message="NFT ID extraction failed",
+                    success=False
+                )
+
                 return None
         else:
             logger.error(f"❌ 新LP追加失敗 - Return Code: {result.returncode}")
             logger.error(f"STDOUT: {result.stdout}")
             logger.error(f"STDERR: {result.stderr}")
+
+            # システムエラーログ - JSONログ追加
+            JSONLogger.log_system(
+                log_level="ERROR",
+                function_name="add_new_liquidity",
+                message=f"add_liquidity.py failed with code {result.returncode}",
+                error_details=result.stderr[:500] if result.stderr else "No error output"
+            )
+
             return None
 
     except subprocess.TimeoutExpired:
         logger.error("❌ 新LP追加タイムアウト")
+        # JSONログ追加
+        JSONLogger.log_system(
+            log_level="ERROR",
+            function_name="add_new_liquidity",
+            message="add_liquidity.py timeout",
+            error_details="Execution exceeded 180 seconds"
+        )
         return None
     except Exception as e:
         logger.error(f"❌ 新LP追加エラー: {e}")
+        # JSONログ追加
+        JSONLogger.log_system(
+            log_level="ERROR",
+            function_name="add_new_liquidity",
+            message="Unexpected error in LP addition",
+            error_details=str(e)
+        )
         return None
 
 
@@ -412,6 +533,13 @@ def main():
     logger.info(f"🔄 完全リバランス開始 - NFT {token_id}")
     logger.info("💰 最大投入額での資金効率最適化リバランス")
 
+    # リバランス開始ログ - JSONログ追加
+    JSONLogger.log_system(
+        log_level="INFO",
+        function_name="main",
+        message=f"Rebalance started for NFT {token_id}"
+    )
+
     # Step 1: 流動性撤退
     if not remove_liquidity(token_id):
         logger.error(f"❌ NFT {token_id} 流動性撤退失敗 - リバランス中止")
@@ -425,6 +553,14 @@ def main():
 
         logger.info(f"✅ 完全リバランス完了 - 旧NFT {token_id} → 新NFT {new_nft_id}")
         logger.info("🚀 最大投入額での効率的なリバランスが完了しました")
+
+        # 完了ログ - JSONログ追加
+        JSONLogger.log_system(
+            log_level="INFO",
+            function_name="main",
+            message=f"Rebalance completed: {token_id} -> {new_nft_id}"
+        )
+
         print(f"REBALANCE SUCCESS: {token_id} -> {new_nft_id}")
         sys.exit(0)
     else:

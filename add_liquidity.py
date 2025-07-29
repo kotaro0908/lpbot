@@ -8,6 +8,7 @@ import json, os, time
 import subprocess
 # ✅ swap_utils.py統合
 from swap_utils import get_token_balance, swap_exact_input, approve_if_needed
+from json_logger import JSONLogger
 
 POSITION_MANAGER_ADDRESS = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
 POOL_ADDRESS = "0xC6962004f452bE9203591991D15f6b388e09E8D0"
@@ -229,6 +230,15 @@ class RobustGasManager:
                 print(f"   ガス設定: {current_gas:,} / {gas_price / 10 ** 9:.1f} gwei")
                 print(f"   戦略: 試行{attempt + 1}: ガス×{gas_multiplier}")
 
+                # JSONログ追加
+                JSONLogger.log_gas_retry(
+                    function_name="mint",
+                    attempt=attempt + 1,
+                    gas_limit=current_gas,
+                    gas_multiplier=gas_multiplier,
+                    success=False  # 最初はFalse
+                )
+
                 # トランザクション実行
                 result = transaction_func(current_gas, gas_price, *args, **kwargs)
 
@@ -238,6 +248,16 @@ class RobustGasManager:
                     print(f"🎉 最終成功! ({attempt + 1}回目で成功)")
                     print(f"   ガス使用量: {result['gas_used']:,}")
                     print(f"   効率: {efficiency:.1f}%")
+
+                    # 成功時のJSONログ
+                    JSONLogger.log_gas_retry(
+                        function_name="mint",
+                        attempt=attempt + 1,
+                        gas_limit=current_gas,
+                        gas_multiplier=gas_multiplier,
+                        success=True
+                    )
+
                     return result
                 else:
                     print(f"❌ 試行{attempt + 1}失敗: {result.get('error', 'Unknown error')}")
@@ -438,6 +458,15 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
                     if swap_result:
                         print("✅ USDC→WETH SWAP成功")
 
+                        # JSONログ追加
+                        JSONLogger.log_swap(
+                            from_token="USDC",
+                            to_token="WETH",
+                            amount=usdc_needed,
+                            swap_direction="USDC_TO_ETH",
+                            success=True
+                        )
+
                         # 残高再確認
                         time.sleep(2)
                         weth_balance = get_token_balance(WETH_ADDRESS, wallet.address)
@@ -450,10 +479,28 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
                             print(f"🔧 投入WETH量を調整: {target_weth:.6f}")
                     else:
                         print("❌ USDC→WETH SWAP失敗")
+                        # JSONログ追加
+                        JSONLogger.log_swap(
+                            from_token="USDC",
+                            to_token="WETH",
+                            amount=usdc_needed,
+                            swap_direction="USDC_TO_ETH",
+                            success=False,
+                            error_message="SWAP execution failed"
+                        )
                         return
 
                 except Exception as e:
                     print(f"❌ SWAP エラー: {e}")
+                    # JSONログ追加
+                    JSONLogger.log_swap(
+                        from_token="USDC",
+                        to_token="WETH",
+                        amount=usdc_needed,
+                        swap_direction="USDC_TO_ETH",
+                        success=False,
+                        error_message=str(e)
+                    )
                     return
             else:
                 print(f"❌ USDC不足: 必要{usdc_needed:.2f}, 利用可能{usdc_balance / 10 ** 6:.2f}")
@@ -537,6 +584,15 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
                     if swap_result:
                         print("✅ WETH→USDC SWAP成功")
 
+                        # JSONログ追加
+                        JSONLogger.log_swap(
+                            from_token="WETH",
+                            to_token="USDC",
+                            amount=eth_needed,
+                            swap_direction="ETH_TO_USDC",
+                            success=True
+                        )
+
                         # 残高再確認
                         time.sleep(2)  # ブロック確認待機
                         usdc_balance = get_token_balance(USDC_ADDRESS, wallet.address)
@@ -551,10 +607,28 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
 
                     else:
                         print("❌ WETH→USDC SWAP失敗")
+                        # JSONログ追加
+                        JSONLogger.log_swap(
+                            from_token="WETH",
+                            to_token="USDC",
+                            amount=eth_needed,
+                            swap_direction="ETH_TO_USDC",
+                            success=False,
+                            error_message="SWAP execution failed"
+                        )
                         return
 
                 except Exception as e:
                     print(f"❌ SWAP エラー: {e}")
+                    # JSONログ追加
+                    JSONLogger.log_swap(
+                        from_token="WETH",
+                        to_token="USDC",
+                        amount=eth_needed,
+                        swap_direction="ETH_TO_USDC",
+                        success=False,
+                        error_message=str(e)
+                    )
                     return
             else:
                 print(f"❌ WETH不足: 必要{eth_needed:.6f}, 利用可能{weth_balance / 10 ** 18:.6f}")
@@ -610,6 +684,18 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
         print(f"Events: {result['events']} 個")
         print(f"transaction hash: {result['tx_hash']}")  # main.py対応形式
 
+        # JSONログ追加
+        JSONLogger.log_to_json("lp_creation", {
+            "tx_hash": result['tx_hash'],
+            "gas_used": result['gas_used'],
+            "events": result['events'],
+            "tick_lower": tick_lower,
+            "tick_upper": tick_upper,
+            "amount_weth": amount0_desired / 10 ** 18,
+            "amount_usdc": amount1_desired / 10 ** 6,
+            "success": True
+        })
+
         # ✅ NFT ID抽出・出力
         print("\n=== 🎯 NFT ID抽出 ===")
         nft_id = extract_nft_id_from_transaction(w3, result['tx_hash'])
@@ -630,6 +716,16 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
     else:
         print(f"Status: ❌ FAILED")
         print(f"Error: {result['error']}")
+
+        # JSONログ追加
+        JSONLogger.log_to_json("lp_creation", {
+            "error": result['error'],
+            "tick_lower": tick_lower,
+            "tick_upper": tick_upper,
+            "amount_weth": amount0_desired / 10 ** 18,
+            "amount_usdc": amount1_desired / 10 ** 6,
+            "success": False
+        })
 
 
 def parse_arguments():

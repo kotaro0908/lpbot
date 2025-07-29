@@ -7,6 +7,7 @@ import subprocess
 import logging
 from web3 import Web3
 from dotenv import load_dotenv
+from json_logger import JSONLogger  # ← この行を追加
 
 # .envファイルを読み込み
 load_dotenv()
@@ -465,6 +466,14 @@ class LPManager:
             if usd_increase >= self.MIN_DEPOSIT_THRESHOLD:
                 # 新規入金
                 logger.info(f"💵 新規入金検出: +${usd_increase:.2f}")
+
+                # JSONログ追加
+                JSONLogger.log_fund_change(
+                    change_type="deposit",
+                    amount_usd=usd_increase,
+                    trigger_action="rebalance"
+                )
+
                 trigger = True
             elif available_funds > 20:
                 # 利用可能資金が多い
@@ -584,7 +593,8 @@ class LPManager:
         logger.info(f"📊 現在tick: {current_tick}")
 
         # 🆕 資金追加チェック（最初に実行）
-        if self.check_balance_changes():
+        fund_change_detected = self.check_balance_changes()
+        if fund_change_detected:
             logger.info("🔄 資金追加によるリバランスチェック開始")
 
             # 🆕 LP価値をチェック
@@ -670,6 +680,16 @@ class LPManager:
                 logger.info(f"🔴 NFT {token_id} レンジ外 - リバランス対象")
                 out_of_range_nfts.append(token_id)
 
+                # JSONログ追加
+                JSONLogger.log_to_json("range_detection", {
+                    "nft_id": token_id,
+                    "current_tick": current_tick,
+                    "tick_lower": position_info['tick_lower'],
+                    "tick_upper": position_info['tick_upper'],
+                    "in_range": False,
+                    "price": self.lp_helper.get_eth_price() if hasattr(self, 'lp_helper') else None
+                })
+
         # 追跡リスト更新
         if len(self.tracked_nfts) != len(active_nfts):
             self.tracked_nfts = active_nfts
@@ -694,6 +714,13 @@ class LPManager:
     def add_initial_liquidity(self):
         """初回LP追加（最大資金活用版）"""
         logger.info("🚀 初回LP追加を自動実行中...")
+
+        # JSONログ追加
+        JSONLogger.log_system(
+            log_level="INFO",
+            function_name="add_initial_liquidity",
+            message="Initial LP creation started"
+        )
 
         try:
             # 💰 LP Helper: 最適投入額計算
@@ -757,6 +784,14 @@ class LPManager:
                         self.save_tracked_nfts()
 
                         logger.info(f"✅ LP追加成功: NFT {new_nft_id} を追跡開始")
+
+                        # JSONログ追加 - 成功
+                        JSONLogger.log_to_json("lp_initialization", {
+                            "nft_id": new_nft_id,
+                            "tx_hash": tx_hash,
+                            "investment_usd": optimal_amounts['total_investment_usd'] if optimal_amounts else None,
+                            "success": True
+                        })
                     else:
                         logger.warning("⚠️ NFT ID取得失敗 - 次回スキャンで検出予定")
                 else:
@@ -765,10 +800,32 @@ class LPManager:
             else:
                 logger.error(f"❌ LP追加失敗: {result.stderr}")
 
+                # JSONログ追加 - 失敗
+                JSONLogger.log_system(
+                    log_level="ERROR",
+                    function_name="add_initial_liquidity",
+                    message="Initial LP creation failed",
+                    error_details=result.stderr[:500] if result.stderr else "No error output"
+                )
+
         except subprocess.TimeoutExpired:
             logger.error("❌ LP追加タイムアウト")
+            # JSONログ追加
+            JSONLogger.log_system(
+                log_level="ERROR",
+                function_name="add_initial_liquidity",
+                message="LP addition timeout",
+                error_details="Execution exceeded 60 seconds"
+            )
         except Exception as e:
             logger.error(f"❌ LP追加エラー: {e}")
+            # JSONログ追加
+            JSONLogger.log_system(
+                log_level="ERROR",
+                function_name="add_initial_liquidity",
+                message="LP addition error",
+                error_details=str(e)
+            )
 
         # main.pyのadd_initial_liquidity関数内で
         print(f"🔧 DEBUG: optimal_amounts = {optimal_amounts}")
@@ -828,6 +885,14 @@ class LPManager:
         """個別ポジションのリバランス"""
         logger.info(f"🔄 NFT {token_id} のリバランス開始")
 
+        # JSONログ追加 - リバランス開始
+        JSONLogger.log_to_json("rebalance_trigger", {
+            "nft_id": token_id,
+            "reason": "range_out",  # または "fund_added" - 呼び出し元に応じて変更
+            "current_price": self.lp_helper.get_eth_price() if hasattr(self, 'lp_helper') else None,
+            "timestamp": time.time()
+        })
+
         try:
             # リバランススクリプト実行
             result = subprocess.run(
@@ -846,22 +911,56 @@ class LPManager:
 
                 # 新しいNFT IDをトランザクションから取得
                 output_lines = result.stdout.split('\n')
+                new_nft_id = None
                 for line in output_lines:
                     if 'new nft id:' in line.lower():
-                        new_nft_id = int(line.split(':')[-1].strip())
-                        self.tracked_nfts.append(new_nft_id)
-                        logger.info(f"🎯 新NFT追跡開始: {new_nft_id}")
-                        break
+                        try:
+                            new_nft_id = int(line.split(':')[-1].strip())
+                            self.tracked_nfts.append(new_nft_id)
+                            logger.info(f"🎯 新NFT追跡開始: {new_nft_id}")
+                            break
+                        except:
+                            pass
 
                 self.save_tracked_nfts()
+
+                # JSONログ追加 - 成功
+                if new_nft_id:
+                    JSONLogger.log_to_json("rebalance_result", {
+                        "old_nft_id": token_id,
+                        "new_nft_id": new_nft_id,
+                        "success": True
+                    })
 
             else:
                 logger.error(f"❌ NFT {token_id} リバランス失敗: {result.stderr}")
 
+                # JSONログ追加 - 失敗
+                JSONLogger.log_to_json("rebalance_result", {
+                    "old_nft_id": token_id,
+                    "new_nft_id": None,
+                    "success": False,
+                    "error": result.stderr[:500] if result.stderr else "Unknown error"
+                })
+
         except subprocess.TimeoutExpired:
             logger.error(f"❌ NFT {token_id} リバランスタイムアウト")
+            # JSONログ追加
+            JSONLogger.log_system(
+                log_level="ERROR",
+                function_name="rebalance_position",
+                message=f"Rebalance timeout for NFT {token_id}",
+                error_details="Execution exceeded 120 seconds"
+            )
         except Exception as e:
             logger.error(f"❌ NFT {token_id} リバランスエラー: {e}")
+            # JSONログ追加
+            JSONLogger.log_system(
+                log_level="ERROR",
+                function_name="rebalance_position",
+                message=f"Rebalance error for NFT {token_id}",
+                error_details=str(e)
+            )
 
 
 def main():
@@ -914,24 +1013,60 @@ def main():
 
         logger.info("✅ 資金最大化LP検知システム初期化完了")
 
+        # JSONログ追加 - システム開始
+        JSONLogger.log_system(
+            log_level="INFO",
+            function_name="main",
+            message="LP monitoring system started",
+            execution_time_ms=None,
+            error_details=None
+        )
+
         # 監視ループ
         cycle_count = 0
         while True:
             cycle_count += 1
             logger.info(f"\n=== 監視サイクル {cycle_count} ===")
 
+            # JSONログ追加 - サイクル開始
+            JSONLogger.log_to_json("monitoring_cycle", {
+                "cycle": cycle_count,
+                "timestamp": time.time(),
+                "tracked_nfts": lp_manager.tracked_nfts,
+                "status": "started"
+            })
+
             try:
                 lp_manager.check_and_rebalance_if_needed()
             except Exception as e:
                 logger.error(f"❌ 監視サイクルエラー: {e}")
+                # JSONログ追加 - エラー
+                JSONLogger.log_system(
+                    log_level="ERROR",
+                    function_name="main",
+                    message=f"Monitoring cycle {cycle_count} error",
+                    error_details=str(e)
+                )
 
             time.sleep(MONITORING_INTERVAL)
 
     except KeyboardInterrupt:
         logger.info("🛑 監視システム停止（ユーザー中断）")
+        # JSONログ追加 - システム停止
+        JSONLogger.log_system(
+            log_level="INFO",
+            function_name="main",
+            message="System stopped by user interrupt"
+        )
     except Exception as e:
         logger.error(f"❌ システムエラー: {e}")
-
+        # JSONログ追加
+        JSONLogger.log_system(
+            log_level="ERROR",
+            function_name="main",
+            message="System error",
+            error_details=str(e)
+        )
 
 if __name__ == "__main__":
     main()
