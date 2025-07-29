@@ -359,6 +359,173 @@ def remove_liquidity(w3, wallet, token_id, liquidity_percentage=1.0, gas=400000,
         raise e
 
 
+# ===== Multicall機能追加 =====
+# Multicall V3 Address (Arbitrum One)
+MULTICALL_ADDRESS = "0xcA11bde05977b3631167028862bE2a173976CA11"
+
+# Multicall ABI（必要な関数のみ）
+MULTICALL_ABI = [
+    {
+        "inputs": [
+            {
+                "components": [
+                    {"internalType": "address", "name": "target", "type": "address"},
+                    {"internalType": "bytes", "name": "callData", "type": "bytes"}
+                ],
+                "internalType": "struct Multicall3.Call[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "aggregate",
+        "outputs": [
+            {"internalType": "uint256", "name": "blockNumber", "type": "uint256"},
+            {"internalType": "bytes[]", "name": "returnData", "type": "bytes[]"}
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]
+
+
+def encode_decrease_liquidity(token_id, liquidity_to_remove, amount0_min=0, amount1_min=0):
+    """decreaseLiquidity関数呼び出しをエンコード（Web3標準機能使用）"""
+    try:
+        from web3 import Web3
+
+        # deadline設定（1時間後）
+        deadline = int(time.time()) + 3600
+
+        # パラメータ構築
+        decrease_params = (
+            token_id,
+            liquidity_to_remove,
+            amount0_min,
+            amount1_min,
+            deadline
+        )
+
+        # Web3コントラクトを使ってエンコード
+        w3 = Web3()
+        pm = w3.eth.contract(address=POSITION_MANAGER_ADDRESS, abi=POSITION_MANAGER_ABI)
+
+        # 関数呼び出しデータを直接エンコード
+        encoded_data = pm.encodeABI(fn_name="decreaseLiquidity", args=[decrease_params])
+
+        return encoded_data
+
+    except Exception as e:
+        print(f"❌ encode_decrease_liquidity エラー: {e}")
+        raise e
+
+
+def encode_collect(token_id, recipient):
+    """collect関数呼び出しをエンコード（Web3標準機能使用）"""
+    try:
+        from web3 import Web3
+
+        # パラメータ構築（最大値で全回収）
+        collect_params = (
+            token_id,
+            recipient,
+            MAX_UINT128,  # amount0Max
+            MAX_UINT128  # amount1Max
+        )
+
+        # Web3コントラクトを使ってエンコード
+        w3 = Web3()
+        pm = w3.eth.contract(address=POSITION_MANAGER_ADDRESS, abi=POSITION_MANAGER_ABI)
+
+        # 関数呼び出しデータを直接エンコード
+        encoded_data = pm.encodeABI(fn_name="collect", args=[collect_params])
+
+        return encoded_data
+
+    except Exception as e:
+        print(f"❌ encode_collect エラー: {e}")
+        raise e
+
+
+def multicall_decrease_and_collect(w3, wallet, token_id, liquidity_to_remove, amount0_min, amount1_min, gas=800000,
+                                   gas_price=2000000000):
+    """Position Managerのmulticall機能を使用（Multicall3不使用）"""
+    try:
+        print(f"🔄 Position Manager Multicall開始: NFT {token_id}")
+
+        # Position Manager ABI（multicall機能付き）
+        MULTICALL_ABI = POSITION_MANAGER_ABI + [
+            {
+                "inputs": [{"internalType": "bytes[]", "name": "data", "type": "bytes[]"}],
+                "name": "multicall",
+                "outputs": [{"internalType": "bytes[]", "name": "results", "type": "bytes[]"}],
+                "stateMutability": "payable",
+                "type": "function"
+            }
+        ]
+
+        pm = w3.eth.contract(address=POSITION_MANAGER_ADDRESS, abi=MULTICALL_ABI)
+
+        # Step 1: decreaseLiquidityのcallDataを作成
+        deadline = int(time.time()) + 3600
+        decrease_params = (token_id, liquidity_to_remove, amount0_min, amount1_min, deadline)
+        decrease_data = pm.encodeABI(fn_name="decreaseLiquidity", args=[decrease_params])
+
+        # Step 2: collectのcallDataを作成
+        collect_params = (token_id, wallet.address, MAX_UINT128, MAX_UINT128)
+        collect_data = pm.encodeABI(fn_name="collect", args=[collect_params])
+
+        print(f"📊 エンコード結果:")
+        print(f"   decrease_data: {decrease_data[:100]}...")
+        print(f"   collect_data: {collect_data[:100]}...")
+
+        # Step 3: Position Managerのmulticallを実行
+        nonce = w3.eth.get_transaction_count(wallet.address, 'pending')
+
+        # multicall用のcallDataリスト
+        multicall_data = [decrease_data, collect_data]
+
+        # ガス見積もり
+        try:
+            gas_estimate = pm.functions.multicall(multicall_data).estimate_gas({
+                "from": wallet.address,
+                "value": 0
+            })
+            gas_limit = int(gas_estimate * 1.5)
+            print(f"⛽ ガス見積もり成功: {gas_estimate:,} → {gas_limit:,}")
+        except Exception as e:
+            print(f"⚠️ ガス見積もり失敗: {e}")
+            gas_limit = gas
+
+        # トランザクション構築
+        tx_data = pm.functions.multicall(multicall_data).build_transaction({
+            "from": wallet.address,
+            "nonce": nonce,
+            "gas": gas_limit,
+            "gasPrice": gas_price,
+            "value": 0
+        })
+
+        # 署名・送信
+        signed = wallet.sign_transaction(tx_data)
+        tx_hash = w3.eth.send_raw_transaction(signed.rawTransaction)
+
+        print(f"📝 Position Manager Multicall送信: {tx_hash.hex()}")
+        print(f"🔗 Arbiscan: https://arbiscan.io/tx/{tx_hash.hex()}")
+
+        # 確認待機
+        receipt = w3.eth.wait_for_transaction_receipt(tx_hash, timeout=60)
+
+        if receipt.status == 1:
+            print("✅ Position Manager Multicall成功!")
+            return tx_hash
+        else:
+            print("❌ Position Manager Multicall失敗")
+            return None
+
+    except Exception as e:
+        print(f"❌ multicall_decrease_and_collect エラー: {e}")
+        raise e
+
 if __name__ == "__main__":
     """テスト実行"""
     print("=== 🔧 Uniswap Utils テスト ===")
@@ -370,3 +537,4 @@ if __name__ == "__main__":
     print("- approve_if_needed(w3, wallet, token_address, spender, amount)")
     print("- add_liquidity(w3, wallet, token0, token1, fee, tick_lower, tick_upper, amount0, amount1)")
     print("- remove_liquidity(w3, wallet, token_id, percentage)")
+    print("- multicall_decrease_and_collect(w3, wallet, token_id, liquidity_to_remove)")

@@ -15,7 +15,7 @@ import subprocess
 import logging
 from web3 import Web3
 from dotenv import load_dotenv
-from uniswap_utils import get_liquidity, decrease_liquidity, collect_fees
+from uniswap_utils import get_liquidity, decrease_liquidity, collect_fees, multicall_decrease_and_collect
 
 # .envファイルを読み込み
 load_dotenv()
@@ -189,38 +189,8 @@ def calculate_optimal_amounts(w3, wallet_address):
 
     return optimal_amounts
 
-
-def safe_collect(w3, wallet, token_id):
-    """collectのnonceずれ・二重送信対策。何度でも実行OKな構成"""
-    try:
-        # 最新nonceで送信（状態変化後に確実に回収できるように）
-        tx_hash2 = collect_fees(
-            w3,
-            wallet,
-            token_id,
-            GAS,
-            GAS_PRICE
-        )
-        logger.info(f"collect sent: {w3.to_hex(tx_hash2)}")
-        receipt2 = w3.eth.wait_for_transaction_receipt(tx_hash2)
-        if receipt2.status == 1:
-            logger.info(f"✅ collect Tx confirmed in block: {receipt2.blockNumber}")
-            return True
-        else:
-            logger.error("❌ collect Tx failed at block level。未回収残高があるかも")
-            return False
-    except Exception as e:
-        # 既にfee回収済み/残高なしならこのエラーもOK
-        if "already been used" in str(e) or "revert" in str(e):
-            logger.warning("⚠️ collect Tx: 既にfee回収済み、または残高なしの可能性")
-            return True
-        else:
-            logger.error(f"❌ collect Tx exception: {e}")
-            return False
-
-
 def remove_liquidity(token_id):
-    """流動性撤退"""
+    """流動性撤退（Multicall版）"""
     logger.info(f"🔄 NFT {token_id} の流動性撤退開始...")
 
     w3 = Web3(Web3.HTTPProvider(RPC_URL))
@@ -232,10 +202,22 @@ def remove_liquidity(token_id):
 
     if liquidity == 0:
         logger.warning(f"⚠️ NFT {token_id}: 流動性が既に0です")
-        # 流動性0でもcollectを試行（手数料回収のため）
         logger.info("💰 手数料回収を試行中...")
-        safe_collect(w3, wallet, token_id)
-        return True
+
+        # 流動性0でもcollectを試行（手数料回収のため）
+        try:
+            tx_hash = collect_fees(w3, wallet, token_id, GAS, GAS_PRICE)
+            logger.info(f"collect sent: {w3.to_hex(tx_hash)}")
+            receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+            if receipt.status == 1:
+                logger.info(f"✅ collect Tx confirmed in block: {receipt.blockNumber}")
+                return True
+            else:
+                logger.error("❌ collect Tx failed at block level")
+                return False
+        except Exception as e:
+            logger.error(f"❌ collect Tx exception: {e}")
+            return False
 
     # 全流動性撤退
     WITHDRAW_PCT = 1.0
@@ -249,9 +231,9 @@ def remove_liquidity(token_id):
     logger.info(f"📊 最小受取設定 - WETH: {AMOUNT0_MIN}, USDC: {AMOUNT1_MIN}")
 
     try:
-        # decreaseLiquidity実行
-        logger.info("🔽 decreaseLiquidity実行中...")
-        tx_hash = decrease_liquidity(
+        # Multicall実行（decreaseLiquidity + collect を同時実行）
+        logger.info("🔄 Multicall実行中（decreaseLiquidity + collect）...")
+        tx_hash = multicall_decrease_and_collect(
             w3,
             wallet,
             token_id,
@@ -261,26 +243,16 @@ def remove_liquidity(token_id):
             GAS,
             GAS_PRICE
         )
-        logger.info(f"📝 decreaseLiquidity送信: {w3.to_hex(tx_hash)}")
+        logger.info(f"📝 Multicall送信: {w3.to_hex(tx_hash)}")
 
         # トランザクション確認
         receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
         if receipt.status == 1:
-            logger.info(f"✅ decreaseLiquidity確認済み - ブロック: {receipt.blockNumber}")
-        else:
-            logger.error("❌ decreaseLiquidity失敗")
-            return False
-
-        # collect実行
-        logger.info("💰 手数料・残高回収中...")
-        collect_success = safe_collect(w3, wallet, token_id)
-        time.sleep(5)
-
-        if collect_success:
+            logger.info(f"✅ Multicall確認済み - ブロック: {receipt.blockNumber}")
             logger.info(f"✅ NFT {token_id} 流動性撤退完了")
             return True
         else:
-            logger.error(f"❌ NFT {token_id} collect失敗 - 撤退未完了")
+            logger.error("❌ Multicall失敗")
             return False
 
     except Exception as e:
