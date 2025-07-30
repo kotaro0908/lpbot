@@ -42,6 +42,7 @@ class JSONLogger:
                       old_tick_lower: Optional[int] = None, old_tick_upper: Optional[int] = None,
                       new_tick_lower: Optional[int] = None, new_tick_upper: Optional[int] = None,
                       price_at_rebalance: Optional[float] = None, estimated_amount: Optional[float] = None,
+                      actual_amount: Optional[float] = None,
                       swap_executed: bool = False, retry_count: int = 0,
                       tx_hash: Optional[str] = None, error_message: Optional[str] = None,
                       success: bool = True) -> None:
@@ -56,6 +57,7 @@ class JSONLogger:
             "new_tick_upper": new_tick_upper,
             "price_at_rebalance": price_at_rebalance,
             "estimated_amount": estimated_amount,
+            "actual_amount": actual_amount,
             "swap_executed": swap_executed,
             "retry_count": retry_count,
             "tx_hash": tx_hash,

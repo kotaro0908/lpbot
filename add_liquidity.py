@@ -14,6 +14,11 @@ POSITION_MANAGER_ADDRESS = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
 POOL_ADDRESS = "0xC6962004f452bE9203591991D15f6b388e09E8D0"
 RPC_URL = "https://arb1.arbitrum.io/rpc"
 
+# 環境変数から旧ポジション情報を取得（リバランス時のみ）
+OLD_NFT_ID = os.environ.get('REBALANCE_OLD_NFT_ID')
+OLD_TICK_LOWER = os.environ.get('REBALANCE_OLD_TICK_LOWER')
+OLD_TICK_UPPER = os.environ.get('REBALANCE_OLD_TICK_UPPER')
+
 # 無制限approve用定数
 MAX_UINT256 = 2 ** 256 - 1
 
@@ -331,11 +336,6 @@ def execute_mint_with_robust_gas(gas_limit, gas_price, w3, wallet, params):
 
     except Exception as e:
         return {"success": False, "error": str(e)}
-    # USDC→WETH SWAP成功時
-    if swap_result:
-        print("✅ USDC→WETH SWAP成功")
-        os.environ['REBALANCE_SWAP_EXECUTED'] = 'true'  # 追加
-
 
 # ✅ 引数対応版LP追加テスト（main.py連携対応 + 自動SWAP復活）
 def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):

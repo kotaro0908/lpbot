@@ -322,7 +322,7 @@ def remove_liquidity(token_id):
         return False
 
 
-def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
+def add_new_liquidity(old_nft_id, old_position_info):
     """新しいレンジで最大投入額LP追加"""
     logger.info("🚀 新しいレンジで最大投入額LP追加中...")
 
@@ -331,10 +331,21 @@ def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
         w3 = Web3(Web3.HTTPProvider(RPC_URL))
         wallet = w3.eth.account.from_key(PRIVATE_KEY)
 
+        # ===== 環境変数で旧ポジション情報を伝達 =====
+        if old_nft_id:
+            os.environ['REBALANCE_OLD_NFT_ID'] = str(old_nft_id)
+        if old_position_info:
+            os.environ['REBALANCE_OLD_TICK_LOWER'] = str(old_position_info.get('tick_lower', ''))
+            os.environ['REBALANCE_OLD_TICK_UPPER'] = str(old_position_info.get('tick_upper', ''))
+
+        # SWAP実行フラグをリセット
+        os.environ['REBALANCE_SWAP_EXECUTED'] = 'false'
+        # ===== ここまで環境変数設定 =====
+
         # 最適投入額計算
         optimal_amounts = calculate_optimal_amounts(w3, wallet.address)
 
-        # レンジ情報読み込み（新レンジ記録用）- JSONログ用追加
+        # レンジ情報読み込み（新レンジ記録用）
         new_tick_lower = None
         new_tick_upper = None
         try:
@@ -344,18 +355,6 @@ def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
                 new_tick_upper = range_config.get('upper_tick')
         except:
             logger.warning("⚠️ range_config.json読み込み失敗")
-
-        # ===== ここから追加 =====
-        # 環境変数で旧ポジション情報を伝達
-        if old_nft_id:
-            os.environ['REBALANCE_OLD_NFT_ID'] = str(old_nft_id)
-        if old_position_info:
-            os.environ['REBALANCE_OLD_TICK_LOWER'] = str(old_position_info.get('tick_lower', ''))
-            os.environ['REBALANCE_OLD_TICK_UPPER'] = str(old_position_info.get('tick_upper', ''))
-
-        # SWAP実行フラグをリセット
-        os.environ['REBALANCE_SWAP_EXECUTED'] = 'false'
-        # ===== ここまで追加 =====
 
         # add_liquidity.pyを最適化引数付きで呼び出し
         cmd = [
@@ -374,7 +373,7 @@ def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
             timeout=180  # タイムアウト延長（SWAP含むため）
         )
 
-        # 🔧 修正: NFT ID取得を最優先にする成功判定
+        # NFT ID取得を最優先にする成功判定
         if result.returncode == 0:
             # NFT ID抽出を先に実行
             new_nft_id = None
@@ -409,6 +408,23 @@ def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
                     except:
                         pass
 
+            # actual_amount抽出（追加）
+            actual_amount = None
+            for line in output_lines:
+                if '投入予定:' in line:
+                    try:
+                        import re
+                        # "投入予定: 0.011152 WETH, 42.03 USDC" のパターンを解析
+                        numbers = re.findall(r'[\d.]+', line)
+                        if len(numbers) >= 2:
+                            weth_amount = float(numbers[0])
+                            usdc_amount = float(numbers[1])
+                            # ETH価格から概算
+                            eth_price = optimal_amounts.get('eth_price', 3800)
+                            actual_amount = (weth_amount * eth_price) + usdc_amount
+                    except:
+                        pass
+
             # NFT IDが取得できたら成功
             if new_nft_id:
                 logger.info("✅ 最大投入額での新LP追加成功")
@@ -429,16 +445,22 @@ def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
                 if tx_hash:
                     logger.info(f"📝 新LP追加Tx: {tx_hash}")
 
-                # 成功ログ - JSONログ追加
+                # SWAP実行状態を確認
+                swap_executed = os.environ.get('REBALANCE_SWAP_EXECUTED', 'false') == 'true'
+
+                # 成功ログ - JSONログ追加（修正版）
                 JSONLogger.log_rebalance(
-                    reason="range_out",  # または"fund_added" - main.pyから渡す必要あり
-                    old_nft_id=None,  # この時点では不明
+                    reason="range_out",  # TODO: main.pyから渡す
+                    old_nft_id=old_nft_id,
                     new_nft_id=new_nft_id,
+                    old_tick_lower=old_position_info.get('tick_lower') if old_position_info else None,
+                    old_tick_upper=old_position_info.get('tick_upper') if old_position_info else None,
                     new_tick_lower=new_tick_lower,
                     new_tick_upper=new_tick_upper,
                     price_at_rebalance=optimal_amounts.get('eth_price'),
                     estimated_amount=optimal_amounts['total_investment_usd'],
-                    swap_executed=False,  # 実際のSWAP実行はadd_liquidity.py内で判定
+                    actual_amount=actual_amount,  # 追加
+                    swap_executed=swap_executed,
                     tx_hash=tx_hash,
                     success=True
                 )
@@ -452,8 +474,10 @@ def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
                 # 失敗ログ - JSONログ追加
                 JSONLogger.log_rebalance(
                     reason="range_out",
-                    old_nft_id=None,
+                    old_nft_id=old_nft_id,
                     new_nft_id=None,
+                    old_tick_lower=old_position_info.get('tick_lower') if old_position_info else None,
+                    old_tick_upper=old_position_info.get('tick_upper') if old_position_info else None,
                     estimated_amount=optimal_amounts['total_investment_usd'],
                     error_message="NFT ID extraction failed",
                     success=False
@@ -475,27 +499,31 @@ def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
 
             return None
 
-    except subprocess.TimeoutExpired:
-        logger.error("❌ 新LP追加タイムアウト")
-        # JSONログ追加
-        JSONLogger.log_system(
-            log_level="ERROR",
-            function_name="add_new_liquidity",
-            message="add_liquidity.py timeout",
-            error_details="Execution exceeded 180 seconds"
-        )
-        return None
     except Exception as e:
-        logger.error(f"❌ 新LP追加エラー: {e}")
-        # JSONログ追加
-        JSONLogger.log_system(
-            log_level="ERROR",
-            function_name="add_new_liquidity",
-            message="Unexpected error in LP addition",
-            error_details=str(e)
-        )
-        return None
+        # JSONLoggerエラーでも新NFT IDがあれば返す
+        if 'new_nft_id' in locals() and new_nft_id:
+            logger.warning(f"⚠️ ログエラーが発生しましたが、新NFT {new_nft_id} は作成されました: {e}")
+            return new_nft_id
+        else:
+            # TimeoutErrorとその他のエラーを判別
+            if isinstance(e, subprocess.TimeoutExpired):
 
+                logger.error("❌ 新LP追加タイムアウト")
+                JSONLogger.log_system(
+                    log_level="ERROR",
+                    function_name="add_new_liquidity",
+                    message="add_liquidity.py timeout",
+                    error_details="Execution exceeded 180 seconds"
+                )
+            else:
+                logger.error(f"❌ 新LP追加エラー: {e}")
+                JSONLogger.log_system(
+                    log_level="ERROR",
+                    function_name="add_new_liquidity",
+                    message="Unexpected error in LP addition",
+                    error_details=str(e)
+                )
+            return None
 
 def update_tracked_nfts(old_nft_id, new_nft_id):
     """追跡NFTファイル更新"""
@@ -545,7 +573,6 @@ def main():
     logger.info(f"🔄 完全リバランス開始 - NFT {token_id}")
     logger.info("💰 最大投入額での資金効率最適化リバランス")
 
-    # ===== ここから追加 =====
     # Step 0: リバランス開始時の旧ポジション情報を取得
     old_position_info = None
     w3 = None

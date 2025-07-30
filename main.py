@@ -715,6 +715,14 @@ class LPManager:
         """初回LP追加（最大資金活用版）"""
         logger.info("🚀 初回LP追加を自動実行中...")
 
+        # 🆕 レンジ更新（ここに追加）
+        logger.info("📊 最新レンジを計算...")
+        result = subprocess.run(["python", "range_analyzer.py"], capture_output=True, text=True)
+        if result.returncode == 0:
+            logger.info("✅ レンジ更新完了")
+        else:
+            logger.warning("⚠️ レンジ更新失敗（既存のレンジを使用）")
+
         # JSONログ追加
         JSONLogger.log_system(
             log_level="INFO",
@@ -727,6 +735,11 @@ class LPManager:
             logger.info("💰 最大投入可能額を計算中...")
 
             optimal_amounts = self.lp_helper.calculate_optimal_lp_amounts()
+
+            if optimal_amounts and optimal_amounts['total_investment_usd'] < 1.0:
+                logger.warning(f"⚠️ 投入可能額が不足: ${optimal_amounts['total_investment_usd']:.2f} < $1.00")
+                return
+
             if optimal_amounts:
                 logger.info(f"📊 最適投入額: ${optimal_amounts['total_investment_usd']:.2f}")
                 logger.info(f"   ETH: {optimal_amounts['final_eth_amount']:.6f}")
