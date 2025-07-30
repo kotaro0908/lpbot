@@ -322,7 +322,7 @@ def remove_liquidity(token_id):
         return False
 
 
-def add_new_liquidity():
+def add_new_liquidity(old_nft_id=None, old_position_info=None):  # 引数追加
     """新しいレンジで最大投入額LP追加"""
     logger.info("🚀 新しいレンジで最大投入額LP追加中...")
 
@@ -344,6 +344,18 @@ def add_new_liquidity():
                 new_tick_upper = range_config.get('upper_tick')
         except:
             logger.warning("⚠️ range_config.json読み込み失敗")
+
+        # ===== ここから追加 =====
+        # 環境変数で旧ポジション情報を伝達
+        if old_nft_id:
+            os.environ['REBALANCE_OLD_NFT_ID'] = str(old_nft_id)
+        if old_position_info:
+            os.environ['REBALANCE_OLD_TICK_LOWER'] = str(old_position_info.get('tick_lower', ''))
+            os.environ['REBALANCE_OLD_TICK_UPPER'] = str(old_position_info.get('tick_upper', ''))
+
+        # SWAP実行フラグをリセット
+        os.environ['REBALANCE_SWAP_EXECUTED'] = 'false'
+        # ===== ここまで追加 =====
 
         # add_liquidity.pyを最適化引数付きで呼び出し
         cmd = [
@@ -533,6 +545,21 @@ def main():
     logger.info(f"🔄 完全リバランス開始 - NFT {token_id}")
     logger.info("💰 最大投入額での資金効率最適化リバランス")
 
+    # ===== ここから追加 =====
+    # Step 0: リバランス開始時の旧ポジション情報を取得
+    old_position_info = None
+    w3 = None
+    optimal_amounts = None  # スコープ問題解決
+    try:
+        w3 = Web3(Web3.HTTPProvider(RPC_URL))
+        old_position_info = get_position_info(w3, token_id)
+        if old_position_info:
+            logger.info(
+                f"📊 旧ポジション情報取得: tick範囲 [{old_position_info.get('tick_lower')}, {old_position_info.get('tick_upper')}]")
+    except Exception as e:
+        logger.warning(f"⚠️ 旧ポジション情報取得失敗: {e}")
+    # ===== ここまで追加 =====
+
     # リバランス開始ログ - JSONログ追加
     JSONLogger.log_system(
         log_level="INFO",
@@ -546,13 +573,54 @@ def main():
         sys.exit(1)
 
     # Step 2: 最大投入額での新LP追加
-    new_nft_id = add_new_liquidity()
+    new_nft_id = add_new_liquidity(token_id, old_position_info)  # 引数追加
+
     if new_nft_id:
-        # Step 3: 追跡NFT更新
+        # optimal_amounts取得のため再計算
+        optimal_amounts = None
+        if w3:
+            wallet = w3.eth.account.from_key(PRIVATE_KEY)
+            optimal_amounts = calculate_optimal_amounts(w3, wallet.address)
+
+        # Step 3: 追跡NFT更新（既存のコード）
         update_tracked_nfts(token_id, new_nft_id)
 
         logger.info(f"✅ 完全リバランス完了 - 旧NFT {token_id} → 新NFT {new_nft_id}")
         logger.info("🚀 最大投入額での効率的なリバランスが完了しました")
+
+        # ===== ここから追加（統合ログ） =====
+        # 統合リバランスログ出力
+        new_tick_lower = None
+        new_tick_upper = None
+        try:
+            with open('range_config.json', 'r') as f:
+                range_config = json.load(f)
+                new_tick_lower = range_config.get('lower_tick')
+                new_tick_upper = range_config.get('upper_tick')
+        except:
+            pass
+
+        # 価格情報取得
+        eth_price = None
+        if w3:
+            eth_price = get_eth_price(w3)
+
+        # 統合ログ出力
+        JSONLogger.log_rebalance(
+            reason="range_out",  # TODO: main.pyから理由を受け取る
+            old_nft_id=token_id,
+            new_nft_id=new_nft_id,
+            old_tick_lower=old_position_info.get('tick_lower') if old_position_info else None,
+            old_tick_upper=old_position_info.get('tick_upper') if old_position_info else None,
+            new_tick_lower=new_tick_lower,
+            new_tick_upper=new_tick_upper,
+            price_at_rebalance=eth_price,
+            estimated_amount=optimal_amounts.get('total_investment_usd') if optimal_amounts else None,
+            swap_executed=os.environ.get('REBALANCE_SWAP_EXECUTED', 'false') == 'true',
+            tx_hash=None,  # multicallのため個別ログで記録
+            success=True
+        )
+        # ===== ここまで追加 =====
 
         # 完了ログ - JSONログ追加
         JSONLogger.log_system(

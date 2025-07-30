@@ -195,6 +195,14 @@ def ensure_weth_balance(w3, wallet, required_weth):
 
         if receipt.status == 1:
             print(f"✅ ETH→WETH変換成功: {shortage:.6f} WETH")
+            # ===== 修正版 =====
+            time.sleep(3)  # ブロック反映待機
+            # WETHコントラクトを取得
+            weth_contract_local = w3.eth.contract(address=WETH_ADDRESS, abi=ERC20_ABI)
+            weth_balance_wei = weth_contract_local.functions.balanceOf(wallet.address).call()
+            weth_balance = weth_balance_wei / 10 ** 18
+            print(f"📊 変換後WETH残高: {weth_balance:.6f}")
+            # ===== ここまで =====
             return True
         else:
             print(f"❌ ETH→WETH変換失敗")
@@ -323,6 +331,10 @@ def execute_mint_with_robust_gas(gas_limit, gas_price, w3, wallet, params):
 
     except Exception as e:
         return {"success": False, "error": str(e)}
+    # USDC→WETH SWAP成功時
+    if swap_result:
+        print("✅ USDC→WETH SWAP成功")
+        os.environ['REBALANCE_SWAP_EXECUTED'] = 'true'  # 追加
 
 
 # ✅ 引数対応版LP追加テスト（main.py連携対応 + 自動SWAP復活）
@@ -397,6 +409,7 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
     if not ensure_weth_balance(w3, wallet, target_weth):
         print(f"❌ WETH確保失敗（ETH不足）")
 
+
         # 🆕 WETH不足時の自動SWAP
         print("=== Step 5.1: WETH不足時の自動SWAP ===")
         weth_balance = get_token_balance(WETH_ADDRESS, wallet.address)
@@ -457,6 +470,7 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
 
                     if swap_result:
                         print("✅ USDC→WETH SWAP成功")
+                        os.environ['REBALANCE_SWAP_EXECUTED'] = 'true'
 
                         # JSONログ追加
                         JSONLogger.log_swap(
@@ -583,6 +597,7 @@ def robust_lp_mint_test(custom_eth_amount=None, custom_usdc_amount=None):
 
                     if swap_result:
                         print("✅ WETH→USDC SWAP成功")
+                        os.environ['REBALANCE_SWAP_EXECUTED'] = 'true'
 
                         # JSONログ追加
                         JSONLogger.log_swap(
