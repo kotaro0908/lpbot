@@ -1,0 +1,190 @@
+<!-- monitoring/dashboard/templates/investment.html -->
+{% extends "base.html" %}
+{% block title %}投資履歴管理{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4">
+            <i class="fas fa-wallet"></i> 投資履歴管理
+        </h2>
+
+        <!-- 投資記録フォーム -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">新規記録追加</h5>
+            </div>
+            <div class="card-body">
+                <form id="investmentForm">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">日付</label>
+                            <input type="date" class="form-control" id="date" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">種類</label>
+                            <select class="form-select" id="action" required>
+                                <option value="deposit">入金</option>
+                                <option value="withdraw">出金</option>
+                                <option value="reinvest">再投資</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">金額 (USD)</label>
+                            <input type="number" class="form-control" id="amount" step="0.01" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">メモ</label>
+                            <input type="text" class="form-control" id="note" placeholder="任意">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> 記録する
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 累計サマリー -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h6 class="text-muted">累計入金</h6>
+                        <h3 class="text-success" id="totalDeposit">$0.00</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-muted">累計出金</h6>
+                        <h3 class="text-danger" id="totalWithdraw">$0.00</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-muted">現在の投資残高</h6>
+                        <h3 class="text-primary" id="currentInvestment">$0.00</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 履歴テーブル -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">投資履歴</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>日付</th>
+                                <th>種類</th>
+                                <th>金額</th>
+                                <th>累計投資額</th>
+                                <th>メモ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody">
+                            <!-- JavaScriptで動的に追加 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // 今日の日付をデフォルトに設定
+    $('#date').val(new Date().toISOString().split('T')[0]);
+
+    // 履歴を読み込み
+    loadHistory();
+
+    // フォーム送信
+    $('#investmentForm').on('submit', function(e) {
+        e.preventDefault();
+
+        const data = {
+            date: $('#date').val(),
+            action: $('#action').val(),
+            amount: parseFloat($('#amount').val()),
+            note: $('#note').val()
+        };
+
+        $.ajax({
+            url: '/api/investment',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                // フォームをリセット
+                $('#investmentForm')[0].reset();
+                $('#date').val(new Date().toISOString().split('T')[0]);
+
+                // 履歴を再読み込み
+                loadHistory();
+
+                // 成功メッセージ
+                alert('記録を追加しました');
+            },
+            error: function(error) {
+                alert('エラーが発生しました');
+            }
+        });
+    });
+});
+
+function loadHistory() {
+    $.get('/api/investment', function(data) {
+        const tbody = $('#historyBody');
+        tbody.empty();
+
+        let totalDeposit = 0;
+        let totalWithdraw = 0;
+        let currentInvestment = 0;
+
+        data.forEach(function(row) {
+            const date = new Date(row.timestamp).toLocaleDateString('ja-JP');
+            const actionText = {
+                'deposit': '<span class="badge bg-success">入金</span>',
+                'withdraw': '<span class="badge bg-danger">出金</span>',
+                'reinvest': '<span class="badge bg-info">再投資</span>'
+            }[row.action];
+
+            const amountClass = row.action === 'withdraw' ? 'text-danger' : 'text-success';
+            const amountPrefix = row.action === 'withdraw' ? '-' : '+';
+
+            tbody.append(`
+                <tr>
+                    <td>${date}</td>
+                    <td>${actionText}</td>
+                    <td class="${amountClass}">${amountPrefix}$${row.amount_usd.toFixed(2)}</td>
+                    <td>$${(row.cumulative_investment || 0).toFixed(2)}</td>
+                    <td>${row.note || '-'}</td>
+                </tr>
+            `);
+
+            if (row.action === 'deposit') {
+                totalDeposit += row.amount_usd;
+            } else if (row.action === 'withdraw') {
+                totalWithdraw += row.amount_usd;
+            }
+        });
+
+        // 最新の累計投資額
+        if (data.length > 0) {
+            currentInvestment = data[0].cumulative_investment || 0;
+        }
+
+        // サマリー更新
+        $('#totalDeposit').text('$' + totalDeposit.toFixed(2));
+        $('#totalWithdraw').text('$' + totalWithdraw.toFixed(2));
+        $('#currentInvestment').text('$' + currentInvestment.toFixed(2));
+    });
+}
+</script>
+{% endblock %}
