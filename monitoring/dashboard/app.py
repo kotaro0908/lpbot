@@ -1,4 +1,10 @@
+from dotenv import load_dotenv
+
+load_dotenv("/root/lpbot/.env")
+load_dotenv("/root/lpbot/.env.secret")
+
 # monitoring/dashboard/app.py
+import math
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import sqlite3
 from datetime import datetime, timedelta
@@ -7,7 +13,6 @@ import os
 import sys
 import requests
 from web3 import Web3
-import math
 
 # プロジェクトルートをパスに追加
 sys.path.append('/root/lpbot')
@@ -145,6 +150,7 @@ def ticks_to_price_range(lower_tick, upper_tick):
             'range_width_percent': 0
         }
 
+
 def calculate_in_range_percent():
     """過去24時間のレンジ内滞在率を計算"""
     # TODO: 実装が必要
@@ -170,11 +176,11 @@ def api_dashboard_data():
     """ダッシュボード用データAPI"""
     conn = get_db_connection()
 
-    # 現在の総資産価値（修正版）
+    # 現在の総資産価値とウォレット情報
     eth_price = get_current_eth_price()
     balances = get_wallet_balances()
     wallet_value = (balances['eth'] + balances['weth']) * eth_price + balances['usdc']
-    lp_value = get_lp_position_value(eth_price)
+    lp_value = 65.0  # 暫定的な固定値
     total_value = wallet_value + lp_value
 
     # NFT IDを取得
@@ -203,70 +209,7 @@ def api_dashboard_data():
 
     total_investment = investment['total'] if investment else 0
 
-    # リバランス統計を追加（修正版）
-    rebalance_stats = conn.execute("""
-                                   SELECT
-                                       -- 実際のリバランス回数（range_outのみ）
-                                       COUNT(DISTINCT CASE
-                                                          WHEN new_nft_id IS NOT NULL AND reason = 'range_out'
-                                                              THEN old_nft_id || '->' || new_nft_id END)        as unique_transitions,
-
-                                       -- 今月のリバランス回数
-                                       COUNT(DISTINCT CASE
-                                                          WHEN new_nft_id IS NOT NULL AND reason = 'range_out'
-                                                              AND DATE (timestamp, 'start of month') = DATE
-                                             ('now', 'start of month')
-                                             THEN old_nft_id || '->' || new_nft_id
-                                             END)                                                               as month_transitions,
-
-                                       -- 今日のリバランス回数
-                                       COUNT(CASE WHEN DATE (timestamp) = DATE ('now', 'localtime') THEN 1 END) as today_attempts,
-
-                                       -- 全体の試行回数
-                                       COUNT(*)                                                                 as total_attempts,
-
-                                       -- 成功率用
-                                       COUNT(CASE WHEN success = 1 AND new_nft_id IS NOT NULL THEN 1 END)       as success_count
-                                   FROM rebalance_history
-                                   """).fetchone()
-
-    # 成功率計算
-    success_rate = 0
-    if rebalance_stats and rebalance_stats['total_attempts'] > 0:
-        success_rate = (rebalance_stats['success_count'] / rebalance_stats['total_attempts']) * 100
-
-    # 現在のレンジ情報
-    current_range = None
-    if current_nft:
-        range_info = conn.execute("""
-                                  SELECT new_tick_lower, new_tick_upper
-                                  FROM rebalance_history
-                                  WHERE new_nft_id = ?
-                                  ORDER BY timestamp DESC
-                                      LIMIT 1
-                                  """, (current_nft,)).fetchone()
-
-        if range_info:
-            price_range = ticks_to_price_range(range_info['new_tick_lower'], range_info['new_tick_upper'])
-            current_range = {
-                'lower': price_range['lower_price'],
-                'upper': price_range['upper_price'],
-                'width': price_range['range_width_percent']
-            }
-
-    # 最終リバランス時刻
-    last_rebalance = conn.execute("""
-                                  SELECT timestamp
-                                  FROM rebalance_history
-                                  WHERE success = 1
-                                  ORDER BY timestamp DESC
-                                      LIMIT 1
-                                  """).fetchone()
-
-    # レンジ内滞在率
-    in_range_percent = calculate_in_range_percent()
-
-    # 今日の収益（追加）
+    # 今日の収益
     today_fees = conn.execute("""
                               SELECT COALESCE(SUM(total_usd), 0) as total
                               FROM fee_collection_history
@@ -275,20 +218,79 @@ def api_dashboard_data():
 
     # 平均日次収益と最高日次収益
     daily_stats = conn.execute("""
-        SELECT 
-            AVG(daily_total) as avg_daily,
-            MAX(daily_total) as max_daily
-        FROM (
-            SELECT DATE(timestamp) as date, SUM(total_usd) as daily_total
-            FROM fee_collection_history
-            GROUP BY DATE(timestamp)
-        )
-    """).fetchone()
-    
+                               SELECT AVG(daily_total) as avg_daily,
+                                      MAX(daily_total) as max_daily
+                               FROM (SELECT DATE (timestamp) as date, SUM(total_usd) as daily_total
+                               FROM fee_collection_history
+                               GROUP BY DATE (timestamp)
+                                   )
+                               """).fetchone()
+
     avg_daily_profit = daily_stats["avg_daily"] if daily_stats and daily_stats["avg_daily"] else 0
     max_daily_profit = daily_stats["max_daily"] if daily_stats and daily_stats["max_daily"] else 0
+
+    # リバランス統計を追加（修正版）
+    rebalance_stats = conn.execute("""
+                                   SELECT COUNT(DISTINCT CASE
+                                                             WHEN new_nft_id IS NOT NULL
+                                                                 THEN old_nft_id || '-' || new_nft_id END)         as unique_transitions,
+                                          COUNT(*)                                                                 as total_attempts,
+                                          COUNT(CASE WHEN success = 1 AND new_nft_id IS NOT NULL THEN 1 END)       as success_count,
+                                          COUNT(CASE WHEN DATE (timestamp) = DATE ('now', 'localtime') THEN 1 END) as today_attempts,
+                                          COUNT(DISTINCT CASE WHEN new_nft_id IS NOT NULL AND DATE
+                                                (timestamp, 'start of month') = DATE ('now', 'start of month') THEN
+                                                old_nft_id || '-' || new_nft_id
+                                                END)                                                               as month_transitions
+                                   FROM rebalance_history
+                                   """).fetchone()
+
+    # 成功率計算
+    success_rate = (rebalance_stats['success_count'] / rebalance_stats['total_attempts'] * 100) if rebalance_stats[
+                                                                                                       'total_attempts'] > 0 else 0
+
+    # 最新のリバランス情報を取得
+    last_rebalance = conn.execute("""
+                                  SELECT timestamp, new_tick_lower, new_tick_upper
+                                  FROM rebalance_history
+                                  WHERE success = 1 AND new_nft_id IS NOT NULL
+                                  ORDER BY timestamp DESC
+                                      LIMIT 1
+                                  """).fetchone()
+
+    # レンジ情報を取得（NFTのレンジ情報から）
+    current_range = None
+    if current_nft and last_rebalance and last_rebalance['new_tick_lower'] is not None:
+        price_range = ticks_to_price_range(last_rebalance['new_tick_lower'], last_rebalance['new_tick_upper'])
+        current_range = {
+            'lower': last_rebalance['new_tick_lower'],
+            'upper': last_rebalance['new_tick_upper'],
+            'lower_price': price_range['lower_price'],
+            'upper_price': price_range['upper_price'],
+            'range_width_percent': price_range['range_width_percent']
+        }
+    else:
+        # range_config.jsonから取得
+        try:
+            with open('/root/lpbot/range_config.json', 'r') as f:
+                range_data = json.load(f)
+                if 'lower_tick' in range_data and 'upper_tick' in range_data:
+                    price_range = ticks_to_price_range(range_data['lower_tick'], range_data['upper_tick'])
+                    current_range = {
+                        'lower': range_data['lower_tick'],
+                        'upper': range_data['upper_tick'],
+                        'lower_price': price_range['lower_price'],
+                        'upper_price': price_range['upper_price'],
+                        'range_width_percent': price_range['range_width_percent']
+                    }
+        except Exception as e:
+            print(f"レンジ情報取得エラー: {e}")
+
+    # レンジ内滞在率を計算
+    in_range_percent = calculate_in_range_percent()
+
     conn.close()
 
+    # レスポンスにすべての情報を追加
     return jsonify({
         'total_value': total_value,
         'lp_value': lp_value,
@@ -299,6 +301,9 @@ def api_dashboard_data():
         'net_profit': total_fees - total_gas,
         'roi': ((total_value - total_investment) / total_investment * 100) if total_investment > 0 else 0,
         'current_nft': current_nft,
+        'today_fees': today_fees,
+        'avg_daily_profit': avg_daily_profit,
+        'max_daily_profit': max_daily_profit,
         'rebalance_today': rebalance_stats['today_attempts'] if rebalance_stats else 0,
         'rebalance_count': rebalance_stats['unique_transitions'] if rebalance_stats else 0,
         'rebalance_attempts': rebalance_stats['total_attempts'] if rebalance_stats else 0,
@@ -306,21 +311,114 @@ def api_dashboard_data():
         'success_rate': success_rate,
         'current_range': current_range,
         'last_rebalance': format_timestamp(last_rebalance['timestamp']) if last_rebalance else None,
-        'in_range_time_percent': in_range_percent,
-        'today_fees': today_fees,
-        'avg_daily_profit': avg_daily_profit,
-        'max_daily_profit': max_daily_profit
+        'in_range_time_percent': in_range_percent
+    })
+
+
+@app.route('/api/transaction_history')
+def api_transaction_history():
+    """取引履歴API"""
+    offset = int(request.args.get('offset', 0))
+    limit = int(request.args.get('limit', 10))
+
+    conn = get_db_connection()
+
+    # 総取引回数を取得
+    total_count_result = conn.execute("""
+                                      SELECT COUNT(*) as count
+                                      FROM rebalance_history
+                                      WHERE reason = 'range_out' AND success = 1 AND new_nft_id IS NOT NULL
+                                      """).fetchone()
+    total_count = total_count_result['count'] if total_count_result else 0
+
+    # 平均利益を計算
+    avg_stats = conn.execute("""
+                             SELECT AVG(CASE
+                                            WHEN fc.total_usd IS NOT NULL
+                                                THEN fc.total_usd - COALESCE(rh.gas_cost_usd, 0)
+                                            ELSE -COALESCE(rh.gas_cost_usd, 0)
+                                 END)        as avg_profit,
+                                    AVG(CASE
+                                            WHEN fc.total_usd IS NOT NULL AND rh.actual_amount > 0
+                                                THEN
+                                                ((fc.total_usd - COALESCE(rh.gas_cost_usd, 0)) / rh.actual_amount) *
+                                                100
+                                            ELSE 0
+                                        END) as avg_profit_percent
+                             FROM rebalance_history rh
+                                      LEFT JOIN fee_collection_history fc ON rh.new_nft_id = fc.nft_id
+                             WHERE rh.reason = 'range_out'
+                               AND rh.success = 1
+                               AND rh.new_nft_id IS NOT NULL
+                             """).fetchone()
+
+    avg_profit = avg_stats['avg_profit'] if avg_stats and avg_stats['avg_profit'] else 0
+    avg_profit_percent = avg_stats['avg_profit_percent'] if avg_stats and avg_stats['avg_profit_percent'] else 0
+
+    # 取引履歴を取得
+    transactions = []
+    rows = conn.execute("""
+                        SELECT rh.timestamp,
+                               rh.new_nft_id as nft_id,
+                               rh.actual_amount,
+                               rh.gas_cost_usd,
+                               rh.price_at_rebalance,
+                               fc.total_usd  as fee_revenue,
+                               fc.amount0    as fee_weth,
+                               fc.amount1    as fee_usdc
+                        FROM rebalance_history rh
+                                 LEFT JOIN fee_collection_history fc ON rh.new_nft_id = fc.nft_id
+                        WHERE rh.reason = 'range_out'
+                          AND rh.success = 1
+                          AND rh.new_nft_id IS NOT NULL
+                        ORDER BY rh.timestamp DESC LIMIT ?
+                        OFFSET ?
+                        """, (limit, offset)).fetchall()
+
+    for row in rows:
+        # 手数料収入（NULL対応）
+        fee_revenue = float(row['fee_revenue']) if row['fee_revenue'] else 0
+
+        # ガス代
+        gas_cost = float(row['gas_cost_usd']) if row['gas_cost_usd'] else 0
+
+        # IL損失の推定（簡易版）- 実際の計算は複雑なので暫定値
+        il_loss = fee_revenue * 0.3 if fee_revenue > 0 else 0
+
+        # 純利益
+        net_profit = fee_revenue - il_loss - gas_cost
+
+        # 利益率
+        profit_percent = (net_profit / float(row['actual_amount']) * 100) if row['actual_amount'] and float(
+            row['actual_amount']) > 0 else 0
+
+        transactions.append({
+            'timestamp': row['timestamp'],
+            'nft_id': row['nft_id'],
+            'fee_revenue': fee_revenue,
+            'il_loss': il_loss,
+            'gas_cost': gas_cost,
+            'net_profit': net_profit,
+            'profit_percent': profit_percent
+        })
+
+    # もっと見るボタンの表示判定
+    has_more = (offset + limit) < total_count
+
+    conn.close()
+
+    return jsonify({
+        'total_count': total_count,
+        'avg_profit': avg_profit,
+        'avg_profit_percent': avg_profit_percent,
+        'transactions': transactions,
+        'has_more': has_more
     })
 
 
 def get_current_eth_price():
     """現在のETH価格を取得（プールコントラクトから直接）"""
     try:
-        from web3 import Web3
-
-        # Web3接続
-        w3 = Web3(Web3.HTTPProvider(os.getenv('RPC_URL', 'https://arb1.arbitrum.io/rpc')))
-
         # Uniswap V3 USDC/WETH プール
         POOL_ADDRESS = Web3.to_checksum_address("0xC6962004f452bE9203591991D15f6b388e09E8D0")
 
@@ -403,77 +501,6 @@ def get_current_nft_id():
         return None
 
 
-def get_lp_position_value(eth_price):
-    """現在のLPポジション価値を取得（シンプル版）"""
-    try:
-        # 現在のNFT ID取得
-        current_nft_id = get_current_nft_id()
-        if not current_nft_id:
-            print("NFT IDが見つかりません")
-            return 0
-
-        # データベースから最新の手数料収集データを取得
-        conn = get_db_connection()
-
-        # 最新のリバランス時の投入額を取得
-        latest_position = conn.execute("""
-                                       SELECT actual_amount
-                                       FROM rebalance_history
-                                       WHERE new_nft_id = ?
-                                         AND success = 1
-                                       ORDER BY timestamp DESC
-                                           LIMIT 1
-                                       """, (current_nft_id,)).fetchone()
-
-        if latest_position and latest_position['actual_amount']:
-            # リバランス時の投入額をベースに、現在価値を推定
-            # 実際のUniswapの画面で$65なので、それに近い値になるよう調整
-            base_value = float(latest_position['actual_amount'])
-
-            # 価格変動による調整（簡易版）
-            # TODO: より正確な計算を実装
-            lp_value = base_value * 0.65  # 暫定的に65%として計算
-
-            print(f"LP価値: ${lp_value:.2f} (NFT: {current_nft_id}, Base: ${base_value:.2f})")
-        else:
-            # データがない場合はデフォルト値
-            lp_value = 65.0
-            print(f"LP価値: ${lp_value:.2f} (NFT: {current_nft_id}, デフォルト値)")
-
-        conn.close()
-        return lp_value
-
-    except Exception as e:
-        print(f"LPポジション価値取得エラー: {e}")
-        return 65.0  # エラー時のデフォルト値
-
-def calculate_total_value():
-    """現在の総資産価値を計算（実装版）"""
-    try:
-        # ETH価格取得
-        eth_price = get_current_eth_price()
-
-        # ウォレット残高取得
-        balances = get_wallet_balances()
-
-        # ウォレット価値計算
-        wallet_value = (balances['eth'] + balances['weth']) * eth_price + balances['usdc']
-
-        # NFTポジション価値（暫定的にウォレット価値を使用）
-        # TODO: 将来的にはNFTの実際のポジション価値を計算
-        total_value = wallet_value
-
-        print(f"総資産価値計算完了: ${total_value:.2f}")
-        print(f"  ETH価格: ${eth_price:.2f}")
-        print(f"  ETH: {balances['eth']:.4f}, WETH: {balances['weth']:.4f}, USDC: {balances['usdc']:.2f}")
-
-        return total_value
-
-    except Exception as e:
-        print(f"総資産価値計算エラー: {e}")
-        return 12450.23  # エラー時はダミー値を返す
-
-
 if __name__ == '__main__':
     # まず投資履歴テーブルを作成
     conn = get_db_connection()
@@ -552,115 +579,5 @@ if __name__ == '__main__':
 
     conn.commit()
     conn.close()
-
-
-    @app.route('/api/transaction_history')
-    def api_transaction_history():
-        """取引履歴API"""
-        offset = int(request.args.get('offset', 0))
-        limit = int(request.args.get('limit', 10))
-
-        conn = get_db_connection()
-
-        # 現在のETH価格を取得
-        eth_price = get_current_eth_price()
-
-        # 総取引回数を取得
-        total_count_result = conn.execute("""
-                                          SELECT COUNT(*) as count
-                                          FROM rebalance_history
-                                          WHERE reason = 'range_out' AND success = 1 AND new_nft_id IS NOT NULL
-                                          """).fetchone()
-        total_count = total_count_result['count'] if total_count_result else 0
-
-        # 平均利益を計算
-        avg_stats = conn.execute("""
-                                 SELECT AVG(CASE
-                                                WHEN fc.total_usd IS NOT NULL
-                                                    THEN fc.total_usd - COALESCE(rh.gas_cost_usd, 0)
-                                                ELSE -COALESCE(rh.gas_cost_usd, 0)
-                                     END)        as avg_profit,
-                                        AVG(CASE
-                                                WHEN fc.total_usd IS NOT NULL AND rh.actual_amount > 0
-                                                    THEN
-                                                    ((fc.total_usd - COALESCE(rh.gas_cost_usd, 0)) / rh.actual_amount) *
-                                                    100
-                                                ELSE 0
-                                            END) as avg_profit_percent
-                                 FROM rebalance_history rh
-                                          LEFT JOIN fee_collection_history fc ON rh.new_nft_id = fc.nft_id
-                                 WHERE rh.reason = 'range_out'
-                                   AND rh.success = 1
-                                   AND rh.new_nft_id IS NOT NULL
-                                 """).fetchone()
-
-        avg_profit = avg_stats['avg_profit'] if avg_stats and avg_stats['avg_profit'] else 0
-        avg_profit_percent = avg_stats['avg_profit_percent'] if avg_stats and avg_stats['avg_profit_percent'] else 0
-
-        # 取引履歴を取得
-        transactions = []
-        rows = conn.execute("""
-                            SELECT rh.timestamp,
-                                   rh.new_nft_id as nft_id,
-                                   rh.actual_amount,
-                                   rh.gas_cost_usd,
-                                   rh.price_at_rebalance,
-                                   fc.total_usd  as fee_revenue,
-                                   fc.amount0    as fee_weth,
-                                   fc.amount1    as fee_usdc
-                            FROM rebalance_history rh
-                                     LEFT JOIN fee_collection_history fc ON rh.new_nft_id = fc.nft_id
-                            WHERE rh.reason = 'range_out'
-                              AND rh.success = 1
-                              AND rh.new_nft_id IS NOT NULL
-                            ORDER BY rh.timestamp DESC LIMIT ?
-                            OFFSET ?
-                            """, (limit, offset)).fetchall()
-
-        for row in rows:
-            # 手数料収入（NULL対応）
-            fee_revenue = float(row['fee_revenue']) if row['fee_revenue'] else 0
-
-            # ガス代
-            gas_cost = float(row['gas_cost_usd']) if row['gas_cost_usd'] else 0
-
-            # IL損失の推定（簡易版）- 実際の計算は複雑なので暫定値
-            il_loss = fee_revenue * 0.3 if fee_revenue > 0 else 0
-
-            # 純利益
-            net_profit = fee_revenue - il_loss - gas_cost
-
-            # 利益率
-            profit_percent = (net_profit / float(row['actual_amount']) * 100) if row['actual_amount'] and float(
-                row['actual_amount']) > 0 else 0
-
-            transactions.append({
-                'timestamp': row['timestamp'],
-                'nft_id': row['nft_id'],
-                'fee_revenue': fee_revenue,
-                'il_loss': il_loss,
-                'gas_cost': gas_cost,
-                'net_profit': net_profit,
-                'profit_percent': profit_percent
-            })
-
-        # もっと見るボタンの表示判定
-        has_more = (offset + limit) < total_count
-
-        conn.close()
-
-        return jsonify({
-            'total_count': total_count,
-            'avg_profit': avg_profit,
-            'avg_profit_percent': avg_profit_percent,
-            'transactions': transactions,
-            'has_more': has_more
-        })
-
-
-    # 既存のapp.run()コード
-    if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=5000, debug=True)
-
 
     app.run(host='0.0.0.0', port=5000, debug=True)

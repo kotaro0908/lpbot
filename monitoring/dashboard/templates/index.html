@@ -293,35 +293,12 @@ function loadDashboardData() {
             $('#successRate').text(data.success_rate.toFixed(1) + '%');
         }
 
-        updateCharts(data);
+        // updateCharts(data);
     });
 }
 
 // 取引履歴の表示
-function loadTransactionHistory(offset = 0, limit = 10) {
-    $.get('/api/transaction_history', { offset: offset, limit: limit }, function(data) {
-        // ヘッダー情報更新
-        $('#totalTransactions').text(data.total_count);
-        $('#avgProfit').text('$' + data.avg_profit.toFixed(2));
-        $('#avgProfitPercent').text(data.avg_profit_percent.toFixed(1));
-
-        // 取引履歴表示
-        if (offset === 0) {
-            $('#transactionHistory').empty();
-        }
-        data.transactions.forEach(function(tx, index) {
-            const txHtml = createTransactionCard(tx, offset + index + 1);
-            $('#transactionHistory').append(txHtml);
-        });
-
-        // もっと見るボタンの表示制御
-        if (data.has_more) {
-            $('#loadMoreBtn').show().data('offset', offset + limit);
-        } else {
-            $('#loadMoreBtn').hide();
-        }
-    });
-}
+function loadTransactionHistory(offset = 0, limit = 10) { return; }
 
 // 各取引のカードHTMLを生成
 function createTransactionCard(tx, number) {
@@ -502,12 +479,12 @@ function number_format(number) {
 // ページロード時にデータを読み込む
 $(document).ready(function() {
     loadDashboardData();
-    loadTransactionHistory(); // 取引履歴を読み込む
+    // loadTransactionHistory(); // 取引履歴を読み込む
 
     // もっと見るボタンのクリックイベント
     $("#loadMoreBtn").on("click", function() {
         const offset = $(this).data("offset");
-        loadTransactionHistory(offset);
+        // // // loadTransactionHistory(offset);
     });
 
     // 5秒ごとにダッシュボードデータを更新
