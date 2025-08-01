@@ -9,8 +9,9 @@ from web3 import Web3
 from dotenv import load_dotenv
 from json_logger import JSONLogger  # ← この行を追加
 
-# .envファイルを読み込み
-load_dotenv()
+# 両方の.envファイルを読み込む
+load_dotenv('.env')  # 公開可能な設定
+load_dotenv('.env.secret')  # 秘密鍵
 
 # 設定
 RPC_URL = os.getenv("RPC_URL")
