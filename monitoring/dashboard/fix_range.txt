@@ -1,0 +1,18 @@
+    # 現在のレンジ情報
+    current_range = None
+    try:
+        # range_config.jsonから現在のレンジを取得
+        with open('/root/lpbot/range_config.json', 'r') as f:
+            range_config = json.load(f)
+            price_range = ticks_to_price_range(range_config['lower_tick'], range_config['upper_tick'])
+            current_range = {
+                'lower': range_config['lower_tick'],
+                'upper': range_config['upper_tick'],
+                'lower_price': price_range['lower_price'],
+                'upper_price': price_range['upper_price'],
+                'range_width_percent': price_range['range_width_percent']
+            }
+            print(f"DEBUG: レンジ情報取得成功 - {current_range}")
+    except Exception as e:
+        print(f"レンジ情報取得エラー: {e}")
+        current_range = None

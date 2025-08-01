@@ -1,0 +1,11 @@
+# JSONログインポーター - 5分ごとに実行
+*/5 * * * * cd /root/lpbot && /root/lpbot/venv/bin/python monitoring/collectors/json_importer.py >> /root/lpbot/monitoring/import.log 2>&1
+
+# 日次でアーカイブされたログも含めて全体インポート（毎日午前3時）
+0 3 * * * cd /root/lpbot && /root/lpbot/venv/bin/python monitoring/collectors/json_importer.py --days 30 >> /root/lpbot/monitoring/import_daily.log 2>&1
+
+# 外部データコレクター - 5分ごとに実行
+*/5 * * * * cd /root/lpbot && /root/lpbot/venv/bin/python /root/lpbot/monitoring/collectors/external_collector.py >> /root/lpbot/monitoring/collectors/external_collector.log 2>&1
+
+# 古いログのクリーンアップ（毎日午前3時）
+0 3 * * * cd /root/lpbot && /root/lpbot/venv/bin/python -c 'from json_logger import JSONLogger; JSONLogger.cleanup_old_logs(2)'

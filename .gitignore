@@ -27,11 +27,6 @@ ENV/
 logs/
 *.log
 
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
 # Monitoring data
 monitoring/lpbot.db
 monitoring/lpbot.db-*

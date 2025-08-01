@@ -78,35 +78,58 @@ class JSONLogImporter:
     def import_rebalance(self, data: Dict):
         """リバランスイベントのインポート"""
         try:
-            # INSERT OR IGNORE を使用して重複を自動的にスキップ
+            # まず通常の INSERT OR IGNORE を試行
             cursor = self.conn.execute("""
-                              INSERT OR IGNORE INTO rebalance_history (timestamp, reason, old_nft_id, new_nft_id,
+                                       INSERT
+                                       OR IGNORE INTO rebalance_history (timestamp, reason, old_nft_id, new_nft_id,
                                                              old_tick_lower, old_tick_upper, new_tick_lower,
                                                              new_tick_upper,
                                                              price_at_rebalance, estimated_amount, actual_amount,
                                                              swap_executed, tx_hash, success, error_message)
                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                              """, (
-                                  data['timestamp'],
-                                  data.get('reason', 'unknown'),
-                                  data.get('old_nft_id'),
-                                  data.get('new_nft_id'),
-                                  data.get('old_tick_lower'),
-                                  data.get('old_tick_upper'),
-                                  data.get('new_tick_lower'),
-                                  data.get('new_tick_upper'),
-                                  data.get('price_at_rebalance'),
-                                  data.get('estimated_amount'),
-                                  data.get('actual_amount'),
-                                  1 if data.get('swap_executed', False) else 0,
-                                  data.get('tx_hash'),
-                                  1 if data.get('success', True) else 0,
-                                  data.get('error_message')
-                              ))
+                                       """, (
+                                           data['timestamp'],
+                                           data.get('reason', 'unknown'),
+                                           data.get('old_nft_id'),
+                                           data.get('new_nft_id'),
+                                           data.get('old_tick_lower'),
+                                           data.get('old_tick_upper'),
+                                           data.get('new_tick_lower'),
+                                           data.get('new_tick_upper'),
+                                           data.get('price_at_rebalance'),
+                                           data.get('estimated_amount'),
+                                           data.get('actual_amount'),
+                                           1 if data.get('swap_executed', False) else 0,
+                                           data.get('tx_hash'),
+                                           1 if data.get('success', True) else 0,
+                                           data.get('error_message')
+                                       ))
 
+            # 新規挿入された場合
             if cursor.rowcount > 0:
                 self.imported_count += 1
             else:
+                # 重複でスキップされた場合、ガス代情報があれば既存レコードを更新
+                if data.get('gas_cost_usd') and float(data.get('gas_cost_usd', 0)) > 0:
+                    update_cursor = self.conn.execute("""
+                                                      UPDATE rebalance_history
+                                                      SET gas_cost_usd = COALESCE(gas_cost_usd, ?),
+                                                          gas_used     = COALESCE(gas_used, ?),
+                                                          gas_price    = COALESCE(gas_price, ?)
+                                                      WHERE timestamp = ? AND reason = ? AND new_nft_id = ? 
+                          AND (gas_cost_usd IS NULL OR gas_cost_usd = 0)
+                                                      """, (
+                                                          data.get('gas_cost_usd'),
+                                                          data.get('gas_used'),
+                                                          data.get('gas_price'),
+                                                          data['timestamp'],
+                                                          data.get('reason', 'unknown'),
+                                                          data.get('new_nft_id')
+                                                      ))
+
+                    if update_cursor.rowcount > 0:
+                        print(f"   🔄 ガス代情報更新: NFT {data.get('new_nft_id')}")
+
                 self.skipped_count += 1
 
         except Exception as e:

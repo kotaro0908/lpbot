@@ -1,0 +1,31 @@
+    current_range = None
+    if current_nft:
+        range_info = conn.execute("""
+                                  SELECT new_tick_lower, new_tick_upper
+                                  FROM rebalance_history
+                                  WHERE new_nft_id = ?
+                                  ORDER BY timestamp DESC
+                                      LIMIT 1
+                                  """, (current_nft,)).fetchone()
+
+        if range_info:
+            print(f"DEBUG: range_info = {range_info}")
+            price_range = ticks_to_price_range(range_info['new_tick_lower'], range_info['new_tick_upper'])
+            current_range = {
+                'lower': price_range['lower_price'],
+                'upper': price_range['upper_price'],
+                'width': price_range['range_width_percent']
+            }
+
+    # 最終リバランス時刻
+    last_rebalance = conn.execute("""
+                                  SELECT timestamp
+                                  FROM rebalance_history
+                                  WHERE success = 1
+                                  ORDER BY timestamp DESC
+                                      LIMIT 1
+                                  """).fetchone()
+
+    # レンジ内滞在率
+    in_range_percent = calculate_in_range_percent()
+

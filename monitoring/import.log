@@ -4312,3 +4312,1231 @@ SyntaxError: invalid syntax
    NFT: 4734483 → 4734633
 
 ✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2648件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 131件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7385件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1675件
+   swap_history: 1574件
+   fund_changes: 25件
+   gas_retry_history: 3770件
+   lp_creation_history: 1771件
+   system_logs: 7511件
+   monitoring_cycles: 108528件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2648件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 140件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7394件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 508件
+   swap_history: 1664件
+   fund_changes: 26件
+   gas_retry_history: 3990件
+   lp_creation_history: 1873件
+   system_logs: 7962件
+   monitoring_cycles: 114723件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2648件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 150件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7404件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 843件
+   swap_history: 1754件
+   fund_changes: 27件
+   gas_retry_history: 4210件
+   lp_creation_history: 1975件
+   system_logs: 8413件
+   monitoring_cycles: 120928件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2648件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 159件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7413件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 489件
+   swap_history: 1844件
+   fund_changes: 28件
+   gas_retry_history: 4430件
+   lp_creation_history: 2077件
+   system_logs: 8864件
+   monitoring_cycles: 127142件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2648件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 168件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7422件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 824件
+   swap_history: 1934件
+   fund_changes: 29件
+   gas_retry_history: 4650件
+   lp_creation_history: 2179件
+   system_logs: 9315件
+   monitoring_cycles: 133365件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+   ✅ インポート: 1331件
+   ⏭️  スキップ: 0件（重複）
+   ❌ エラー: 70件
+
+📄 ファイル処理: logs_2025-07-31.json
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+   ✅ インポート: 3092件
+   ⏭️  スキップ: 0件（重複）
+   ❌ エラー: 113件
+
+📄 ファイル処理: logs_2025-08-01.json
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+   ✅ インポート: 2499件
+   ⏭️  スキップ: 0件（重複）
+   ❌ エラー: 149件
+
+📄 ファイル処理: logs_2025-08-02.json
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+   ✅ インポート: 174件
+   ⏭️  スキップ: 0件（重複）
+   ❌ エラー: 3件
+
+📊 日次パフォーマンス集計中...
+
+❌ インポートエラー: no such table: rebalance_history
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 512, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 508, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 431, in run_import
+    self.update_daily_performance()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 382, in update_daily_performance
+    self.conn.execute("""
+sqlite3.OperationalError: no such table: rebalance_history
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2648件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 187件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7441件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 335件
+   swap_history: 2133件
+   fund_changes: 32件
+   gas_retry_history: 5146件
+   lp_creation_history: 2408件
+   system_logs: 10327件
+   monitoring_cycles: 147137件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2648件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 196件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7450件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 489件
+   swap_history: 2313件
+   fund_changes: 34件
+   gas_retry_history: 5586件
+   lp_creation_history: 2612件
+   system_logs: 11229件
+   monitoring_cycles: 159631件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+   ✅ インポート: 1331件
+   ⏭️  スキップ: 0件（重複）
+   ❌ エラー: 70件
+
+📄 ファイル処理: logs_2025-07-31.json
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+   ✅ インポート: 3092件
+   ⏭️  スキップ: 0件（重複）
+   ❌ エラー: 113件
+
+📄 ファイル処理: logs_2025-08-01.json
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+   ✅ インポート: 2499件
+   ⏭️  スキップ: 0件（重複）
+   ❌ エラー: 149件
+
+📄 ファイル処理: logs_2025-08-02.json
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+❌ リバランスインポートエラー: no such table: rebalance_history
+   ✅ インポート: 202件
+   ⏭️  スキップ: 0件（重複）
+   ❌ エラー: 3件
+
+📊 日次パフォーマンス集計中...
+
+❌ インポートエラー: no such table: rebalance_history
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 512, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 508, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 431, in run_import
+    self.update_daily_performance()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 382, in update_daily_performance
+    self.conn.execute("""
+sqlite3.OperationalError: no such table: rebalance_history
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1365件
+   ⏭️  スキップ: 36件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3149件
+   ⏭️  スキップ: 56件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2585件
+   ⏭️  スキップ: 63件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 214件
+   ⏭️  スキップ: 1件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7313件
+   ⏭️  スキップ: 156件（重複）
+
+📈 データベース統計:
+   rebalance_history: 514件
+   swap_history: 2493件
+   fund_changes: 36件
+   gas_retry_history: 6026件
+   lp_creation_history: 2816件
+   system_logs: 12131件
+   monitoring_cycles: 172161件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1365件
+   ⏭️  スキップ: 36件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3149件
+   ⏭️  スキップ: 56件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2585件
+   ⏭️  スキップ: 63件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 223件
+   ⏭️  スキップ: 1件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7322件
+   ⏭️  スキップ: 156件（重複）
+
+📈 データベース統計:
+   rebalance_history: 693件
+   swap_history: 2583件
+   fund_changes: 37件
+   gas_retry_history: 6246件
+   lp_creation_history: 2918件
+   system_logs: 12582件
+   monitoring_cycles: 178440件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 5個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1365件
+   ⏭️  スキップ: 36件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3149件
+   ⏭️  スキップ: 56件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2585件
+   ⏭️  スキップ: 63件（重複）
+
+📄 ファイル処理: logs_2025-08-02.json
+   ✅ インポート: 233件
+   ⏭️  スキップ: 1件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 7332件
+   ⏭️  スキップ: 156件（重複）
+
+📈 データベース統計:
+   rebalance_history: 872件
+   swap_history: 2673件
+   fund_changes: 38件
+   gas_retry_history: 6466件
+   lp_creation_history: 3020件
+   system_logs: 13033件
+   monitoring_cycles: 184729件
+
+   最新リバランス: 2025-08-02T00:10:58.647013
+   NFT: 4734483 → 4734633
+
+✅ インポート完了!

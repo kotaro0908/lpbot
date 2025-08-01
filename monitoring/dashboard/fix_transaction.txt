@@ -1,0 +1,20 @@
+function loadTransactionHistory(offset = 0, limit = 10) {
+    $.get('/api/transaction_history', { offset: offset, limit: limit }, function(data) {
+        // データの存在確認
+        if (!data) return;
+        
+        // ヘッダー情報更新（エラーチェック付き）
+        if (data.total_count !== undefined) {
+            $('#totalTransactions').text(data.total_count);
+        }
+        if (data.avg_profit !== undefined) {
+            $('#avgProfit').text('$' + data.avg_profit.toFixed(2));
+        }
+        if (data.avg_profit_percent !== undefined) {
+            $('#avgProfitPercent').text(data.avg_profit_percent.toFixed(1));
+        }
+        // 以下省略...
+    }).fail(function() {
+        console.log('Transaction history API failed');
+    });
+}
