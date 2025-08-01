@@ -655,7 +655,11 @@ class ExternalDataCollector:
                 except Exception as e:
                     print(f"❌ DB保存エラー: {e}")
 
-        print(f"\n✅ 完了: {success_count}/{len(fee_txs) + len(multicall_txs)}件の手数料収益を取得")
+        total_count = len(fee_txs) + len(multicall_txs)
+        if success_count > 0:
+            print(f"\n✅ 完了: {success_count}件の手数料収益を新規取得（全{total_count}件中）")
+        else:
+            print(f"\n✅ 完了: 全{total_count}件は処理済み（新規0件）")
 
     def run_collection(self):
         """データ収集実行"""

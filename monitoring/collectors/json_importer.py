@@ -78,9 +78,12 @@ class JSONLogImporter:
 
     def check_duplicate(self, table: str, timestamp: str, unique_fields: Dict) -> bool:
         """重複チェック"""
+        # タイムスタンプを秒単位に丸めて比較（ミリ秒の違いを無視）
+        timestamp_seconds = timestamp.split('.')[0] if '.' in timestamp else timestamp
+
         # タイムスタンプベースの重複チェック
-        query = f"SELECT 1 FROM {table} WHERE timestamp = ?"
-        params = [timestamp]
+        query = f"SELECT 1 FROM {table} WHERE datetime(timestamp, 'start of second') = datetime(?, 'start of second')"
+        params = [timestamp_seconds]
 
         # 追加の一意性フィールド
         for field, value in unique_fields.items():
@@ -95,6 +98,7 @@ class JSONLogImporter:
         try:
             # 重複チェック
             unique_fields = {
+                'reason': data.get('reason'),
                 'old_nft_id': data.get('old_nft_id'),
                 'new_nft_id': data.get('new_nft_id')
             }

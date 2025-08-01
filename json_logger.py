@@ -16,10 +16,59 @@ from datetime import datetime as dt, timedelta
 class JSONLogger:
     """LP BOT用JSONログ出力クラス"""
 
+    # 重複防止用のクラス変数
+    _recent_logs = []
+    _max_recent_logs = 100
+
+    @staticmethod
+    def _is_duplicate(log_type: str, log_data: Dict[str, Any]) -> bool:
+        """同じ内容のログが直近に出力されていないかチェック"""
+        # タイムスタンプを除いて比較用のキーを作成
+        key_fields = []
+
+        if log_type == "rebalance":
+            # リバランスの場合は主要なフィールドで判定
+            key_fields = [
+                log_data.get('reason'),
+                log_data.get('old_nft_id'),
+                log_data.get('new_nft_id'),
+                log_data.get('success')
+            ]
+        elif log_type == "system":
+            key_fields = [
+                log_data.get('function_name'),
+                log_data.get('message')
+            ]
+        else:
+            # その他のタイプは全フィールドで判定
+            key_fields = [v for k, v in log_data.items() if k not in ['timestamp', 'type']]
+
+        # キーを作成
+        log_key = f"{log_type}:{':'.join(str(f) for f in key_fields)}"
+
+        # 重複チェック（同じキーが5秒以内に存在するか）
+        now = dt.now()
+        for prev_key, prev_time in JSONLogger._recent_logs:
+            if prev_key == log_key and (now - prev_time).total_seconds() < 5:
+                return True
+
+        # 重複なしの場合、リストに追加
+        JSONLogger._recent_logs.append((log_key, now))
+
+        # リストサイズ管理
+        if len(JSONLogger._recent_logs) > JSONLogger._max_recent_logs:
+            JSONLogger._recent_logs = JSONLogger._recent_logs[-JSONLogger._max_recent_logs:]
+
+        return False
+
     @staticmethod
     def log_to_json(log_type: str, log_data: Dict[str, Any]) -> None:
         """JSONログファイルへの出力"""
         try:
+            # 重複チェック
+            if JSONLogger._is_duplicate(log_type, log_data):
+                return  # 重複の場合は出力しない
+
             # タイムスタンプとタイプを追加
             log_data['timestamp'] = dt.now().isoformat()
             log_data['type'] = log_type
