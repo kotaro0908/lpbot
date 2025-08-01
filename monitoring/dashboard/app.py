@@ -273,6 +273,20 @@ def api_dashboard_data():
                               WHERE DATE (timestamp) = DATE ('now', 'localtime')
                               """).fetchone()['total']
 
+    # 平均日次収益と最高日次収益
+    daily_stats = conn.execute("""
+        SELECT 
+            AVG(daily_total) as avg_daily,
+            MAX(daily_total) as max_daily
+        FROM (
+            SELECT DATE(timestamp) as date, SUM(total_usd) as daily_total
+            FROM fee_collection_history
+            GROUP BY DATE(timestamp)
+        )
+    """).fetchone()
+    
+    avg_daily_profit = daily_stats["avg_daily"] if daily_stats and daily_stats["avg_daily"] else 0
+    max_daily_profit = daily_stats["max_daily"] if daily_stats and daily_stats["max_daily"] else 0
     conn.close()
 
     return jsonify({
@@ -293,7 +307,9 @@ def api_dashboard_data():
         'current_range': current_range,
         'last_rebalance': format_timestamp(last_rebalance['timestamp']) if last_rebalance else None,
         'in_range_time_percent': in_range_percent,
-        'today_fees': today_fees
+        'today_fees': today_fees,
+        'avg_daily_profit': avg_daily_profit,
+        'max_daily_profit': max_daily_profit
     })
 
 
@@ -536,5 +552,115 @@ if __name__ == '__main__':
 
     conn.commit()
     conn.close()
+
+
+    @app.route('/api/transaction_history')
+    def api_transaction_history():
+        """取引履歴API"""
+        offset = int(request.args.get('offset', 0))
+        limit = int(request.args.get('limit', 10))
+
+        conn = get_db_connection()
+
+        # 現在のETH価格を取得
+        eth_price = get_current_eth_price()
+
+        # 総取引回数を取得
+        total_count_result = conn.execute("""
+                                          SELECT COUNT(*) as count
+                                          FROM rebalance_history
+                                          WHERE reason = 'range_out' AND success = 1 AND new_nft_id IS NOT NULL
+                                          """).fetchone()
+        total_count = total_count_result['count'] if total_count_result else 0
+
+        # 平均利益を計算
+        avg_stats = conn.execute("""
+                                 SELECT AVG(CASE
+                                                WHEN fc.total_usd IS NOT NULL
+                                                    THEN fc.total_usd - COALESCE(rh.gas_cost_usd, 0)
+                                                ELSE -COALESCE(rh.gas_cost_usd, 0)
+                                     END)        as avg_profit,
+                                        AVG(CASE
+                                                WHEN fc.total_usd IS NOT NULL AND rh.actual_amount > 0
+                                                    THEN
+                                                    ((fc.total_usd - COALESCE(rh.gas_cost_usd, 0)) / rh.actual_amount) *
+                                                    100
+                                                ELSE 0
+                                            END) as avg_profit_percent
+                                 FROM rebalance_history rh
+                                          LEFT JOIN fee_collection_history fc ON rh.new_nft_id = fc.nft_id
+                                 WHERE rh.reason = 'range_out'
+                                   AND rh.success = 1
+                                   AND rh.new_nft_id IS NOT NULL
+                                 """).fetchone()
+
+        avg_profit = avg_stats['avg_profit'] if avg_stats and avg_stats['avg_profit'] else 0
+        avg_profit_percent = avg_stats['avg_profit_percent'] if avg_stats and avg_stats['avg_profit_percent'] else 0
+
+        # 取引履歴を取得
+        transactions = []
+        rows = conn.execute("""
+                            SELECT rh.timestamp,
+                                   rh.new_nft_id as nft_id,
+                                   rh.actual_amount,
+                                   rh.gas_cost_usd,
+                                   rh.price_at_rebalance,
+                                   fc.total_usd  as fee_revenue,
+                                   fc.amount0    as fee_weth,
+                                   fc.amount1    as fee_usdc
+                            FROM rebalance_history rh
+                                     LEFT JOIN fee_collection_history fc ON rh.new_nft_id = fc.nft_id
+                            WHERE rh.reason = 'range_out'
+                              AND rh.success = 1
+                              AND rh.new_nft_id IS NOT NULL
+                            ORDER BY rh.timestamp DESC LIMIT ?
+                            OFFSET ?
+                            """, (limit, offset)).fetchall()
+
+        for row in rows:
+            # 手数料収入（NULL対応）
+            fee_revenue = float(row['fee_revenue']) if row['fee_revenue'] else 0
+
+            # ガス代
+            gas_cost = float(row['gas_cost_usd']) if row['gas_cost_usd'] else 0
+
+            # IL損失の推定（簡易版）- 実際の計算は複雑なので暫定値
+            il_loss = fee_revenue * 0.3 if fee_revenue > 0 else 0
+
+            # 純利益
+            net_profit = fee_revenue - il_loss - gas_cost
+
+            # 利益率
+            profit_percent = (net_profit / float(row['actual_amount']) * 100) if row['actual_amount'] and float(
+                row['actual_amount']) > 0 else 0
+
+            transactions.append({
+                'timestamp': row['timestamp'],
+                'nft_id': row['nft_id'],
+                'fee_revenue': fee_revenue,
+                'il_loss': il_loss,
+                'gas_cost': gas_cost,
+                'net_profit': net_profit,
+                'profit_percent': profit_percent
+            })
+
+        # もっと見るボタンの表示判定
+        has_more = (offset + limit) < total_count
+
+        conn.close()
+
+        return jsonify({
+            'total_count': total_count,
+            'avg_profit': avg_profit,
+            'avg_profit_percent': avg_profit_percent,
+            'transactions': transactions,
+            'has_more': has_more
+        })
+
+
+    # 既存のapp.run()コード
+    if __name__ == '__main__':
+        app.run(host='0.0.0.0', port=5000, debug=True)
+
 
     app.run(host='0.0.0.0', port=5000, debug=True)

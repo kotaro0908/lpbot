@@ -2948,3 +2948,430 @@ Traceback (most recent call last):
   File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
     self.conn.commit()
 sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 2189件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 6795件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 7083件
+   swap_history: 1124件
+   fund_changes: 20件
+   gas_retry_history: 2670件
+   lp_creation_history: 1261件
+   system_logs: 5256件
+   monitoring_cycles: 77705件
+
+   最新リバランス: 2025-08-01T20:30:26.227328
+   NFT: 4733766 → 4733793
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked

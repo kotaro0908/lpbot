@@ -2177,3 +2177,200 @@
 {"function_name": "mint", "attempt": 1, "gas_limit": 588315, "gas_multiplier": 1.0, "success": true, "timestamp": "2025-08-01T20:31:09.949361", "type": "gas_retry"}
 {"tx_hash": "0x9e7f758e0e700a889ef12ee6a424eae93ad293f9d8c29e7a2a45cd0db5cd5270", "gas_used": 395987, "events": 6, "tick_lower": -194480, "tick_upper": -194280, "amount_weth": 0.000922069700631741, "amount_usdc": 1.262825, "success": true, "timestamp": "2025-08-01T20:31:09.949666", "type": "lp_creation"}
 {"nft_id": 4733796, "tx_hash": "0x9e7f758e0e700a889ef12ee6a424eae93ad293f9d8c29e7a2a45cd0db5cd5270", "investment_usd": 6.679209152318758, "success": true, "timestamp": "2025-08-01T20:31:10.604284", "type": "lp_initialization"}
+{"cycle": 36, "timestamp": "2025-08-01T20:31:40.604890", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 37, "timestamp": "2025-08-01T20:32:12.746238", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 38, "timestamp": "2025-08-01T20:32:44.891907", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 39, "timestamp": "2025-08-01T20:33:17.035558", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 40, "timestamp": "2025-08-01T20:33:49.187808", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 41, "timestamp": "2025-08-01T20:34:21.318669", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 42, "timestamp": "2025-08-01T20:34:53.455144", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 43, "timestamp": "2025-08-01T20:35:25.614823", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 44, "timestamp": "2025-08-01T20:35:57.743832", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 45, "timestamp": "2025-08-01T20:36:29.915711", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 46, "timestamp": "2025-08-01T20:37:02.063942", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 47, "timestamp": "2025-08-01T20:37:34.221798", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 48, "timestamp": "2025-08-01T20:38:06.344238", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 49, "timestamp": "2025-08-01T20:38:38.501650", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 50, "timestamp": "2025-08-01T20:39:10.715431", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 51, "timestamp": "2025-08-01T20:39:42.892741", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 52, "timestamp": "2025-08-01T20:40:15.051038", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 53, "timestamp": "2025-08-01T20:40:47.271838", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 54, "timestamp": "2025-08-01T20:41:19.449199", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 55, "timestamp": "2025-08-01T20:41:51.583099", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 56, "timestamp": "2025-08-01T20:42:23.725419", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 57, "timestamp": "2025-08-01T20:42:55.886099", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 58, "timestamp": "2025-08-01T20:43:28.072483", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 59, "timestamp": "2025-08-01T20:44:00.239945", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 60, "timestamp": "2025-08-01T20:44:32.429217", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 61, "timestamp": "2025-08-01T20:45:04.647849", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 62, "timestamp": "2025-08-01T20:45:36.807238", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 63, "timestamp": "2025-08-01T20:46:08.984255", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 64, "timestamp": "2025-08-01T20:46:41.228309", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 65, "timestamp": "2025-08-01T20:47:13.354923", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 66, "timestamp": "2025-08-01T20:47:45.584565", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 67, "timestamp": "2025-08-01T20:48:17.743192", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 68, "timestamp": "2025-08-01T20:48:50.024529", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 69, "timestamp": "2025-08-01T20:49:22.218493", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 70, "timestamp": "2025-08-01T20:49:54.367587", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 71, "timestamp": "2025-08-01T20:50:26.525430", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 72, "timestamp": "2025-08-01T20:50:58.724134", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 73, "timestamp": "2025-08-01T20:51:30.905803", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 74, "timestamp": "2025-08-01T20:52:03.055716", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 75, "timestamp": "2025-08-01T20:52:35.254766", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 76, "timestamp": "2025-08-01T20:53:07.409413", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 77, "timestamp": "2025-08-01T20:53:39.553374", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 78, "timestamp": "2025-08-01T20:54:11.732771", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 79, "timestamp": "2025-08-01T20:54:43.941281", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 80, "timestamp": "2025-08-01T20:55:16.364026", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 81, "timestamp": "2025-08-01T20:55:48.612060", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 82, "timestamp": "2025-08-01T20:56:20.821411", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 83, "timestamp": "2025-08-01T20:56:52.991078", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 84, "timestamp": "2025-08-01T20:57:25.167157", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 85, "timestamp": "2025-08-01T20:57:57.294168", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 86, "timestamp": "2025-08-01T20:58:29.561882", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 87, "timestamp": "2025-08-01T20:59:01.863912", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 88, "timestamp": "2025-08-01T20:59:34.107599", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 89, "timestamp": "2025-08-01T21:00:06.338806", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 90, "timestamp": "2025-08-01T21:00:38.827086", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 91, "timestamp": "2025-08-01T21:01:11.137849", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 92, "timestamp": "2025-08-01T21:01:43.387892", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 93, "timestamp": "2025-08-01T21:02:15.591343", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 94, "timestamp": "2025-08-01T21:02:47.889085", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"nft_id": 4733796, "reason": "range_out", "current_price": 3643.2405551826055, "timestamp": "2025-08-01T21:02:50.507681", "type": "rebalance_trigger"}
+{"log_level": "INFO", "function_name": "main", "message": "Rebalance started for NFT 4733796", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:02:52.457381", "type": "system"}
+{"reason": "liquidity_removal_start", "old_nft_id": 4733796, "new_nft_id": null, "old_tick_lower": -194480, "old_tick_upper": -194280, "new_tick_lower": null, "new_tick_upper": null, "price_at_rebalance": null, "estimated_amount": null, "actual_amount": null, "swap_executed": false, "retry_count": 0, "tx_hash": null, "error_message": null, "success": true, "timestamp": "2025-08-01T21:02:53.265830", "type": "rebalance"}
+{"reason": "multicall_execution", "old_nft_id": 4733796, "new_nft_id": null, "old_tick_lower": -194480, "old_tick_upper": -194280, "new_tick_lower": null, "new_tick_upper": null, "price_at_rebalance": null, "estimated_amount": null, "actual_amount": null, "swap_executed": false, "retry_count": 0, "tx_hash": "0xb1df7789a77f2810b71b92fd393de49ac2780836f48fab82d712f79a9193a06f", "error_message": null, "success": true, "timestamp": "2025-08-01T21:02:55.366558", "type": "rebalance"}
+{"from_token": "USDC", "to_token": "WETH", "amount": 31.31336837026233, "swap_direction": "USDC_TO_ETH", "success": true, "tx_hash": null, "error_message": null, "timestamp": "2025-08-01T21:03:09.453722", "type": "swap"}
+{"from_token": "WETH", "to_token": "USDC", "amount": 0.0036167657427643753, "swap_direction": "ETH_TO_USDC", "success": true, "tx_hash": null, "error_message": null, "timestamp": "2025-08-01T21:03:16.712838", "type": "swap"}
+{"function_name": "mint", "attempt": 1, "gas_limit": 588315, "gas_multiplier": 1.0, "success": false, "timestamp": "2025-08-01T21:03:20.011840", "type": "gas_retry"}
+{"function_name": "mint", "attempt": 2, "gas_limit": 882472, "gas_multiplier": 1.5, "success": false, "timestamp": "2025-08-01T21:03:22.006059", "type": "gas_retry"}
+{"function_name": "mint", "attempt": 3, "gas_limit": 1176630, "gas_multiplier": 2.0, "success": false, "timestamp": "2025-08-01T21:03:24.337027", "type": "gas_retry"}
+{"function_name": "mint", "attempt": 4, "gas_limit": 1764945, "gas_multiplier": 3.0, "success": false, "timestamp": "2025-08-01T21:03:26.278018", "type": "gas_retry"}
+{"error": "全ての試行が失敗", "tick_lower": -194420, "tick_upper": -194220, "amount_weth": 0.009356419249715846, "amount_usdc": 34.087686, "success": false, "timestamp": "2025-08-01T21:03:29.276129", "type": "lp_creation"}
+{"reason": "range_out", "old_nft_id": 4733796, "new_nft_id": null, "old_tick_lower": -194480, "old_tick_upper": -194280, "new_tick_lower": null, "new_tick_upper": null, "price_at_rebalance": null, "estimated_amount": 68.17537244964727, "actual_amount": null, "swap_executed": false, "retry_count": 0, "tx_hash": null, "error_message": "NFT ID extraction failed", "success": false, "timestamp": "2025-08-01T21:03:29.570782", "type": "rebalance"}
+{"old_nft_id": 4733796, "new_nft_id": null, "success": false, "error": "[2025-08-01 21:02:51] INFO: 🔄 完全リバランス開始 - NFT 4733796\n[2025-08-01 21:02:51] INFO: 💰 最大投入額での資金効率最適化リバランス\n[2025-08-01 21:02:52] INFO: 📊 旧ポジション情報取得: tick範囲 [-194480, -194280]\n[2025-08-01 21:02:52] INFO: 🔄 NFT 4733796 の流動性撤退開始...\n[2025-08-01 21:02:52] INFO: 📊 流動性確認 - NFT 4733796: 3813423899886\n[2025-08-01 21:02:53] INFO: 📉 撤退する流動性: 3813423899886\n[2025-08-01 21:02:53] INFO: 📊 最小受取設定 - WETH: 0, USDC: 0\n[2025-08-01 21:02:53] INFO: 🔄 Multicall実行中（decreaseLiquidity + collect）...\n[2025-08-01 21:02:55] INF", "timestamp": "2025-08-01T21:03:29.866502", "type": "rebalance_result"}
+{"cycle": 95, "timestamp": "2025-08-01T21:03:59.895868", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"nft_id": 4733796, "reason": "range_out", "current_price": 3646.730109148676, "timestamp": "2025-08-01T21:04:02.563452", "type": "rebalance_trigger"}
+{"log_level": "INFO", "function_name": "main", "message": "Rebalance started for NFT 4733796", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:04:04.681658", "type": "system"}
+{"log_level": "ERROR", "function_name": "remove_liquidity", "message": "Collect failed", "execution_time_ms": null, "error_details": "{'code': -32000, 'message': 'insufficient funds for gas * price + value: address 0xea2Cf9D674A63A0dC49a2F2F080092170Fc052fA have 9011053630813400 want 10000000000000000'}", "timestamp": "2025-08-01T21:04:06.174273", "type": "system"}
+{"old_nft_id": 4733796, "new_nft_id": null, "success": false, "error": "[2025-08-01 21:04:04] INFO: 🔄 完全リバランス開始 - NFT 4733796\n[2025-08-01 21:04:04] INFO: 💰 最大投入額での資金効率最適化リバランス\n[2025-08-01 21:04:04] INFO: 📊 旧ポジション情報取得: tick範囲 [-194480, -194280]\n[2025-08-01 21:04:04] INFO: 🔄 NFT 4733796 の流動性撤退開始...\n[2025-08-01 21:04:05] INFO: 📊 流動性確認 - NFT 4733796: 0\n[2025-08-01 21:04:05] WARNING: ⚠️ NFT 4733796: 流動性が既に0です\n[2025-08-01 21:04:05] INFO: 💰 手数料回収を試行中...\n[2025-08-01 21:04:06] ERROR: ❌ collect Tx exception: {'code': -32000, 'message': 'insufficient funds for gas * price + va", "timestamp": "2025-08-01T21:04:06.452645", "type": "rebalance_result"}
+{"cycle": 96, "timestamp": "2025-08-01T21:04:36.458007", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"nft_id": 4733796, "reason": "range_out", "current_price": 3647.3622059412905, "timestamp": "2025-08-01T21:04:39.376100", "type": "rebalance_trigger"}
+{"log_level": "INFO", "function_name": "main", "message": "Rebalance started for NFT 4733796", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:04:41.291952", "type": "system"}
+{"log_level": "ERROR", "function_name": "remove_liquidity", "message": "Collect failed", "execution_time_ms": null, "error_details": "{'code': -32000, 'message': 'insufficient funds for gas * price + value: address 0xea2Cf9D674A63A0dC49a2F2F080092170Fc052fA have 9011053630813400 want 10000000000000000'}", "timestamp": "2025-08-01T21:04:42.900285", "type": "system"}
+{"old_nft_id": 4733796, "new_nft_id": null, "success": false, "error": "[2025-08-01 21:04:40] INFO: 🔄 完全リバランス開始 - NFT 4733796\n[2025-08-01 21:04:40] INFO: 💰 最大投入額での資金効率最適化リバランス\n[2025-08-01 21:04:41] INFO: 📊 旧ポジション情報取得: tick範囲 [-194480, -194280]\n[2025-08-01 21:04:41] INFO: 🔄 NFT 4733796 の流動性撤退開始...\n[2025-08-01 21:04:41] INFO: 📊 流動性確認 - NFT 4733796: 0\n[2025-08-01 21:04:42] WARNING: ⚠️ NFT 4733796: 流動性が既に0です\n[2025-08-01 21:04:42] INFO: 💰 手数料回収を試行中...\n[2025-08-01 21:04:42] ERROR: ❌ collect Tx exception: {'code': -32000, 'message': 'insufficient funds for gas * price + va", "timestamp": "2025-08-01T21:04:43.163227", "type": "rebalance_result"}
+{"cycle": 97, "timestamp": "2025-08-01T21:05:13.191878", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"nft_id": 4733796, "reason": "range_out", "current_price": 3645.17527300857, "timestamp": "2025-08-01T21:05:15.848198", "type": "rebalance_trigger"}
+{"log_level": "INFO", "function_name": "main", "message": "Rebalance started for NFT 4733796", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:05:17.899383", "type": "system"}
+{"log_level": "ERROR", "function_name": "remove_liquidity", "message": "Collect failed", "execution_time_ms": null, "error_details": "{'code': -32000, 'message': 'insufficient funds for gas * price + value: address 0xea2Cf9D674A63A0dC49a2F2F080092170Fc052fA have 9011053630813400 want 10000000000000000'}", "timestamp": "2025-08-01T21:05:19.492361", "type": "system"}
+{"old_nft_id": 4733796, "new_nft_id": null, "success": false, "error": "[2025-08-01 21:05:17] INFO: 🔄 完全リバランス開始 - NFT 4733796\n[2025-08-01 21:05:17] INFO: 💰 最大投入額での資金効率最適化リバランス\n[2025-08-01 21:05:17] INFO: 📊 旧ポジション情報取得: tick範囲 [-194480, -194280]\n[2025-08-01 21:05:17] INFO: 🔄 NFT 4733796 の流動性撤退開始...\n[2025-08-01 21:05:18] INFO: 📊 流動性確認 - NFT 4733796: 0\n[2025-08-01 21:05:18] WARNING: ⚠️ NFT 4733796: 流動性が既に0です\n[2025-08-01 21:05:18] INFO: 💰 手数料回収を試行中...\n[2025-08-01 21:05:19] ERROR: ❌ collect Tx exception: {'code': -32000, 'message': 'insufficient funds for gas * price + va", "timestamp": "2025-08-01T21:05:19.788769", "type": "rebalance_result"}
+{"cycle": 98, "timestamp": "2025-08-01T21:05:49.812508", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"nft_id": 4733796, "reason": "range_out", "current_price": 3648.0212779122744, "timestamp": "2025-08-01T21:05:52.482670", "type": "rebalance_trigger"}
+{"log_level": "INFO", "function_name": "main", "message": "Rebalance started for NFT 4733796", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:05:54.492628", "type": "system"}
+{"log_level": "ERROR", "function_name": "remove_liquidity", "message": "Collect failed", "execution_time_ms": null, "error_details": "{'code': -32000, 'message': 'insufficient funds for gas * price + value: address 0xea2Cf9D674A63A0dC49a2F2F080092170Fc052fA have 9011053630813400 want 10000000000000000'}", "timestamp": "2025-08-01T21:05:56.029031", "type": "system"}
+{"old_nft_id": 4733796, "new_nft_id": null, "success": false, "error": "[2025-08-01 21:05:53] INFO: 🔄 完全リバランス開始 - NFT 4733796\n[2025-08-01 21:05:53] INFO: 💰 最大投入額での資金効率最適化リバランス\n[2025-08-01 21:05:54] INFO: 📊 旧ポジション情報取得: tick範囲 [-194480, -194280]\n[2025-08-01 21:05:54] INFO: 🔄 NFT 4733796 の流動性撤退開始...\n[2025-08-01 21:05:54] INFO: 📊 流動性確認 - NFT 4733796: 0\n[2025-08-01 21:05:55] WARNING: ⚠️ NFT 4733796: 流動性が既に0です\n[2025-08-01 21:05:55] INFO: 💰 手数料回収を試行中...\n[2025-08-01 21:05:56] ERROR: ❌ collect Tx exception: {'code': -32000, 'message': 'insufficient funds for gas * price + va", "timestamp": "2025-08-01T21:05:56.304908", "type": "rebalance_result"}
+{"log_level": "INFO", "function_name": "main", "message": "System stopped by user interrupt", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:06:20.251761", "type": "system"}
+{"log_level": "INFO", "function_name": "main", "message": "LP monitoring system started", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:06:37.382922", "type": "system"}
+{"cycle": 1, "timestamp": "2025-08-01T21:06:37.383230", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"nft_id": 4733796, "reason": "range_out", "current_price": 3648.220400152291, "timestamp": "2025-08-01T21:06:40.239566", "type": "rebalance_trigger"}
+{"log_level": "INFO", "function_name": "main", "message": "Rebalance started for NFT 4733796", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:06:42.256313", "type": "system"}
+{"log_level": "ERROR", "function_name": "remove_liquidity", "message": "Collect failed", "execution_time_ms": null, "error_details": "{'code': -32000, 'message': 'insufficient funds for gas * price + value: address 0xea2Cf9D674A63A0dC49a2F2F080092170Fc052fA have 9011053630813400 want 10000000000000000'}", "timestamp": "2025-08-01T21:06:43.746003", "type": "system"}
+{"old_nft_id": 4733796, "new_nft_id": null, "success": false, "error": "[2025-08-01 21:06:41] INFO: 🔄 完全リバランス開始 - NFT 4733796\n[2025-08-01 21:06:41] INFO: 💰 最大投入額での資金効率最適化リバランス\n[2025-08-01 21:06:42] INFO: 📊 旧ポジション情報取得: tick範囲 [-194480, -194280]\n[2025-08-01 21:06:42] INFO: 🔄 NFT 4733796 の流動性撤退開始...\n[2025-08-01 21:06:42] INFO: 📊 流動性確認 - NFT 4733796: 0\n[2025-08-01 21:06:43] WARNING: ⚠️ NFT 4733796: 流動性が既に0です\n[2025-08-01 21:06:43] INFO: 💰 手数料回収を試行中...\n[2025-08-01 21:06:43] ERROR: ❌ collect Tx exception: {'code': -32000, 'message': 'insufficient funds for gas * price + va", "timestamp": "2025-08-01T21:06:44.035775", "type": "rebalance_result"}
+{"cycle": 2, "timestamp": "2025-08-01T21:07:14.065105", "tracked_nfts": [4733796], "status": "started", "type": "monitoring_cycle"}
+{"log_level": "INFO", "function_name": "main", "message": "System stopped by user interrupt", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:07:14.919497", "type": "system"}
+{"log_level": "INFO", "function_name": "main", "message": "LP monitoring system started", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:07:19.577757", "type": "system"}
+{"cycle": 1, "timestamp": "2025-08-01T21:07:19.577998", "tracked_nfts": [], "status": "started", "type": "monitoring_cycle"}
+{"log_level": "INFO", "function_name": "add_initial_liquidity", "message": "Initial LP creation started", "execution_time_ms": null, "error_details": null, "timestamp": "2025-08-01T21:07:23.539611", "type": "system"}
+{"function_name": "mint", "attempt": 1, "gas_limit": 588315, "gas_multiplier": 1.0, "success": false, "timestamp": "2025-08-01T21:07:38.364738", "type": "gas_retry"}
+{"function_name": "mint", "attempt": 1, "gas_limit": 588315, "gas_multiplier": 1.0, "success": true, "timestamp": "2025-08-01T21:07:41.270612", "type": "gas_retry"}
+{"tx_hash": "0x3d4eab4302698e20b82644c67ea6d5c13e4841f337c641722ce5562506d2dfe5", "gas_used": 417328, "events": 6, "tick_lower": -194390, "tick_upper": -194190, "amount_weth": 0.009075121332698582, "amount_usdc": 33.161862, "success": true, "timestamp": "2025-08-01T21:07:41.270900", "type": "lp_creation"}
+{"nft_id": 4733931, "tx_hash": "0x3d4eab4302698e20b82644c67ea6d5c13e4841f337c641722ce5562506d2dfe5", "investment_usd": 66.32372550236951, "success": true, "timestamp": "2025-08-01T21:07:41.959833", "type": "lp_initialization"}
+{"cycle": 2, "timestamp": "2025-08-01T21:08:11.990503", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 3, "timestamp": "2025-08-01T21:08:44.200603", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 4, "timestamp": "2025-08-01T21:09:16.396796", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 5, "timestamp": "2025-08-01T21:09:48.598786", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 6, "timestamp": "2025-08-01T21:10:20.789879", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 7, "timestamp": "2025-08-01T21:10:53.131848", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 8, "timestamp": "2025-08-01T21:11:25.395836", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 9, "timestamp": "2025-08-01T21:11:57.671389", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 10, "timestamp": "2025-08-01T21:12:29.866870", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 11, "timestamp": "2025-08-01T21:13:02.093224", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 12, "timestamp": "2025-08-01T21:13:34.303849", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 13, "timestamp": "2025-08-01T21:14:06.424031", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 14, "timestamp": "2025-08-01T21:14:38.562869", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 15, "timestamp": "2025-08-01T21:15:10.707950", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 16, "timestamp": "2025-08-01T21:15:42.868544", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 17, "timestamp": "2025-08-01T21:16:15.101631", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 18, "timestamp": "2025-08-01T21:16:47.250814", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 19, "timestamp": "2025-08-01T21:17:19.415857", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 20, "timestamp": "2025-08-01T21:17:51.625032", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 21, "timestamp": "2025-08-01T21:18:23.845918", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 22, "timestamp": "2025-08-01T21:18:55.991913", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 23, "timestamp": "2025-08-01T21:19:28.148089", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 24, "timestamp": "2025-08-01T21:20:00.367020", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 25, "timestamp": "2025-08-01T21:20:32.547903", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 26, "timestamp": "2025-08-01T21:21:04.752577", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 27, "timestamp": "2025-08-01T21:21:36.975638", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 28, "timestamp": "2025-08-01T21:22:09.166405", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 29, "timestamp": "2025-08-01T21:22:41.353852", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 30, "timestamp": "2025-08-01T21:23:13.583863", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 31, "timestamp": "2025-08-01T21:23:45.698974", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 32, "timestamp": "2025-08-01T21:24:17.817693", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 33, "timestamp": "2025-08-01T21:24:50.029864", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 34, "timestamp": "2025-08-01T21:25:22.212708", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 35, "timestamp": "2025-08-01T21:25:54.415888", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 36, "timestamp": "2025-08-01T21:26:26.578707", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 37, "timestamp": "2025-08-01T21:26:58.858692", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 38, "timestamp": "2025-08-01T21:27:31.095736", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 39, "timestamp": "2025-08-01T21:28:03.267565", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 40, "timestamp": "2025-08-01T21:28:35.440993", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 41, "timestamp": "2025-08-01T21:29:07.659995", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 42, "timestamp": "2025-08-01T21:29:39.899684", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 43, "timestamp": "2025-08-01T21:30:12.123751", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 44, "timestamp": "2025-08-01T21:30:44.283908", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 45, "timestamp": "2025-08-01T21:31:16.445618", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 46, "timestamp": "2025-08-01T21:31:48.567929", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 47, "timestamp": "2025-08-01T21:32:20.790814", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 48, "timestamp": "2025-08-01T21:32:52.955860", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 49, "timestamp": "2025-08-01T21:33:25.238794", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 50, "timestamp": "2025-08-01T21:33:57.460066", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 51, "timestamp": "2025-08-01T21:34:29.664351", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 52, "timestamp": "2025-08-01T21:35:01.814034", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 53, "timestamp": "2025-08-01T21:35:34.074075", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 54, "timestamp": "2025-08-01T21:36:06.356065", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 55, "timestamp": "2025-08-01T21:36:38.582392", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 56, "timestamp": "2025-08-01T21:37:10.772749", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 57, "timestamp": "2025-08-01T21:37:42.949331", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 58, "timestamp": "2025-08-01T21:38:15.075131", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 59, "timestamp": "2025-08-01T21:38:47.289303", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 60, "timestamp": "2025-08-01T21:39:19.498872", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 61, "timestamp": "2025-08-01T21:39:51.697311", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 62, "timestamp": "2025-08-01T21:40:23.940956", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 63, "timestamp": "2025-08-01T21:40:56.235889", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 64, "timestamp": "2025-08-01T21:41:28.471312", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 65, "timestamp": "2025-08-01T21:42:00.600893", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 66, "timestamp": "2025-08-01T21:42:32.797906", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 67, "timestamp": "2025-08-01T21:43:04.983937", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 68, "timestamp": "2025-08-01T21:43:37.146435", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 69, "timestamp": "2025-08-01T21:44:09.367226", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 70, "timestamp": "2025-08-01T21:44:41.579407", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 71, "timestamp": "2025-08-01T21:45:13.788269", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 72, "timestamp": "2025-08-01T21:45:46.032047", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 73, "timestamp": "2025-08-01T21:46:18.301881", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 74, "timestamp": "2025-08-01T21:46:50.587450", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 75, "timestamp": "2025-08-01T21:47:22.809288", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 76, "timestamp": "2025-08-01T21:47:55.064574", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 77, "timestamp": "2025-08-01T21:48:27.223564", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 78, "timestamp": "2025-08-01T21:48:59.449401", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 79, "timestamp": "2025-08-01T21:49:31.650521", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 80, "timestamp": "2025-08-01T21:50:03.847865", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 81, "timestamp": "2025-08-01T21:50:36.071977", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 82, "timestamp": "2025-08-01T21:51:08.285645", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 83, "timestamp": "2025-08-01T21:51:40.510905", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 84, "timestamp": "2025-08-01T21:52:12.746032", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 85, "timestamp": "2025-08-01T21:52:45.021710", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 86, "timestamp": "2025-08-01T21:53:17.491377", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 87, "timestamp": "2025-08-01T21:53:49.656033", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 88, "timestamp": "2025-08-01T21:54:21.844958", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 89, "timestamp": "2025-08-01T21:54:53.966681", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
+{"cycle": 90, "timestamp": "2025-08-01T21:55:26.225529", "tracked_nfts": [4733931], "status": "started", "type": "monitoring_cycle"}
