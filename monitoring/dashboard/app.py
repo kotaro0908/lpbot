@@ -365,7 +365,8 @@ def api_transaction_history():
                                rh.price_at_rebalance,
                                fc.total_usd  as fee_revenue,
                                fc.amount0    as fee_weth,
-                               fc.amount1    as fee_usdc
+                               fc.amount1    as fee_usdc,
+                               rh.tx_hash
                         FROM rebalance_history rh
                                  LEFT JOIN fee_collection_history fc ON rh.new_nft_id = fc.nft_id
                         WHERE rh.reason = 'range_out'
@@ -399,7 +400,7 @@ def api_transaction_history():
             'il_loss': il_loss,
             'gas_cost': gas_cost,
             'net_profit': net_profit,
-            'profit_percent': profit_percent
+            'profit_percent': profit_percent,            'tx_hash': row['tx_hash']
         })
 
     # もっと見るボタンの表示判定

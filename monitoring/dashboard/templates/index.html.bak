@@ -1,358 +1,536 @@
-<!-- monitoring/dashboard/templates/index.html -->
+# /root/lpbot/monitoring/dashboard で実行
+cd /root/lpbot/monitoring/dashboard
+
+# 現在のindex.htmlをバックアップ
+mv templates/index.html templates/index.html.old
+
+# 完全版を保存
+cat > templates/index.html << 'EOF'
 {% extends "base.html" %}
+
 {% block title %}メインダッシュボード{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="h3 mb-0 text-gray-800">
-                <i class="fas fa-chart-line text-primary"></i> LP BOT 収益ダッシュボード
-            </h1>
-            <p class="text-muted">リアルタイム収益監視 & 投資分析</p>
-        </div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">LP BOT 収益ダッシュボード</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-download fa-sm text-white-50"></i> レポート生成</a>
     </div>
 
-    <!-- KPIカード -->
-    <div class="row mb-4">
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card kpi-card stat-card">
-                <div class="kpi-label">総資産価値</div>
-                <div class="kpi-value" id="totalValue">$--</div>
-                <div class="kpi-change" id="totalValueChange">
-                    <i class="fas fa-chart-line"></i> 計算中...
-                </div>
-            </div>
-        </div>
+    <p class="mb-4 text-gray-700">リアルタイム収益監視 & 投資分析</p>
 
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card kpi-card stat-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
-                <div class="kpi-label">純利益</div>
-                <div class="kpi-value" id="netProfit">$--</div>
-                <div class="kpi-change" id="netProfitChange">
-                    <i class="fas fa-dollar-sign"></i> 計算中...
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card kpi-card stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <div class="kpi-label">ROI</div>
-                <div class="kpi-value" id="roi">--%</div>
-                <div class="kpi-change" id="roiChange">
-                    <i class="fas fa-percentage"></i> 計算中...
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card kpi-card stat-card" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #333;">
-                <div class="kpi-label">今日の収益</div>
-                <div class="kpi-value" id="dailyProfit">$--</div>
-                <div class="kpi-change" id="dailyProfitChange">
-                    <i class="fas fa-calendar-day"></i> 計算中...
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- グラフエリア -->
     <div class="row">
-        <!-- 収益推移グラフ -->
-        <div class="col-xl-8 col-lg-7">
-            <div class="chart-wrapper">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">
-                        <i class="fas fa-chart-area text-primary"></i> 収益推移
-                    </h5>
-                    <div class="btn-group btn-group-sm" role="group">
-                        <button type="button" class="btn btn-outline-primary active" data-period="7d">7日</button>
-                        <button type="button" class="btn btn-outline-primary" data-period="30d">30日</button>
-                        <button type="button" class="btn btn-outline-primary" data-period="90d">90日</button>
+
+        <!-- 総資産価値カード -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                総資産価値</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <span id="totalValue">$--</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mt-1">
+                                LP: <span id="lpValue">$--</span><br>
+                                ウォレット: <span id="walletValue">$--</span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="profitChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 純利益カード -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                純利益 (全期間)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <span id="netProfit">$--</span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-hand-holding-usd fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROIカード -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">ROI</div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="roi">--%</div>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar"
+                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 今日の収益カード -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                今日の収益</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="todayProfit">$--</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 収益推移グラフ -->
+    <div class="row">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">収益推移</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">期間選択:</div>
+                            <a class="dropdown-item" href="#">7日</a>
+                            <a class="dropdown-item" href="#">30日</a>
+                            <a class="dropdown-item" href="#">90日</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- リバランス統計 -->
         <div class="col-xl-4 col-lg-5">
-            <div class="chart-wrapper">
-                <h5 class="mb-3">
-                    <i class="fas fa-exchange-alt text-success"></i> リバランス統計
-                </h5>
-
-                <!-- 統計カード -->
-                <div class="card mb-3" style="background: #f8f9fa;">
-                    <div class="card-body text-center">
-                        <div class="row">
-                            <div class="col-6">
-                                <h6 class="text-muted">今月の実リバランス</h6>
-                                <h4 class="text-primary" id="monthlyRebalances">--回</h4>
-                                
-                            </div>
-                            <div class="col-6">
-                                <h6 class="text-muted">成功率</h6>
-                                <h4 class="text-success" id="successRate">--%</h4>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">リバランス統計</h6>
                 </div>
-
-                <!-- リバランス頻度グラフ -->
-                <div class="chart-container" style="height: 200px;">
-                    <canvas id="rebalanceChart"></canvas>
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> 今月の実リバランス: <span id="rebalanceMonthly">--回</span>
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> 成功率: <span id="successRate">--%</span>
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> (試行: <span id="rebalanceAttempts">--回</span>)
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 詳細統計 -->
-    <div class="row mt-4">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-coins"></i> 手数料収益詳細
-                    </h6>
+    <div class="row">
+        <!-- 手数料収益詳細カード -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">手数料収益詳細</h6>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <tbody>
-                                <tr>
-                                    <td>累計手数料</td>
-                                    <td class="text-right font-weight-bold text-success" id="totalFees">$--</td>
-                                </tr>
-                                <tr>
-                                    <td>累計ガス代</td>
-                                    <td class="text-right font-weight-bold text-danger" id="totalGas">$--</td>
-                                </tr>
-                                <tr>
-                                    <td>平均日次収益</td>
-                                    <td class="text-right font-weight-bold" id="avgDailyProfit">$--</td>
-                                </tr>
-                                <tr>
-                                    <td>最高日次収益</td>
-                                    <td class="text-right font-weight-bold text-primary" id="maxDailyProfit">$--</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">累計手数料</div>
+                    <div class="h5 mb-3 font-weight-bold text-gray-800" id="totalFees">$--</div>
+
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">累計ガス代</div>
+                    <div class="h5 mb-3 font-weight-bold text-gray-800" id="totalGas">$--</div>
+
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">平均日次収益</div>
+                    <div class="h5 mb-3 font-weight-bold text-gray-800" id="avgDailyProfit">$--</div>
+
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">最高日次収益</div>
+                    <div class="h5 mb-3 font-weight-bold text-gray-800" id="maxDailyProfit">$--</div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-chart-pie"></i> 運用状況
-                    </h6>
+        <!-- 運用状況カード -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">運用状況</h6>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <tbody>
-                                <tr>
-                                    <td>現在のNFT ID</td>
-                                    <td class="text-right font-weight-bold" id="currentNFT">--</td>
-                                </tr>
-                                <tr>
-                                    <td>現在のレンジ</td>
-                                    <td class="text-right">
-                                        <div class="font-weight-bold" id="currentPriceRange">-- ~ --</div>
-                                        <small class="text-muted" id="currentTickRange">-- ~ --</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>レンジ内滞在率(24h)</td>
-                                    <td class="text-right font-weight-bold text-success" id="inRangeTime">--%</td>
-                                </tr>
-                                <tr>
-                                    <td>最後のリバランス</td>
-                                    <td class="text-right font-weight-bold" id="lastRebalance">--</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">現在のNFT ID</div>
+                    <div class="h5 mb-3 font-weight-bold text-gray-800" id="currentNftId">--</div>
+
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">現在のレンジ</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="currentPriceRange">-- ~ --</span> <small class="text-gray-600" id="currentTickRange">(-- ~ --)</small><br><span class="badge badge-secondary" id="rangeWidthBadge">--%</span></div>
+                    <div class="text-xs text-gray-600 mb-3"></div>
+
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">レンジ内滞在率(24h)</div>
+                    <div class="h5 mb-3 font-weight-bold text-gray-800" id="inRangeTime">--%</div>
+
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">最後のリバランス</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="lastRebalance">--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 取引履歴セクション -->
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">取引履歴</h6>
+                    <div class="text-sm text-gray-600">
+                        合計: <span id="totalTransactions">--</span>回 |
+                        平均利益: <span id="avgProfit">$--</span> (<span id="avgProfitPercent">--</span>%)
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="transactionHistory" class="list-group">
+                        読み込み中...
+                    </div>
+                    <div class="text-center mt-3">
+                        <button id="loadMoreBtn" class="btn btn-primary btn-sm" style="display: none;">もっと見る</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 {% endblock %}
 
 {% block extra_js %}
+<!-- Page level plugins -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
 <script>
-// グローバル変数
-let profitChart = null;
-let rebalanceChart = null;
-
-$(document).ready(function() {
-    // 初期データ読み込み
-    loadDashboardData();
-    initCharts();
-
-    // 5分ごとに更新
-    setInterval(loadDashboardData, 300000);
-
-    // 期間変更ボタン
-    $('[data-period]').on('click', function() {
-        $('[data-period]').removeClass('active');
-        $(this).addClass('active');
-
-        const period = $(this).data('period');
-        updateCharts(period);
-    });
-});
-
+// APIからデータを読み込み、ダッシュボードを更新する関数
 function loadDashboardData() {
     $.get('/api/dashboard_data', function(data) {
-        // KPI更新
+        // KPIカードの更新
         $('#totalValue').text('$' + data.total_value.toFixed(2));
+        $('#lpValue').text('$' + data.lp_value.toFixed(2));
+        $('#walletValue').text('$' + data.wallet_value.toFixed(2));
         $('#netProfit').text('$' + data.net_profit.toFixed(2));
         $('#roi').text(data.roi.toFixed(1) + '%');
+        $('#todayProfit').text('$' + data.today_fees.toFixed(2)); // 今日の収益
 
         // 詳細統計
         $('#totalFees').text('$' + data.total_fees.toFixed(2));
         $('#totalGas').text('$' + data.total_gas.toFixed(2));
+        $('#avgDailyProfit').text('$' + data.avg_daily_profit.toFixed(2));
+        $('#maxDailyProfit').text('$' + data.max_daily_profit.toFixed(2));
 
-        // NFT IDの更新
+        // 運用状況
         if (data.current_nft) {
-            $('#currentNFT').text(data.current_nft);
+            $('#currentNftId').text(data.current_nft);
         } else {
-            $('#currentNFT').text('--');
+            $('#currentNftId').text('--');
+        }
+        if (data.current_range) {
+            $('#currentPriceRange').text('$' + data.current_range.lower_price.toFixed(2) + ' ~ $' + data.current_range.upper_price.toFixed(2));
+            $('#currentTickRange').text('(' + data.current_range.lower + ' ~ ' + data.current_range.upper + ')');
+            $('#rangeWidthBadge').text(data.current_range.range_width_percent.toFixed(1) + '%');
+        } else {
+            $('#currentPriceRange').text('-- ~ --');
+            $('#currentTickRange').text('-- ~ --');
+            $('#rangeWidthBadge').text('--%');
+        }
+        if (data.in_range_time_percent !== undefined) {
+            $('#inRangeTime').text(data.in_range_time_percent.toFixed(1) + '%');
+        }
+        if (data.last_rebalance) {
+            $('#lastRebalance').text(data.last_rebalance);
         }
 
-        // リバランス統計の更新（改善版）
+        // リバランス統計
         if (data.month_rebalances !== undefined) {
-            $('#monthlyRebalances').text(data.month_rebalances + '回');
+            $('#rebalanceMonthly').text(data.month_rebalances + '回');
         }
         if (data.rebalance_attempts !== undefined) {
-            
+            $('#rebalanceAttempts').text(data.rebalance_attempts + '回');
         }
         if (data.success_rate !== undefined) {
             $('#successRate').text(data.success_rate.toFixed(1) + '%');
         }
 
-        // レンジ情報の更新（改善版）
-        if (data.current_range) {
-            // 価格レンジ（メイン表示）
-            if (data.current_range.lower_price && data.current_range.upper_price) {
-                const lowerPrice = data.current_range.lower_price.toFixed(2);
-                const upperPrice = data.current_range.upper_price.toFixed(2);
-                $('#currentPriceRange').text('$' + lowerPrice + ' ~ $' + upperPrice);
-
-                // レンジ幅も表示
-                if (data.current_range.range_width_percent) {
-                    $('#currentPriceRange').append(' <span class="badge badge-info">' + data.current_range.range_width_percent.toFixed(1) + '%</span>');
-                }
-            } else {
-                $('#currentPriceRange').text('-- ~ --');
-            }
-
-            // ティックレンジ（サブ表示）
-            $('#currentTickRange').text('(' + data.current_range.lower + ' ~ ' + data.current_range.upper + ')');
-        }
-
-        // レンジ内滞在率
-        if (data.in_range_time_percent !== undefined) {
-            $('#inRangeTime').text(data.in_range_time_percent.toFixed(1) + '%');
-        }
-
-        // 最後のリバランス（整形済み）
-        if (data.last_rebalance) {
-            $('#lastRebalance').text(data.last_rebalance);
-        }
-
-        // 色変更（収益性に応じて）
-        if (data.net_profit > 0) {
-            $('#netProfit').closest('.kpi-card').css('background', 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)');
-        } else {
-            $('#netProfit').closest('.kpi-card').css('background', 'linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%)');
-        }
-
-        // 今日の収益（TODO: 実装が必要）
-        // $('#dailyProfit').text('$' + (data.daily_profit || 0).toFixed(2));
-    }).fail(function() {
-        console.error('データ取得エラー');
+        // updateCharts(data);
     });
 }
 
-function initCharts() {
-    // 収益推移グラフ
-    const ctx1 = document.getElementById('profitChart').getContext('2d');
-    profitChart = new Chart(ctx1, {
+// 取引履歴の表示
+function loadTransactionHistory(offset = 0, limit = 10) {
+    $.get('/api/transaction_history', { offset: offset, limit: limit })
+        .done(function(data) {
+            // ヘッダー情報更新
+            $('#totalTransactions').text(data.total_count || 0);
+            $('#avgProfit').text('$' + (data.avg_profit || 0).toFixed(2));
+            $('#avgProfitPercent').text((data.avg_profit_percent || 0).toFixed(1) + '%');
+
+            // 取引履歴表示
+            if (offset === 0) {
+                $('#transactionHistory').empty();
+            }
+
+            if (data.transactions && data.transactions.length > 0) {
+                data.transactions.forEach(function(tx, index) {
+                    const number = data.total_count - offset - index;
+                    $('#transactionHistory').append(createTransactionCard(tx, number));
+                });
+
+                // もっと見るボタンの制御
+                if (data.has_more) {
+                    $('#loadMoreBtn').show().data('offset', offset + data.transactions.length);
+                } else {
+                    $('#loadMoreBtn').hide();
+                }
+            } else {
+                if (offset === 0) {
+                    $('#transactionHistory').html('<p class="text-center text-muted">取引履歴がありません</p>');
+                }
+            }
+        })
+        .fail(function() {
+            $('#transactionHistory').html('<p class="text-center text-danger">データの読み込みに失敗しました</p>');
+        });
+}
+
+// 各取引のカードHTMLを生成
+function createTransactionCard(tx, number) {
+    const profitSign = tx.net_profit >= 0 ? '+' : '';
+    const profitClass = tx.net_profit >= 0 ? 'text-success' : 'text-danger';
+    const txHashShort = tx.tx_hash ? tx.tx_hash.substring(0, 10) + '...' : 'N/A';
+    const arbiscanLink = tx.tx_hash ? `https://arbiscan.io/tx/${tx.tx_hash}` : '#';
+
+    return `
+        <div class="list-group-item list-group-item-action mb-2 shadow-sm transaction-card">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">#${number} ${formatDate(tx.timestamp)}</h5>
+                <small class="${profitClass}">
+                    ${profitSign}$${Math.abs(tx.net_profit).toFixed(2)} (${profitSign}${tx.profit_percent.toFixed(1)}%)
+                </small>
+            </div>
+            <div class="transaction-details mt-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>NFT ID:</strong> <a href="https://arbiscan.io/nft/0xc36442b4a4522e871399cd717abdd847ab11fe88/${tx.nft_id}" target="_blank" class="text-primary">#${tx.nft_id}</a>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>TX Hash:</strong> <a href="${arbiscanLink}" target="_blank" class="text-primary">${txHashShort}</a>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-4">
+                        <span class="text-success">手数料収入:</span> +$${tx.fee_revenue.toFixed(2)}
+                    </div>
+                    <div class="col-md-4">
+                        <span class="text-danger">ILロス:</span> -$${tx.il_loss.toFixed(2)}
+                    </div>
+                    <div class="col-md-4">
+                        <span class="text-secondary">ガス代:</span> -$${tx.gas_cost.toFixed(2)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 日付フォーマット
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('ja-JP', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ' ' +
+           date.toLocaleTimeString('ja-JP', {hour: '2-digit', minute: '2-digit'});
+}
+
+// チャートの更新
+function updateCharts(data) {
+    // Area Chart Example
+    var ctx = document.getElementById("myAreaChart");
+    var myLineChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [],
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             datasets: [{
-                label: '累積収益',
-                data: [],
-                borderColor: '#667eea',
-                backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                tension: 0.4,
-                fill: true
-            }]
+                label: "Earnings",
+                lineTension: 0.3,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+            }],
         },
         options: {
-            responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
                 }
             },
             scales: {
-                y: {
-                    beginAtZero: false,
+                xAxes: [{
+                    time: {
+                        unit: 'date'
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
                     ticks: {
-                        callback: function(value) {
-                            return '$' + value.toFixed(2);
+                        maxTicksLimit: 7
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        maxTicksLimit: 5,
+                        padding: 10,
+                        // Include a dollar sign in the ticks
+                        callback: function(value, index, values) {
+                            return '$' + number_format(value);
                         }
+                    },
+                    gridLines: {
+                        color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
+                        drawBorder: false,
+                        borderDash: [2],
+                        zeroLineBorderDash: [2]
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                intersect: false,
+                mode: 'index',
+                caretPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, chart) {
+                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                        return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
                     }
                 }
             }
         }
     });
 
-    // リバランス頻度グラフ
-    const ctx2 = document.getElementById('rebalanceChart').getContext('2d');
-    rebalanceChart = new Chart(ctx2, {
-        type: 'bar',
+    // Pie Chart Example
+    var ctx2 = document.getElementById("myPieChart");
+    var myPieChart = new Chart(ctx2, {
+        type: 'doughnut',
         data: {
-            labels: ['月', '火', '水', '木', '金', '土', '日'],
+            labels: ["成功", "失敗", "その他"],
             datasets: [{
-                label: 'リバランス回数',
-                data: [5, 8, 3, 12, 7, 2, 4],
-                backgroundColor: 'rgba(17, 153, 142, 0.8)',
-                borderColor: '#11998e',
-                borderWidth: 1
-            }]
+                data: [data.success_rate || 0, 100 - (data.success_rate || 0), 0], // Success, Fail, Others
+                backgroundColor: ['#4e73df', '#dc3545', '#36b9cc'], // Primary, Danger, Info
+                hoverBackgroundColor: ['#2e59d9', '#c82333', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
         },
         options: {
-            responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
             },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80,
+        },
     });
 }
 
-function updateCharts(period) {
-    // TODO: 期間に応じたデータ取得とグラフ更新
-    console.log('期間変更:', period);
+function number_format(number) {
+    return new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(number);
 }
+
+// ページロード時にデータを読み込む
+$(document).ready(function() {
+    loadDashboardData();
+    loadTransactionHistory(); // 取引履歴を読み込む
+
+    // もっと見るボタンのクリックイベント
+    $("#loadMoreBtn").on("click", function() {
+        const offset = $(this).data("offset");
+        loadTransactionHistory(offset);
+    });
+
+    // 5秒ごとにダッシュボードデータを更新
+    setInterval(loadDashboardData, 5000);
+});
 </script>
 {% endblock %}
+EOF
+
+# ブラウザで強制リロード（Ctrl+F5）
+echo "✅ templates/index.html 完全版を保存しました"
+echo "ブラウザでCtrl+F5で強制リロードしてください"

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 LP BOT監視システム - JSONログインポーター
 JSONログファイルからSQLiteデータベースへのデータ取り込み
@@ -76,40 +75,12 @@ class JSONLogImporter:
             print(f"⚠️  JSONパースエラー: {e}")
             return None
 
-    def check_duplicate(self, table: str, timestamp: str, unique_fields: Dict) -> bool:
-        """重複チェック"""
-        # タイムスタンプを秒単位に丸めて比較（ミリ秒の違いを無視）
-        timestamp_seconds = timestamp.split('.')[0] if '.' in timestamp else timestamp
-
-        # タイムスタンプベースの重複チェック
-        query = f"SELECT 1 FROM {table} WHERE datetime(timestamp, 'start of second') = datetime(?, 'start of second')"
-        params = [timestamp_seconds]
-
-        # 追加の一意性フィールド
-        for field, value in unique_fields.items():
-            query += f" AND {field} = ?"
-            params.append(value)
-
-        cursor = self.conn.execute(query + " LIMIT 1", params)
-        return cursor.fetchone() is not None
-
     def import_rebalance(self, data: Dict):
         """リバランスイベントのインポート"""
         try:
-            # 重複チェック
-            unique_fields = {
-                'reason': data.get('reason'),
-                'old_nft_id': data.get('old_nft_id'),
-                'new_nft_id': data.get('new_nft_id')
-            }
-
-            if self.check_duplicate('rebalance_history', data['timestamp'], unique_fields):
-                self.skipped_count += 1
-                return
-
-            # データ挿入
-            self.conn.execute("""
-                              INSERT INTO rebalance_history (timestamp, reason, old_nft_id, new_nft_id,
+            # INSERT OR IGNORE を使用して重複を自動的にスキップ
+            cursor = self.conn.execute("""
+                              INSERT OR IGNORE INTO rebalance_history (timestamp, reason, old_nft_id, new_nft_id,
                                                              old_tick_lower, old_tick_upper, new_tick_lower,
                                                              new_tick_upper,
                                                              price_at_rebalance, estimated_amount, actual_amount,
@@ -133,7 +104,10 @@ class JSONLogImporter:
                                   data.get('error_message')
                               ))
 
-            self.imported_count += 1
+            if cursor.rowcount > 0:
+                self.imported_count += 1
+            else:
+                self.skipped_count += 1
 
         except Exception as e:
             print(f"❌ リバランスインポートエラー: {e}")
@@ -142,14 +116,9 @@ class JSONLogImporter:
     def import_swap(self, data: Dict):
         """SWAPイベントのインポート"""
         try:
-            # 重複チェック
-            if self.check_duplicate('swap_history', data['timestamp'], {}):
-                self.skipped_count += 1
-                return
-
-            # データ挿入
-            self.conn.execute("""
-                              INSERT INTO swap_history (timestamp, from_token, to_token, amount,
+            # INSERT OR IGNORE を使用
+            cursor = self.conn.execute("""
+                              INSERT OR IGNORE INTO swap_history (timestamp, from_token, to_token, amount,
                                                         swap_direction, tx_hash, success, error_message)
                               VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                               """, (
@@ -163,7 +132,10 @@ class JSONLogImporter:
                                   data.get('error_message')
                               ))
 
-            self.imported_count += 1
+            if cursor.rowcount > 0:
+                self.imported_count += 1
+            else:
+                self.skipped_count += 1
 
         except Exception as e:
             print(f"❌ SWAPインポートエラー: {e}")
@@ -172,14 +144,9 @@ class JSONLogImporter:
     def import_fund_change(self, data: Dict):
         """資金変動イベントのインポート"""
         try:
-            # 重複チェック
-            if self.check_duplicate('fund_changes', data['timestamp'], {}):
-                self.skipped_count += 1
-                return
-
-            # データ挿入
-            self.conn.execute("""
-                              INSERT INTO fund_changes (timestamp, change_type, amount_usd,
+            # INSERT OR IGNORE を使用
+            cursor = self.conn.execute("""
+                              INSERT OR IGNORE INTO fund_changes (timestamp, change_type, amount_usd,
                                                         eth_balance, weth_balance, usdc_balance,
                                                         total_value_usd, trigger_action)
                               VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -194,7 +161,10 @@ class JSONLogImporter:
                                   data.get('trigger_action')
                               ))
 
-            self.imported_count += 1
+            if cursor.rowcount > 0:
+                self.imported_count += 1
+            else:
+                self.skipped_count += 1
 
         except Exception as e:
             print(f"❌ 資金変動インポートエラー: {e}")
@@ -203,19 +173,9 @@ class JSONLogImporter:
     def import_gas_retry(self, data: Dict):
         """ガスリトライイベントのインポート"""
         try:
-            # 重複チェック
-            unique_fields = {
-                'function_name': data.get('function_name'),
-                'attempt': data.get('attempt')
-            }
-
-            if self.check_duplicate('gas_retry_history', data['timestamp'], unique_fields):
-                self.skipped_count += 1
-                return
-
-            # データ挿入
-            self.conn.execute("""
-                              INSERT INTO gas_retry_history (timestamp, function_name, attempt,
+            # INSERT OR IGNORE を使用
+            cursor = self.conn.execute("""
+                              INSERT OR IGNORE INTO gas_retry_history (timestamp, function_name, attempt,
                                                              gas_limit, gas_multiplier, success)
                               VALUES (?, ?, ?, ?, ?, ?)
                               """, (
@@ -227,7 +187,10 @@ class JSONLogImporter:
                                   1 if data.get('success', False) else 0
                               ))
 
-            self.imported_count += 1
+            if cursor.rowcount > 0:
+                self.imported_count += 1
+            else:
+                self.skipped_count += 1
 
         except Exception as e:
             print(f"❌ ガスリトライインポートエラー: {e}")
@@ -236,16 +199,9 @@ class JSONLogImporter:
     def import_lp_creation(self, data: Dict):
         """LP作成イベントのインポート"""
         try:
-            # 重複チェック
-            unique_fields = {'tx_hash': data.get('tx_hash')} if data.get('tx_hash') else {}
-
-            if self.check_duplicate('lp_creation_history', data['timestamp'], unique_fields):
-                self.skipped_count += 1
-                return
-
-            # データ挿入
-            self.conn.execute("""
-                              INSERT INTO lp_creation_history (timestamp, tx_hash, gas_used, events,
+            # INSERT OR IGNORE を使用
+            cursor = self.conn.execute("""
+                              INSERT OR IGNORE INTO lp_creation_history (timestamp, tx_hash, gas_used, events,
                                                                tick_lower, tick_upper, amount_weth, amount_usdc,
                                                                success, error_message)
                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -262,7 +218,10 @@ class JSONLogImporter:
                                   data.get('error', data.get('error_message'))
                               ))
 
-            self.imported_count += 1
+            if cursor.rowcount > 0:
+                self.imported_count += 1
+            else:
+                self.skipped_count += 1
 
         except Exception as e:
             print(f"❌ LP作成インポートエラー: {e}")
@@ -271,14 +230,9 @@ class JSONLogImporter:
     def import_system_log(self, data: Dict):
         """システムログのインポート"""
         try:
-            # 重複チェック
-            if self.check_duplicate('system_logs', data['timestamp'], {}):
-                self.skipped_count += 1
-                return
-
-            # データ挿入
-            self.conn.execute("""
-                              INSERT INTO system_logs (timestamp, log_level, function_name,
+            # INSERT OR IGNORE を使用
+            cursor = self.conn.execute("""
+                              INSERT OR IGNORE INTO system_logs (timestamp, log_level, function_name,
                                                        message, execution_time_ms, error_details)
                               VALUES (?, ?, ?, ?, ?, ?)
                               """, (
@@ -290,7 +244,10 @@ class JSONLogImporter:
                                   data.get('error_details')
                               ))
 
-            self.imported_count += 1
+            if cursor.rowcount > 0:
+                self.imported_count += 1
+            else:
+                self.skipped_count += 1
 
         except Exception as e:
             print(f"❌ システムログインポートエラー: {e}")
@@ -299,16 +256,9 @@ class JSONLogImporter:
     def import_monitoring_cycle(self, data: Dict):
         """監視サイクルイベントのインポート"""
         try:
-            # 重複チェック
-            unique_fields = {'cycle': data.get('cycle')}
-
-            if self.check_duplicate('monitoring_cycles', data['timestamp'], unique_fields):
-                self.skipped_count += 1
-                return
-
-            # データ挿入
-            self.conn.execute("""
-                              INSERT INTO monitoring_cycles (timestamp, cycle, tracked_nfts, status)
+            # INSERT OR IGNORE を使用
+            cursor = self.conn.execute("""
+                              INSERT OR IGNORE INTO monitoring_cycles (timestamp, cycle, tracked_nfts, status)
                               VALUES (?, ?, ?, ?)
                               """, (
                                   data['timestamp'],
@@ -317,7 +267,10 @@ class JSONLogImporter:
                                   data.get('status', 'started')
                               ))
 
-            self.imported_count += 1
+            if cursor.rowcount > 0:
+                self.imported_count += 1
+            else:
+                self.skipped_count += 1
 
         except Exception as e:
             print(f"❌ 監視サイクルインポートエラー: {e}")

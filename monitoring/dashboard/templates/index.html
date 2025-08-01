@@ -1,3 +1,6 @@
+# /root/lpbot/monitoring/dashboard で実行
+cd /root/lpbot/monitoring/dashboard
+
 # 現在のindex.htmlをバックアップ
 mv templates/index.html templates/index.html.old
 
@@ -181,7 +184,7 @@ cat > templates/index.html << 'EOF'
 
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">平均日次収益</div>
                     <div class="h5 mb-3 font-weight-bold text-gray-800" id="avgDailyProfit">$--</div>
-                    
+
                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">最高日次収益</div>
                     <div class="h5 mb-3 font-weight-bold text-gray-800" id="maxDailyProfit">$--</div>
                 </div>
@@ -247,18 +250,18 @@ cat > templates/index.html << 'EOF'
 function loadDashboardData() {
     $.get('/api/dashboard_data', function(data) {
         // KPIカードの更新
-        $('#totalValue').text('$' + data.total_value.toFixed(2));
-        $('#lpValue').text('$' + data.lp_value.toFixed(2));
-        $('#walletValue').text('$' + data.wallet_value.toFixed(2));
-        $('#netProfit').text('$' + data.net_profit.toFixed(2));
+        $('#totalValue').text('$' + data.total_value.toFixed(3));
+        $('#lpValue').text('$' + data.lp_value.toFixed(3));
+        $('#walletValue').text('$' + data.wallet_value.toFixed(3));
+        $('#netProfit').text('$' + data.net_profit.toFixed(3));
         $('#roi').text(data.roi.toFixed(1) + '%');
-        $('#todayProfit').text('$' + data.today_fees.toFixed(2)); // 今日の収益
-        
+        $('#todayProfit').text('$' + data.today_fees.toFixed(3)); // 今日の収益
+
         // 詳細統計
-        $('#totalFees').text('$' + data.total_fees.toFixed(2));
-        $('#totalGas').text('$' + data.total_gas.toFixed(2));
-        $('#avgDailyProfit').text('$' + data.avg_daily_profit.toFixed(2));
-        $('#maxDailyProfit').text('$' + data.max_daily_profit.toFixed(2));
+        $('#totalFees').text('$' + data.total_fees.toFixed(3));
+        $('#totalGas').text('$' + data.total_gas.toFixed(3));
+        $('#avgDailyProfit').text('$' + data.avg_daily_profit.toFixed(3));
+        $('#maxDailyProfit').text('$' + data.max_daily_profit.toFixed(3));
 
         // 運用状況
         if (data.current_nft) {
@@ -267,7 +270,7 @@ function loadDashboardData() {
             $('#currentNftId').text('--');
         }
         if (data.current_range) {
-            $('#currentPriceRange').text('$' + data.current_range.lower_price.toFixed(2) + ' ~ $' + data.current_range.upper_price.toFixed(2));
+            $('#currentPriceRange').text('$' + data.current_range.lower_price.toFixed(3) + ' ~ $' + data.current_range.upper_price.toFixed(3));
             $('#currentTickRange').text('(' + data.current_range.lower + ' ~ ' + data.current_range.upper + ')');
             $('#rangeWidthBadge').text(data.current_range.range_width_percent.toFixed(1) + '%');
         } else {
@@ -298,7 +301,41 @@ function loadDashboardData() {
 }
 
 // 取引履歴の表示
-function loadTransactionHistory(offset = 0, limit = 10) { return; }
+function loadTransactionHistory(offset = 0, limit = 10) {
+    $.get('/api/transaction_history', { offset: offset, limit: limit })
+        .done(function(data) {
+            // ヘッダー情報更新
+            $('#totalTransactions').text(data.total_count || 0);
+            $('#avgProfit').text('$' + (data.avg_profit || 0).toFixed(3));
+            $('#avgProfitPercent').text((data.avg_profit_percent || 0).toFixed(1) + '%');
+
+            // 取引履歴表示
+            if (offset === 0) {
+                $('#transactionHistory').empty();
+            }
+
+            if (data.transactions && data.transactions.length > 0) {
+                data.transactions.forEach(function(tx, index) {
+                    const number = data.total_count - offset - index;
+                    $('#transactionHistory').append(createTransactionCard(tx, number));
+                });
+
+                // もっと見るボタンの制御
+                if (data.has_more) {
+                    $('#loadMoreBtn').show().data('offset', offset + data.transactions.length);
+                } else {
+                    $('#loadMoreBtn').hide();
+                }
+            } else {
+                if (offset === 0) {
+                    $('#transactionHistory').html('<p class="text-center text-muted">取引履歴がありません</p>');
+                }
+            }
+        })
+        .fail(function() {
+            $('#transactionHistory').html('<p class="text-center text-danger">データの読み込みに失敗しました</p>');
+        });
+}
 
 // 各取引のカードHTMLを生成
 function createTransactionCard(tx, number) {
@@ -312,7 +349,7 @@ function createTransactionCard(tx, number) {
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">#${number} ${formatDate(tx.timestamp)}</h5>
                 <small class="${profitClass}">
-                    ${profitSign}$${Math.abs(tx.net_profit).toFixed(2)} (${profitSign}${tx.profit_percent.toFixed(1)}%)
+                    ${profitSign}$${Math.abs(tx.net_profit).toFixed(3)} (${profitSign}${tx.profit_percent.toFixed(1)}%)
                 </small>
             </div>
             <div class="transaction-details mt-2">
@@ -326,13 +363,13 @@ function createTransactionCard(tx, number) {
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-4">
-                        <span class="text-success">手数料収入:</span> +$${tx.fee_revenue.toFixed(2)}
+                        <span class="text-success">手数料収入:</span> +$${tx.fee_revenue.toFixed(3)}
                     </div>
                     <div class="col-md-4">
-                        <span class="text-danger">ILロス:</span> -$${tx.il_loss.toFixed(2)}
+                        <span class="text-danger">ILロス:</span> -$${tx.il_loss.toFixed(3)}
                     </div>
                     <div class="col-md-4">
-                        <span class="text-secondary">ガス代:</span> -$${tx.gas_cost.toFixed(2)}
+                        <span class="text-secondary">ガス代:</span> -$${tx.gas_cost.toFixed(3)}
                     </div>
                 </div>
             </div>
@@ -479,12 +516,12 @@ function number_format(number) {
 // ページロード時にデータを読み込む
 $(document).ready(function() {
     loadDashboardData();
-    // loadTransactionHistory(); // 取引履歴を読み込む
+    loadTransactionHistory(); // 取引履歴を読み込む
 
     // もっと見るボタンのクリックイベント
     $("#loadMoreBtn").on("click", function() {
         const offset = $(this).data("offset");
-        // // // loadTransactionHistory(offset);
+        loadTransactionHistory(offset);
     });
 
     // 5秒ごとにダッシュボードデータを更新
@@ -493,3 +530,7 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 EOF
+
+# ブラウザで強制リロード（Ctrl+F5）
+echo "✅ templates/index.html 完全版を保存しました"
+echo "ブラウザでCtrl+F5で強制リロードしてください"
