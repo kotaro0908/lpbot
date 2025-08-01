@@ -19,10 +19,6 @@
             <div class="card kpi-card stat-card">
                 <div class="kpi-label">総資産価値</div>
                 <div class="kpi-value" id="totalValue">$--</div>
-                <div class="kpi-breakdown" style="font-size: 0.8rem; margin-top: 5px;">
-                    <div>LP: $<span id="lpValue">--</span></div>
-                    <div>ウォレット: $<span id="walletValue">--</span></div>
-                </div>
                 <div class="kpi-change" id="totalValueChange">
                     <i class="fas fa-chart-line"></i> 計算中...
                 </div>
@@ -217,8 +213,6 @@ function loadDashboardData() {
     $.get('/api/dashboard_data', function(data) {
         // KPI更新
         $('#totalValue').text('$' + data.total_value.toFixed(2));
-        $('#lpValue').text(data.lp_value.toFixed(2));
-        $('#walletValue').text(data.wallet_value.toFixed(2));
         $('#netProfit').text('$' + data.net_profit.toFixed(2));
         $('#roi').text(data.roi.toFixed(1) + '%');
 

@@ -388,48 +388,60 @@ def get_current_nft_id():
 
 
 def get_lp_position_value(eth_price):
-    """現在のLPポジション価値を取得（シンプル版）"""
+    """現在のLPポジション価値を取得"""
     try:
+        # Position Manager Contract
+        POSITION_MANAGER = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
+
         # 現在のNFT ID取得
         current_nft_id = get_current_nft_id()
         if not current_nft_id:
             print("NFT IDが見つかりません")
             return 0
 
-        # データベースから最新の手数料収集データを取得
-        conn = get_db_connection()
+        # Position Manager ABI (positions関数のみ)
+        position_abi = [{
+            "inputs": [{"internalType": "uint256", "name": "tokenId", "type": "uint256"}],
+            "name": "positions",
+            "outputs": [
+                {"internalType": "uint96", "name": "nonce", "type": "uint96"},
+                {"internalType": "address", "name": "operator", "type": "address"},
+                {"internalType": "address", "name": "token0", "type": "address"},
+                {"internalType": "address", "name": "token1", "type": "address"},
+                {"internalType": "uint24", "name": "fee", "type": "uint24"},
+                {"internalType": "int24", "name": "tickLower", "type": "int24"},
+                {"internalType": "int24", "name": "tickUpper", "type": "int24"},
+                {"internalType": "uint128", "name": "liquidity", "type": "uint128"},
+                {"internalType": "uint256", "name": "feeGrowthInside0LastX128", "type": "uint256"},
+                {"internalType": "uint256", "name": "feeGrowthInside1LastX128", "type": "uint256"},
+                {"internalType": "uint128", "name": "tokensOwed0", "type": "uint128"},
+                {"internalType": "uint128", "name": "tokensOwed1", "type": "uint128"}
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }]
 
-        # 最新のリバランス時の投入額を取得
-        latest_position = conn.execute("""
-                                       SELECT actual_amount
-                                       FROM rebalance_history
-                                       WHERE new_nft_id = ?
-                                         AND success = 1
-                                       ORDER BY timestamp DESC
-                                           LIMIT 1
-                                       """, (current_nft_id,)).fetchone()
+        # ポジション情報取得
+        position_manager = w3.eth.contract(address=POSITION_MANAGER, abi=position_abi)
+        position = position_manager.functions.positions(int(current_nft_id)).call()
 
-        if latest_position and latest_position['actual_amount']:
-            # リバランス時の投入額をベースに、現在価値を推定
-            # 実際のUniswapの画面で$65なので、それに近い値になるよう調整
-            base_value = float(latest_position['actual_amount'])
+        liquidity = position[7]
 
-            # 価格変動による調整（簡易版）
-            # TODO: より正確な計算を実装
-            lp_value = base_value * 0.65  # 暫定的に65%として計算
+        if liquidity == 0:
+            print("ポジションに流動性がありません")
+            return 0
 
-            print(f"LP価値: ${lp_value:.2f} (NFT: {current_nft_id}, Base: ${base_value:.2f})")
-        else:
-            # データがない場合はデフォルト値
-            lp_value = 65.0
-            print(f"LP価値: ${lp_value:.2f} (NFT: {current_nft_id}, デフォルト値)")
+        # 現在価格でのポジション価値を簡易計算
+        # TODO: より正確な計算（tick範囲を考慮）を実装
+        # 暫定的に流動性の大きさから推定
+        estimated_value = float(liquidity) / 10 ** 15 * eth_price * 0.5
 
-        conn.close()
-        return lp_value
+        print(f"LP価値推定: ${estimated_value:.2f} (NFT: {current_nft_id})")
+        return estimated_value
 
     except Exception as e:
         print(f"LPポジション価値取得エラー: {e}")
-        return 65.0  # エラー時のデフォルト値
+        return 0
 
 def calculate_total_value():
     """現在の総資産価値を計算（実装版）"""
