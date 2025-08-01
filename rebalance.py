@@ -15,12 +15,15 @@ import subprocess
 import logging
 from web3 import Web3
 from dotenv import load_dotenv
+
+# 両方の.envファイルを読み込む
+load_dotenv(".env")  # 公開可能な設定
+load_dotenv(".env.secret")  # 秘密鍵
 from uniswap_utils import get_liquidity, decrease_liquidity, collect_fees, multicall_decrease_and_collect, \
     get_position_info
 from json_logger import JSONLogger
 
 # .envファイルを読み込み
-load_dotenv()
 
 # 設定
 RPC_URL = os.getenv('RPC_URL')
@@ -61,6 +64,7 @@ POOL_ABI = [
         "type": "function"
     }
 ]
+
 
 
 def get_token_balance(w3, token_address, wallet_address):
@@ -325,6 +329,14 @@ def remove_liquidity(token_id):
 def add_new_liquidity(old_nft_id, old_position_info):
     """新しいレンジで最大投入額LP追加"""
     logger.info("🚀 新しいレンジで最大投入額LP追加中...")
+
+    # 🆕 レンジ更新を追加
+    logger.info("📊 最新レンジを計算...")
+    result = subprocess.run(["python", "range_analyzer.py"], capture_output=True, text=True)
+    if result.returncode == 0:
+        logger.info("✅ レンジ更新完了")
+    else:
+        logger.warning("⚠️ レンジ更新失敗（既存のレンジを使用）")
 
     try:
         # Web3接続

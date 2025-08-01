@@ -205,7 +205,7 @@ def ensure_weth_balance(w3, wallet, required_weth):
             # WETHコントラクトを取得
             weth_contract_local = w3.eth.contract(address=WETH_ADDRESS, abi=ERC20_ABI)
             weth_balance_wei = weth_contract_local.functions.balanceOf(wallet.address).call()
-            weth_balance = weth_balance_wei / 10 ** 18
+            weth_balance = weth_contract_local.functions.balanceOf(wallet.address).call() / 10 ** 18
             print(f"📊 変換後WETH残高: {weth_balance:.6f}")
             # ===== ここまで =====
             return True

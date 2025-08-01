@@ -29,8 +29,8 @@ MONITORING_INTERVAL = 30  # 秒
 REBALANCE_THRESHOLD = 0.05  # 5%の閾値
 
 # LP Helper設定
-MIN_ETH_BUFFER = 0.008  # ガス代用ETH残高（SWAP+LP作成分）
-MIN_USDC_BUFFER = 5.0  # 調整用USDC残高
+MIN_ETH_BUFFER = float(os.getenv("MIN_ETH_BUFFER", "0.008"))
+MIN_USDC_BUFFER = float(os.getenv("MIN_USDC_BUFFER", "5.0"))
 TARGET_INVESTMENT_RATIO = 0.95  # 95%投入で安全マージン確保
 
 # Position Manager ABI
