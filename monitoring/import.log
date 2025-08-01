@@ -1,0 +1,2164 @@
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 6件
+   ⏭️  スキップ: 325件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 6件
+   ⏭️  スキップ: 325件（重複）
+
+📈 データベース統計:
+   rebalance_history: 23件
+   swap_history: 4件
+   fund_changes: 0件
+   gas_retry_history: 20件
+   lp_creation_history: 8件
+   system_logs: 35件
+   monitoring_cycles: 253件
+
+   最新リバランス: 2025-07-30T11:27:05.673649
+   NFT: 4724020 → 4724059
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 13件
+   ⏭️  スキップ: 379件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 13件
+   ⏭️  スキップ: 379件（重複）
+
+📈 データベース統計:
+   rebalance_history: 17件
+   swap_history: 4件
+   fund_changes: 0件
+   gas_retry_history: 20件
+   lp_creation_history: 8件
+   system_logs: 40件
+   monitoring_cycles: 309件
+
+   最新リバランス: 2025-07-30T11:27:05.673649
+   NFT: 4724020 → 4724059
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 107件
+   ⏭️  スキップ: 386件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 107件
+   ⏭️  スキップ: 386件（重複）
+
+📈 データベース統計:
+   rebalance_history: 27件
+   swap_history: 5件
+   fund_changes: 0件
+   gas_retry_history: 22件
+   lp_creation_history: 9件
+   system_logs: 45件
+   monitoring_cycles: 397件
+
+   最新リバランス: 2025-07-30T15:31:23.112296
+   NFT: 4724059 → 4724477
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 11件
+   ⏭️  スキップ: 497件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 11件
+   ⏭️  スキップ: 497件（重複）
+
+📈 データベース統計:
+   rebalance_history: 53件
+   swap_history: 5件
+   fund_changes: 0件
+   gas_retry_history: 24件
+   lp_creation_history: 10件
+   system_logs: 51件
+   monitoring_cycles: 401件
+
+   最新リバランス: 2025-07-30T16:34:59.321166
+   NFT: 4724477 → 4724616
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 45件
+   ⏭️  スキップ: 500件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 45件
+   ⏭️  スキップ: 500件（重複）
+
+📈 データベース統計:
+   rebalance_history: 69件
+   swap_history: 7件
+   fund_changes: 0件
+   gas_retry_history: 28件
+   lp_creation_history: 12件
+   system_logs: 58件
+   monitoring_cycles: 415件
+
+   最新リバランス: 2025-07-30T17:53:22.554013
+   NFT: 4724698 → 4724769
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 165件
+   ⏭️  スキップ: 533件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 165件
+   ⏭️  スキップ: 533件（重複）
+
+📈 データベース統計:
+   rebalance_history: 90件
+   swap_history: 9件
+   fund_changes: 1件
+   gas_retry_history: 36件
+   lp_creation_history: 15件
+   system_logs: 70件
+   monitoring_cycles: 533件
+
+   最新リバランス: 2025-07-30T18:31:45.497592
+   NFT: 4724812 → 4724874
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 160件
+   ⏭️  スキップ: 681件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 160件
+   ⏭️  スキップ: 681件（重複）
+
+📈 データベース統計:
+   rebalance_history: 115件
+   swap_history: 11件
+   fund_changes: 1件
+   gas_retry_history: 40件
+   lp_creation_history: 17件
+   system_logs: 78件
+   monitoring_cycles: 652件
+
+   最新リバランス: 2025-07-30T19:53:22.778712
+   NFT: 4725068 → 4725100
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 152件
+   ⏭️  スキップ: 820件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 152件
+   ⏭️  スキップ: 820件（重複）
+
+📈 データベース統計:
+   rebalance_history: 140件
+   swap_history: 12件
+   fund_changes: 1件
+   gas_retry_history: 42件
+   lp_creation_history: 18件
+   system_logs: 82件
+   monitoring_cycles: 771件
+
+   最新リバランス: 2025-07-30T20:26:09.768089
+   NFT: 4725100 → 4725231
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 154件
+   ⏭️  スキップ: 949件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 154件
+   ⏭️  スキップ: 949件（重複）
+
+📈 データベース統計:
+   rebalance_history: 167件
+   swap_history: 13件
+   fund_changes: 1件
+   gas_retry_history: 44件
+   lp_creation_history: 19件
+   system_logs: 86件
+   monitoring_cycles: 890件
+
+   最新リバランス: 2025-07-30T21:25:30.199316
+   NFT: 4725231 → 4725479
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 168件
+   ⏭️  スキップ: 1078件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 168件
+   ⏭️  スキップ: 1078件（重複）
+
+📈 データベース統計:
+   rebalance_history: 200件
+   swap_history: 15件
+   fund_changes: 1件
+   gas_retry_history: 48件
+   lp_creation_history: 21件
+   system_logs: 94件
+   monitoring_cycles: 1009件
+
+   最新リバランス: 2025-07-30T22:46:36.659998
+   NFT: 4725614 → 4725672
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 1個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 184件
+   ⏭️  スキップ: 1217件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 184件
+   ⏭️  スキップ: 1217件（重複）
+
+📈 データベース統計:
+   rebalance_history: 241件
+   swap_history: 18件
+   fund_changes: 1件
+   gas_retry_history: 54件
+   lp_creation_history: 24件
+   system_logs: 106件
+   monitoring_cycles: 1128件
+
+   最新リバランス: 2025-07-30T23:52:55.706471
+   NFT: 4725854 → 4725893
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 142件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 177件
+   ⏭️  スキップ: 1366件（重複）
+
+📈 データベース統計:
+   rebalance_history: 284件
+   swap_history: 20件
+   fund_changes: 1件
+   gas_retry_history: 58件
+   lp_creation_history: 26件
+   system_logs: 114件
+   monitoring_cycles: 1246件
+
+   最新リバランス: 2025-07-31T00:07:24.005489
+   NFT: 4725935 → 4725955
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 136件
+   ⏭️  スキップ: 138件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 171件
+   ⏭️  スキップ: 1504件（重複）
+
+📈 データベース統計:
+   rebalance_history: 327件
+   swap_history: 21件
+   fund_changes: 1件
+   gas_retry_history: 60件
+   lp_creation_history: 27件
+   system_logs: 118件
+   monitoring_cycles: 1366件
+
+   最新リバランス: 2025-07-31T01:18:47.302845
+   NFT: 4725955 → 4726165
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 6件
+   ⏭️  スキップ: 387件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 41件
+   ⏭️  スキップ: 1753件（重複）
+
+📈 データベース統計:
+   rebalance_history: 409件
+   swap_history: 21件
+   fund_changes: 1件
+   gas_retry_history: 60件
+   lp_creation_history: 27件
+   system_logs: 118件
+   monitoring_cycles: 1485件
+
+   最新リバランス: 2025-07-31T01:18:47.302845
+   NFT: 4725955 → 4726165
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 184件
+   ⏭️  スキップ: 387件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 219件
+   ⏭️  スキップ: 1753件（重複）
+
+📈 データベース統計:
+   rebalance_history: 470件
+   swap_history: 26件
+   fund_changes: 1件
+   gas_retry_history: 70件
+   lp_creation_history: 32件
+   system_logs: 138件
+   monitoring_cycles: 1603件
+
+   最新リバランス: 2025-07-31T03:58:53.016123
+   NFT: 4726587 → 4726651
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 205件
+   ⏭️  スキップ: 555件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 240件
+   ⏭️  スキップ: 1921件（重複）
+
+📈 データベース統計:
+   rebalance_history: 545件
+   swap_history: 32件
+   fund_changes: 1件
+   gas_retry_history: 82件
+   lp_creation_history: 38件
+   system_logs: 162件
+   monitoring_cycles: 1720件
+
+   最新リバランス: 2025-07-31T04:49:58.159744
+   NFT: 4726964 → 4726984
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 170件
+   ⏭️  スキップ: 732件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 205件
+   ⏭️  スキップ: 2098件（重複）
+
+📈 データベース統計:
+   rebalance_history: 616件
+   swap_history: 34件
+   fund_changes: 1件
+   gas_retry_history: 86件
+   lp_creation_history: 40件
+   system_logs: 170件
+   monitoring_cycles: 1838件
+
+   最新リバランス: 2025-07-31T05:36:03.191267
+   NFT: 4727088 → 4727185
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 175件
+   ⏭️  スキップ: 870件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 210件
+   ⏭️  スキップ: 2236件（重複）
+
+📈 データベース統計:
+   rebalance_history: 691件
+   swap_history: 36件
+   fund_changes: 1件
+   gas_retry_history: 90件
+   lp_creation_history: 42件
+   system_logs: 178件
+   monitoring_cycles: 1957件
+
+   最新リバランス: 2025-07-31T06:55:41.084641
+   NFT: 4727328 → 4727392
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 156件
+   ⏭️  スキップ: 1009件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 191件
+   ⏭️  スキップ: 2375件（重複）
+
+📈 データベース統計:
+   rebalance_history: 762件
+   swap_history: 36件
+   fund_changes: 1件
+   gas_retry_history: 90件
+   lp_creation_history: 42件
+   system_logs: 178件
+   monitoring_cycles: 2077件
+
+   最新リバランス: 2025-07-31T06:55:41.084641
+   NFT: 4727328 → 4727392
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 179件
+   ⏭️  スキップ: 1129件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 214件
+   ⏭️  スキップ: 2495件（重複）
+
+📈 データベース統計:
+   rebalance_history: 841件
+   swap_history: 38件
+   fund_changes: 1件
+   gas_retry_history: 94件
+   lp_creation_history: 44件
+   system_logs: 186件
+   monitoring_cycles: 2196件
+
+   最新リバランス: 2025-07-31T08:31:54.258136
+   NFT: 4727548 → 4727599
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 194件
+   ⏭️  スキップ: 1268件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 229件
+   ⏭️  スキップ: 2634件（重複）
+
+📈 データベース統計:
+   rebalance_history: 928件
+   swap_history: 41件
+   fund_changes: 1件
+   gas_retry_history: 100件
+   lp_creation_history: 47件
+   system_logs: 198件
+   monitoring_cycles: 2314件
+
+   最新リバランス: 2025-07-31T09:40:51.303232
+   NFT: 4727775 → 4727804
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 165件
+   ⏭️  スキップ: 1416件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 200件
+   ⏭️  スキップ: 2782件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1009件
+   swap_history: 41件
+   fund_changes: 1件
+   gas_retry_history: 100件
+   lp_creation_history: 47件
+   system_logs: 198件
+   monitoring_cycles: 2433件
+
+   最新リバランス: 2025-07-31T09:40:51.303232
+   NFT: 4727775 → 4727804
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 178件
+   ⏭️  スキップ: 1535件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 213件
+   ⏭️  スキップ: 2901件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1094件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 2553件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 167件
+   ⏭️  スキップ: 1665件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 202件
+   ⏭️  スキップ: 3031件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1177件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 2672件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 168件
+   ⏭️  スキップ: 1784件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 203件
+   ⏭️  スキップ: 3150件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1260件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 2792件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 168件
+   ⏭️  スキップ: 1904件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 203件
+   ⏭️  スキップ: 3270件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1343件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 2912件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 168件
+   ⏭️  スキップ: 2024件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 203件
+   ⏭️  スキップ: 3390件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1426件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 3032件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 167件
+   ⏭️  スキップ: 2144件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 202件
+   ⏭️  スキップ: 3510件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1509件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 3151件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 168件
+   ⏭️  スキップ: 2263件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 203件
+   ⏭️  スキップ: 3629件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1592件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 3271件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 168件
+   ⏭️  スキップ: 2383件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 203件
+   ⏭️  スキップ: 3749件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1675件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 3391件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 167件
+   ⏭️  スキップ: 2503件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 202件
+   ⏭️  スキップ: 3869件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1758件
+   swap_history: 42件
+   fund_changes: 1件
+   gas_retry_history: 102件
+   lp_creation_history: 48件
+   system_logs: 202件
+   monitoring_cycles: 3510件
+
+   最新リバランス: 2025-07-31T11:45:54.982015
+   NFT: 4727804 → 4728093
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 180件
+   ⏭️  スキップ: 2622件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 215件
+   ⏭️  スキップ: 3988件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1845件
+   swap_history: 43件
+   fund_changes: 1件
+   gas_retry_history: 104件
+   lp_creation_history: 49件
+   system_logs: 206件
+   monitoring_cycles: 3630件
+
+   最新リバランス: 2025-07-31T20:10:15.578436
+   NFT: 4728093 → 4728886
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 170件
+   ⏭️  スキップ: 2752件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 205件
+   ⏭️  スキップ: 4118件（重複）
+
+📈 データベース統計:
+   rebalance_history: 1930件
+   swap_history: 43件
+   fund_changes: 1件
+   gas_retry_history: 104件
+   lp_creation_history: 49件
+   system_logs: 206件
+   monitoring_cycles: 3750件
+
+   最新リバランス: 2025-07-31T20:10:15.578436
+   NFT: 4728093 → 4728886
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 202件
+   ⏭️  スキップ: 2872件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 237件
+   ⏭️  スキップ: 4238件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2024件
+   swap_history: 45件
+   fund_changes: 1件
+   gas_retry_history: 112件
+   lp_creation_history: 52件
+   system_logs: 218件
+   monitoring_cycles: 3868件
+
+   最新リバランス: 2025-07-31T22:16:39.604598
+   NFT: 4729119 → 4729178
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 2個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 186件
+   ⏭️  スキップ: 3019件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 221件
+   ⏭️  スキップ: 4385件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2118件
+   swap_history: 46件
+   fund_changes: 1件
+   gas_retry_history: 114件
+   lp_creation_history: 53件
+   system_logs: 222件
+   monitoring_cycles: 3987件
+
+   最新リバランス: 2025-07-31T23:23:02.434396
+   NFT: 4729178 → 4729396
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 132件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 224件
+   ⏭️  スキップ: 4514件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2214件
+   swap_history: 47件
+   fund_changes: 1件
+   gas_retry_history: 116件
+   lp_creation_history: 54件
+   system_logs: 226件
+   monitoring_cycles: 4107件
+
+   最新リバランス: 2025-08-01T00:31:24.223320
+   NFT: 4729396 → 4729661
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 133件
+   ⏭️  スキップ: 130件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 225件
+   ⏭️  スキップ: 4644件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2312件
+   swap_history: 48件
+   fund_changes: 1件
+   gas_retry_history: 118件
+   lp_creation_history: 55件
+   system_logs: 230件
+   monitoring_cycles: 4226件
+
+   最新リバランス: 2025-08-01T01:36:17.394299
+   NFT: 4729661 → 4729805
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 6件
+   ⏭️  スキップ: 388件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 98件
+   ⏭️  スキップ: 4902件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2510件
+   swap_history: 49件
+   fund_changes: 1件
+   gas_retry_history: 120件
+   lp_creation_history: 56件
+   system_logs: 234件
+   monitoring_cycles: 4345件
+
+   最新リバランス: 2025-08-01T02:03:04.243865
+   NFT: 4729805 → 4729896
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 149件
+   ⏭️  スキップ: 388件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 241件
+   ⏭️  スキップ: 4902件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2616件
+   swap_history: 51件
+   fund_changes: 1件
+   gas_retry_history: 124件
+   lp_creation_history: 58件
+   system_logs: 242件
+   monitoring_cycles: 4464件
+
+   最新リバランス: 2025-08-01T03:37:11.918313
+   NFT: 4730067 → 4730181
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 153件
+   ⏭️  スキップ: 527件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 245件
+   ⏭️  スキップ: 5041件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2726件
+   swap_history: 53件
+   fund_changes: 1件
+   gas_retry_history: 128件
+   lp_creation_history: 60件
+   system_logs: 250件
+   monitoring_cycles: 4583件
+
+   最新リバランス: 2025-08-01T04:49:17.553412
+   NFT: 4730256 → 4730353
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 157件
+   ⏭️  スキップ: 666件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 249件
+   ⏭️  スキップ: 5180件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2840件
+   swap_history: 55件
+   fund_changes: 1件
+   gas_retry_history: 132件
+   lp_creation_history: 62件
+   system_logs: 258件
+   monitoring_cycles: 4702件
+
+   最新リバランス: 2025-08-01T05:22:18.212118
+   NFT: 4730429 → 4730477
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 184件
+   ⏭️  スキップ: 805件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 276件
+   ⏭️  スキップ: 5319件（重複）
+
+📈 データベース統計:
+   rebalance_history: 2966件
+   swap_history: 59件
+   fund_changes: 1件
+   gas_retry_history: 140件
+   lp_creation_history: 66件
+   system_logs: 274件
+   monitoring_cycles: 4820件
+
+   最新リバランス: 2025-08-01T06:54:24.043188
+   NFT: 4730737 → 4730757
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 157件
+   ⏭️  スキップ: 963件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 249件
+   ⏭️  スキップ: 5477件（重複）
+
+📈 データベース統計:
+   rebalance_history: 3088件
+   swap_history: 60件
+   fund_changes: 1件
+   gas_retry_history: 142件
+   lp_creation_history: 67件
+   system_logs: 278件
+   monitoring_cycles: 4939件
+
+   最新リバランス: 2025-08-01T07:39:15.319690
+   NFT: 4730757 → 4730898
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 35件
+   ⏭️  スキップ: 1366件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 57件
+   ⏭️  スキップ: 3148件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 55件
+   ⏭️  スキップ: 1219件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 147件
+   ⏭️  スキップ: 5733件（重複）
+
+📈 データベース統計:
+   rebalance_history: 3346件
+   swap_history: 63件
+   fund_changes: 1件
+   gas_retry_history: 148件
+   lp_creation_history: 70件
+   system_logs: 290件
+   monitoring_cycles: 5057件
+
+   最新リバランス: 2025-08-01T08:41:35.870128
+   NFT: 4731075 → 4731134
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 3個
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 1485件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 6091件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 3503件
+   swap_history: 200件
+   fund_changes: 2件
+   gas_retry_history: 444件
+   lp_creation_history: 214件
+   system_logs: 876件
+   monitoring_cycles: 13722件
+
+   最新リバランス: 2025-08-01T09:58:39.001460
+   NFT: 4731587 → 4731600
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 1668件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 6274件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 4359件
+   swap_history: 420件
+   fund_changes: 11件
+   gas_retry_history: 1050件
+   lp_creation_history: 489件
+   system_logs: 2066件
+   monitoring_cycles: 28048件
+
+   最新リバランス: 2025-08-01T11:01:29.232823
+   NFT: 4731842 → 4731875
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 1678件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 6284件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 4655件
+   swap_history: 496件
+   fund_changes: 12件
+   gas_retry_history: 1224件
+   lp_creation_history: 572件
+   system_logs: 2408件
+   monitoring_cycles: 33360件
+
+   最新リバランス: 2025-08-01T11:01:29.232823
+   NFT: 4731842 → 4731875
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-31.json
+   ✅ インポート: 3205件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-08-01.json
+   ✅ インポート: 1698件
+   ⏭️  スキップ: 0件（重複）
+
+📊 日次パフォーマンス集計中...
+   ✅ 日次パフォーマンス更新完了
+
+📊 インポート結果:
+   ✅ インポート: 6304件
+   ⏭️  スキップ: 0件（重複）
+
+📈 データベース統計:
+   rebalance_history: 4954件
+   swap_history: 573件
+   fund_changes: 13件
+   gas_retry_history: 1400件
+   lp_creation_history: 656件
+   system_logs: 2754件
+   monitoring_cycles: 38681件
+
+   最新リバランス: 2025-08-01T11:14:18.843140
+   NFT: 4731875 → 4731916
+
+✅ インポート完了!
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
+
+🚀 JSONログインポート開始
+📍 データベース: /root/lpbot/monitoring/lpbot.db
+📅 対象期間: 過去7日間
+
+📁 対象ファイル: 4個
+
+📄 ファイル処理: logs_2025-07-24.json
+   ✅ インポート: 0件
+   ⏭️  スキップ: 0件（重複）
+
+📄 ファイル処理: logs_2025-07-30.json
+   ✅ インポート: 1401件
+   ⏭️  スキップ: 0件（重複）
+
+❌ インポートエラー: database is locked
+Traceback (most recent call last):
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 536, in <module>
+    main()
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 532, in main
+    importer.run_import(days_back=args.days)
+  File "/root/lpbot/monitoring/collectors/json_importer.py", line 452, in run_import
+    self.conn.commit()
+sqlite3.OperationalError: database is locked
