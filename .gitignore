@@ -41,3 +41,8 @@ Thumbs.db
 tracked_nfts.json
 logs_*.json
 archive/
+
+# データベースファイル（大容量のため除外）
+monitoring/lpbot.db
+monitoring/*.db
+*.sqlite
