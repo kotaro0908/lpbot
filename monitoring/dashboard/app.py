@@ -356,6 +356,7 @@ def api_dashboard_data():
         'in_range_time_percent': in_range_percent
     })
 
+
 @app.route('/api/transaction_history')
 def api_transaction_history():
     """取引履歴API"""
@@ -434,6 +435,36 @@ def api_transaction_history():
         profit_percent = (net_profit / float(row['actual_amount']) * 100) if row['actual_amount'] and float(
             row['actual_amount']) > 0 else 0
 
+        # 滞在時間計算
+        conn_duration = get_db_connection()
+        duration_result = conn_duration.execute("""
+                                                SELECT ROUND((julianday(rh2.timestamp) - julianday(rh1.timestamp)) * 24 * 3600) as duration_seconds
+                                                FROM rebalance_history rh1
+                                                         LEFT JOIN rebalance_history rh2
+                                                                   ON rh1.new_nft_id = rh2.old_nft_id
+                                                                       AND rh2.reason = 'range_out' AND rh2.success = 1
+                                                WHERE rh1.new_nft_id = ?
+                                                """, (row['nft_id'],)).fetchone()
+        conn_duration.close()
+
+        duration_seconds = duration_result['duration_seconds'] if duration_result else None
+
+        # 滞在時間表示形式と資本時間効率計算
+        if duration_seconds:
+            hours = int(duration_seconds // 3600)
+            minutes = int((duration_seconds % 3600) // 60)
+            seconds = int(duration_seconds % 60)
+            duration_display = f"{hours}時間{minutes:02d}分{seconds:02d}秒"
+
+            # 資本時間効率計算
+            duration_hours = duration_seconds / 3600
+            roi_percent = (net_profit / float(row['actual_amount'])) * 100
+            roi_per_hour = roi_percent / duration_hours
+            roi_per_hour_display = f"{roi_per_hour:+.3f}%/h"
+        else:
+            duration_display = "進行中"
+            roi_per_hour_display = None
+
         transactions.append({
             'timestamp': row['timestamp'],
             'nft_id': row['nft_id'],
@@ -442,7 +473,9 @@ def api_transaction_history():
             'gas_cost': gas_cost,
             'net_profit': net_profit,
             'profit_percent': profit_percent,
-            'tx_hash': row['tx_hash']
+            'tx_hash': row['tx_hash'],
+            'duration_display': duration_display,
+            'roi_per_hour': roi_per_hour_display
         })
 
     # もっと見るボタンの表示判定

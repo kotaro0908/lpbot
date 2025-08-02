@@ -337,12 +337,16 @@ function loadTransactionHistory(offset = 0, limit = 10) {
         });
 }
 
-// 各取引のカードHTMLを生成
+// 現在のcreateTransactionCard関数に追加
 function createTransactionCard(tx, number) {
     const profitSign = tx.net_profit >= 0 ? '+' : '';
     const profitClass = tx.net_profit >= 0 ? 'text-success' : 'text-danger';
     const txHashShort = tx.tx_hash ? tx.tx_hash.substring(0, 10) + '...' : 'N/A';
     const arbiscanLink = tx.tx_hash ? `https://arbiscan.io/tx/${tx.tx_hash}` : '#';
+
+    // 新しいKPI表示の追加
+    const durationDisplay = tx.duration_display || '--';
+    const roiPerHour = tx.roi_per_hour || '--';
 
     return `
         <div class="list-group-item list-group-item-action mb-2 shadow-sm transaction-card">
@@ -354,22 +358,28 @@ function createTransactionCard(tx, number) {
             </div>
             <div class="transaction-details mt-2">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <strong>NFT ID:</strong> <a href="https://arbiscan.io/nft/0xc36442b4a4522e871399cd717abdd847ab11fe88/${tx.nft_id}" target="_blank" class="text-primary">#${tx.nft_id}</a>
                     </div>
-                    <div class="col-md-6">
-                        <strong>TX Hash:</strong> <a href="${arbiscanLink}" target="_blank" class="text-primary">${txHashShort}</a>
+                    <div class="col-md-4">
+                        <strong>滞在時間:</strong> ${durationDisplay}
+                    </div>
+                    <div class="col-md-4">
+                        <strong>効率:</strong> ${roiPerHour}
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <span class="text-success">手数料収入:</span> +$${tx.fee_revenue.toFixed(3)}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <span class="text-danger">ILロス:</span> -$${tx.il_loss.toFixed(3)}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <span class="text-secondary">ガス代:</span> -$${tx.gas_cost.toFixed(3)}
+                    </div>
+                    <div class="col-md-3">
+                        <strong>TX Hash:</strong> <a href="${arbiscanLink}" target="_blank" class="text-primary">${txHashShort}</a>
                     </div>
                 </div>
             </div>
