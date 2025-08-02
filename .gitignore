@@ -49,3 +49,7 @@ monitoring/*.db
 
 # 追跡済みDBファイルも除外
 monitoring/lpbot.db
+
+# 強制除外（PyCharm対策）
+monitoring/lpbot.db
+/monitoring/lpbot.db
