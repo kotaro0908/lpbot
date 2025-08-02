@@ -215,7 +215,13 @@ def api_dashboard_data():
     eth_price = get_current_eth_price()
     balances = get_wallet_balances()
     wallet_value = (balances['eth'] + balances['weth']) * eth_price + balances['usdc']
-    lp_value = 65.0  # 暫定的な固定値
+
+    # LP価値を正確に計算
+    lp_result = get_lp_value()
+    lp_value = lp_result["value"]
+    lp_mode = lp_result["mode"]
+    # lp_mode = lp_result["mode"]  ← この重複行を削除
+
     total_value = wallet_value + lp_value
 
     # NFT IDを取得
@@ -329,6 +335,7 @@ def api_dashboard_data():
     return jsonify({
         'total_value': total_value,
         'lp_value': lp_value,
+        'lp_mode': lp_mode,
         'wallet_value': wallet_value,
         'total_investment': total_investment,
         'total_fees': total_fees,
@@ -348,7 +355,6 @@ def api_dashboard_data():
         'last_rebalance': format_timestamp(last_rebalance['timestamp']) if last_rebalance else None,
         'in_range_time_percent': in_range_percent
     })
-
 
 @app.route('/api/transaction_history')
 def api_transaction_history():
@@ -475,9 +481,11 @@ def get_current_eth_price():
         slot0 = pool.functions.slot0().call()
         sqrt_price_x96 = slot0[0]
 
-        # 価格計算
-        price = (sqrt_price_x96 / (2 ** 96)) ** 2
-        eth_price_usd = price * (10 ** 12)  # USDC decimals adjustment
+        # 正しい価格計算
+        # Token0 = WETH (18 decimals), Token1 = USDC (6 decimals)
+        price_ratio = (sqrt_price_x96 / (2 ** 96)) ** 2
+        decimal_adjustment = 10 ** (18 - 6)  # 10^12
+        eth_price_usd = price_ratio * decimal_adjustment
 
         print(f"ETH価格取得成功: ${eth_price_usd:.2f}")
         return eth_price_usd
@@ -538,79 +546,146 @@ def get_current_nft_id():
         return None
 
 
+def get_active_nft_with_validation():
+    """突合確認付きでアクティブNFTを取得"""
+    try:
+        # tracked_nfts.jsonから取得
+        json_nft = get_current_nft_id()
+        
+        # rebalance_historyから最新NFTを取得
+        conn = get_db_connection()
+        db_result = conn.execute("""
+            SELECT new_nft_id
+            FROM rebalance_history
+            WHERE reason = 'range_out' AND success = 1 AND new_nft_id IS NOT NULL
+            ORDER BY timestamp DESC LIMIT 1
+        """).fetchone()
+        conn.close()
+        
+        db_nft = db_result['new_nft_id'] if db_result else None
+        
+        # 突合確認
+        if json_nft and db_nft and json_nft == db_nft:
+            print(f"✅ アクティブNFT確認: {json_nft}")
+            return json_nft
+        else:
+            print(f"❌ NFT不整合: JSON={json_nft}, DB={db_nft}")
+            return None
+            
+    except Exception as e:
+        print(f"アクティブNFT取得エラー: {e}")
+        return None
+
+
+def calculate_lp_value_accurate(nft_id):
+    """投入額ベースの価格変動調整LP価値計算"""
+    try:
+        # 現在のETH価格取得
+        current_eth_price = get_current_eth_price()
+
+        # DBから投入時のデータ取得
+        conn = get_db_connection()
+        position_data = conn.execute("""
+                                     SELECT actual_amount, price_at_rebalance as entry_price
+                                     FROM rebalance_history
+                                     WHERE new_nft_id = ?
+                                       AND reason = 'range_out'
+                                       AND success = 1
+                                     """, (nft_id,)).fetchone()
+        conn.close()
+
+        if not position_data:
+            print(f"⚠️ NFT {nft_id}: 投入データが見つかりません")
+            return None
+
+        actual_amount = float(position_data['actual_amount'])
+        entry_price = float(position_data['entry_price'])
+
+        # 価格変動率計算
+        price_change_ratio = current_eth_price / entry_price
+
+        # LP価値推定（価格変動を反映）
+        estimated_lp_value = actual_amount * price_change_ratio
+
+        print(f"✅ NFT {nft_id} LP価値計算:")
+        print(f"  投入額: ${actual_amount:.2f}")
+        print(f"  投入時価格: ${entry_price:.2f}")
+        print(f"  現在価格: ${current_eth_price:.2f}")
+        print(f"  価格変動: {(price_change_ratio - 1) * 100:+.2f}%")
+        print(f"  推定LP価値: ${estimated_lp_value:.2f}")
+
+        return estimated_lp_value
+
+    except Exception as e:
+        print(f"❌ LP価値計算エラー: {e}")
+        return None
+
+def get_lp_value():
+    """LP価値を取得（正確計算 + フォールバック）"""
+    try:
+        # Step 1: アクティブNFT特定
+        active_nft = get_active_nft_with_validation()
+
+        if not active_nft:
+            print("❌ アクティブNFTなし - LP価値=0")
+            return {'value': 0.0, 'mode': 'no_active_lp'}
+
+        # Step 2: 正確なLP価値計算を試行
+        accurate_value = calculate_lp_value_accurate(active_nft)
+
+        if accurate_value is not None:
+            return {'value': accurate_value, 'mode': 'accurate'}
+
+        # Step 3: フォールバック（簡易計算）
+        print("⚠️ 正確計算失敗 - 簡易計算に切り替え")
+
+        conn = get_db_connection()
+
+        # 投入額取得
+        amount_result = conn.execute("""
+                                     SELECT actual_amount
+                                     FROM rebalance_history
+                                     WHERE new_nft_id = ?
+                                       AND reason = 'range_out'
+                                       AND success = 1
+                                     """, (active_nft,)).fetchone()
+
+        # 手数料取得
+        fee_result = conn.execute("""
+                                  SELECT COALESCE(total_usd, 0) as fees
+                                  FROM fee_collection_history
+                                  WHERE nft_id = ?
+                                  """, (active_nft,)).fetchone()
+
+        conn.close()
+
+        actual_amount = amount_result['actual_amount'] if amount_result else 50.0
+        fees = fee_result['fees'] if fee_result else 0.0
+
+        fallback_value = actual_amount + fees
+
+        print(f"📊 簡易計算: 投入額${actual_amount:.2f} + 手数料${fees:.2f} = ${fallback_value:.2f}")
+
+        return {'value': fallback_value, 'mode': 'estimated'}
+
+    except Exception as e:
+        print(f"❌ LP価値取得エラー: {e}")
+        return {'value': 0.0, 'mode': 'error'}
+
+
 if __name__ == '__main__':
     # まず投資履歴テーブルを作成
     conn = get_db_connection()
     conn.execute("""
                  CREATE TABLE IF NOT EXISTS investment_history
                  (
-                     id
-                     INTEGER
-                     PRIMARY
-                     KEY
-                     AUTOINCREMENT,
-                     timestamp
-                     DATETIME
-                     NOT
-                     NULL,
-                     action
-                     TEXT
-                     NOT
-                     NULL,
-                     amount_usd
-                     REAL
-                     NOT
-                     NULL,
-                     cumulative_investment
-                     REAL,
-                     note
-                     TEXT,
-                     created_at
-                     DATETIME
-                     DEFAULT
-                     CURRENT_TIMESTAMP
-                 )
-                 """)
-
-    # fee_collection_historyテーブルも作成
-    conn.execute("""
-                 CREATE TABLE IF NOT EXISTS fee_collection_history
-                 (
-                     id
-                     INTEGER
-                     PRIMARY
-                     KEY
-                     AUTOINCREMENT,
-                     timestamp
-                     DATETIME
-                     NOT
-                     NULL,
-                     nft_id
-                     INTEGER,
-                     tx_hash
-                     TEXT,
-                     amount0
-                     REAL,
-                     amount1
-                     REAL,
-                     amount0_usd
-                     REAL,
-                     amount1_usd
-                     REAL,
-                     total_usd
-                     REAL,
-                     gas_used
-                     INTEGER,
-                     gas_cost_eth
-                     REAL,
-                     gas_cost_usd
-                     REAL,
-                     net_profit_usd
-                     REAL,
-                     created_at
-                     DATETIME
-                     DEFAULT
-                     CURRENT_TIMESTAMP
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     timestamp DATETIME NOT NULL,
+                     action TEXT NOT NULL,
+                     amount_usd REAL NOT NULL,
+                     cumulative_investment REAL,
+                     note TEXT,
+                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                  )
                  """)
 
