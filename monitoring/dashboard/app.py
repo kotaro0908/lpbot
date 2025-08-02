@@ -220,7 +220,6 @@ def api_dashboard_data():
     lp_result = get_lp_value()
     lp_value = lp_result["value"]
     lp_mode = lp_result["mode"]
-    # lp_mode = lp_result["mode"]  ← この重複行を削除
 
     total_value = wallet_value + lp_value
 
@@ -270,24 +269,45 @@ def api_dashboard_data():
     avg_daily_profit = daily_stats["avg_daily"] if daily_stats and daily_stats["avg_daily"] else 0
     max_daily_profit = daily_stats["max_daily"] if daily_stats and daily_stats["max_daily"] else 0
 
-    # リバランス統計を追加（修正版）
+    # リバランス統計（改善版）
     rebalance_stats = conn.execute("""
                                    SELECT COUNT(DISTINCT CASE
                                                              WHEN new_nft_id IS NOT NULL
                                                                  THEN old_nft_id || '-' || new_nft_id END)         as unique_transitions,
-                                          COUNT(*)                                                                 as total_attempts,
-                                          COUNT(CASE WHEN success = 1 AND new_nft_id IS NOT NULL THEN 1 END)       as success_count,
-                                          COUNT(CASE WHEN DATE (timestamp) = DATE ('now', 'localtime') THEN 1 END) as today_attempts,
+                                          COUNT(CASE WHEN DATE (timestamp) = DATE ('now', 'localtime') THEN 1 END) as today_rebalances,
                                           COUNT(DISTINCT CASE WHEN new_nft_id IS NOT NULL AND DATE
                                                 (timestamp, 'start of month') = DATE ('now', 'start of month') THEN
                                                 old_nft_id || '-' || new_nft_id
-                                                END)                                                               as month_transitions
+                                                END)                                                               as month_rebalances
                                    FROM rebalance_history
+                                   WHERE reason = 'range_out'
+                                     AND success = 1
+                                     AND new_nft_id IS NOT NULL
                                    """).fetchone()
 
-    # 成功率計算
-    success_rate = (rebalance_stats['success_count'] / rebalance_stats['total_attempts'] * 100) if rebalance_stats[
-                                                                                                       'total_attempts'] > 0 else 0
+    # 日次平均リバランス回数計算
+    days_count = conn.execute("""
+                              SELECT COUNT(DISTINCT DATE (timestamp)) as total_days
+                              FROM rebalance_history
+                              WHERE reason = 'range_out'
+                                AND success = 1
+                                AND new_nft_id IS NOT NULL
+                              """).fetchone()['total_days']
+
+    daily_avg_rebalances = (rebalance_stats['unique_transitions'] / days_count) if days_count > 0 else 0
+
+    # 平均リバランス間隔計算
+    avg_interval = conn.execute("""
+                                SELECT AVG(ROUND((julianday(rh2.timestamp) - julianday(rh1.timestamp)) * 24)) as avg_hours
+                                FROM rebalance_history rh1
+                                         JOIN rebalance_history rh2 ON rh1.new_nft_id = rh2.old_nft_id
+                                    AND rh2.reason = 'range_out' AND rh2.success = 1
+                                WHERE rh1.reason = 'range_out'
+                                  AND rh1.success = 1
+                                  AND rh1.new_nft_id IS NOT NULL
+                                """).fetchone()['avg_hours']
+
+    avg_interval_hours = avg_interval if avg_interval else 0
 
     # 最新のリバランス情報を取得
     last_rebalance = conn.execute("""
@@ -346,16 +366,14 @@ def api_dashboard_data():
         'today_fees': today_fees,
         'avg_daily_profit': avg_daily_profit,
         'max_daily_profit': max_daily_profit,
-        'rebalance_today': rebalance_stats['today_attempts'] if rebalance_stats else 0,
-        'rebalance_count': rebalance_stats['unique_transitions'] if rebalance_stats else 0,
-        'rebalance_attempts': rebalance_stats['total_attempts'] if rebalance_stats else 0,
-        'month_rebalances': rebalance_stats['month_transitions'] if rebalance_stats else 0,
-        'success_rate': success_rate,
+        'rebalance_today': rebalance_stats['today_rebalances'] if rebalance_stats else 0,
+        'rebalance_count': rebalance_stats['month_rebalances'] if rebalance_stats else 0,
+        'daily_avg_rebalances': daily_avg_rebalances,
+        'avg_interval_hours': avg_interval_hours,
         'current_range': current_range,
         'last_rebalance': format_timestamp(last_rebalance['timestamp']) if last_rebalance else None,
         'in_range_time_percent': in_range_percent
     })
-
 
 @app.route('/api/transaction_history')
 def api_transaction_history():

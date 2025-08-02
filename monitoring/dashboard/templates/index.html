@@ -152,15 +152,15 @@ cat > templates/index.html << 'EOF'
                         <canvas id="myPieChart"></canvas>
                     </div>
                     <div class="mt-4 text-center small">
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> 今月の実リバランス: <span id="rebalanceMonthly">--回</span>
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> 成功率: <span id="successRate">--%</span>
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-info"></i> (試行: <span id="rebalanceAttempts">--回</span>)
-                        </span>
+    <span class="mr-2">
+        <i class="fas fa-circle text-primary"></i> 今月のリバランス: <span id="rebalanceMonthly">--回</span>
+    </span>
+    <span class="mr-2">
+        <i class="fas fa-circle text-success"></i> 日次平均: <span id="dailyAvgRebalances">--回/日</span>
+    </span>
+    <span class="mr-2">
+        <i class="fas fa-circle text-info"></i> 平均間隔: <span id="avgIntervalHours">--時間</span>
+    </span>
                     </div>
                 </div>
             </div>
@@ -286,15 +286,15 @@ function loadDashboardData() {
         }
 
         // リバランス統計
-        if (data.month_rebalances !== undefined) {
-            $('#rebalanceMonthly').text(data.month_rebalances + '回');
-        }
-        if (data.rebalance_attempts !== undefined) {
-            $('#rebalanceAttempts').text(data.rebalance_attempts + '回');
-        }
-        if (data.success_rate !== undefined) {
-            $('#successRate').text(data.success_rate.toFixed(1) + '%');
-        }
+        if (data.rebalance_count !== undefined) {
+    $('#rebalanceMonthly').text(data.rebalance_count + '回');
+}
+if (data.daily_avg_rebalances !== undefined) {
+    $('#dailyAvgRebalances').text(data.daily_avg_rebalances.toFixed(1) + '回/日');
+}
+if (data.avg_interval_hours !== undefined) {
+    $('#avgIntervalHours').text(data.avg_interval_hours.toFixed(1) + '時間');
+}
 
         // updateCharts(data);
     });
