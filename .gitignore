@@ -46,3 +46,6 @@ archive/
 monitoring/lpbot.db
 monitoring/*.db
 *.sqlite
+
+# 追跡済みDBファイルも除外
+monitoring/lpbot.db
