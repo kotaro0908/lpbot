@@ -27,12 +27,6 @@ ENV/
 logs/
 *.log
 
-# Monitoring data
-monitoring/lpbot.db
-monitoring/lpbot.db-*
-monitoring/import.log
-monitoring/collectors/*.log
-
 # Temporary files
 *.tmp
 *.bak
