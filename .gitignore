@@ -53,3 +53,11 @@ monitoring/lpbot.db
 # 強制除外（PyCharm対策）
 monitoring/lpbot.db
 /monitoring/lpbot.db
+
+# PyCharm対策 - 強制除外
+monitoring/lpbot.db
+/monitoring/lpbot.db
+
+# ログファイル除外
+monitoring/collectors/*.log
+monitoring/*.log
