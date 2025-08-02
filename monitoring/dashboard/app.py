@@ -47,6 +47,41 @@ ERC20_ABI = [
 ]
 
 
+def calculate_il_loss(nft_id, price_at_entry, actual_amount):
+    """正確なIL計算を実行"""
+    try:
+        conn = get_db_connection()
+        
+        # このNFTの exit_price を取得（次のリバランス時の価格）
+        exit_data = conn.execute("""
+            SELECT price_at_rebalance as exit_price
+            FROM rebalance_history
+            WHERE old_nft_id = ? AND reason = 'range_out' AND success = 1
+            ORDER BY timestamp ASC LIMIT 1
+        """, (nft_id,)).fetchone()
+        
+        conn.close()
+        
+        if not exit_data or not exit_data['exit_price']:
+            return 0  # exit価格がない場合は0
+        
+        exit_price = float(exit_data['exit_price'])
+        entry_price = float(price_at_entry)
+        amount = float(actual_amount)
+        
+        # IL計算: 2 * sqrt(price_ratio) / (1 + price_ratio) - 1
+        price_ratio = exit_price / entry_price
+        sqrt_ratio = (price_ratio ** 0.5)
+        il_percentage = 2 * sqrt_ratio / (1 + price_ratio) - 1
+        il_amount = abs(il_percentage * amount)
+        
+        return il_amount
+        
+    except Exception as e:
+        print(f"IL計算エラー: {e}")
+        return 0
+
+
 def get_db_connection():
     """データベース接続"""
     conn = sqlite3.connect(DB_PATH)
@@ -383,8 +418,8 @@ def api_transaction_history():
         # ガス代
         gas_cost = float(row['gas_cost_usd']) if row['gas_cost_usd'] else 0
 
-        # IL損失の推定（簡易版）- 実際の計算は複雑なので暫定値
-        il_loss = fee_revenue * 0.3 if fee_revenue > 0 else 0
+        # IL損失の正確な計算
+        il_loss = calculate_il_loss(row['nft_id'], row['price_at_rebalance'], row['actual_amount'])
 
         # 純利益
         net_profit = fee_revenue - il_loss - gas_cost
@@ -400,7 +435,8 @@ def api_transaction_history():
             'il_loss': il_loss,
             'gas_cost': gas_cost,
             'net_profit': net_profit,
-            'profit_percent': profit_percent,            'tx_hash': row['tx_hash']
+            'profit_percent': profit_percent,
+            'tx_hash': row['tx_hash']
         })
 
     # もっと見るボタンの表示判定
